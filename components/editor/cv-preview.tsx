@@ -236,73 +236,237 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               </motion.p>
             )}
 
-            {/* Contact info */}
-            <motion.div
-              layout="position"
-              className={cn(
-                "mt-3 flex flex-wrap items-center gap-4 text-sm text-black",
-                contactJustify
-              )}
-            >
-              {personalInfo.email && (
-                <motion.span
-                  layout="position"
-                  className="flex items-center gap-1"
-                >
-                  <Mail className="h-3.5 w-3.5" />
-                  {personalInfo.email}
-                </motion.span>
-              )}
-              {personalInfo.phone && (
-                <motion.span
-                  layout="position"
-                  className="flex items-center gap-1"
-                >
-                  <Phone className="h-3.5 w-3.5" />
-                  {personalInfo.phone}
-                </motion.span>
-              )}
-              {personalInfo.location && (
-                <motion.span
-                  layout="position"
-                  className="flex items-center gap-1"
-                >
-                  <MapPin className="h-3.5 w-3.5" />
-                  {personalInfo.location}
-                </motion.span>
-              )}
-            </motion.div>
-
-            {/* Social Links */}
-            {personalInfo.socialLinks &&
-              personalInfo.socialLinks.length > 0 && (
+            {/* Contact info - Split layout for left/right alignment */}
+            {personalInfo.headerAlign === "center" ? (
+              <>
+                {/* Center alignment - single row */}
                 <motion.div
                   layout="position"
                   className={cn(
-                    "mt-3 flex flex-wrap items-center gap-2 text-sm text-black",
+                    "mt-3 flex flex-wrap items-center gap-4 text-sm text-black",
                     contactJustify
                   )}
                 >
-                  {personalInfo.socialLinks.map((link) => {
-                    const Icon = platformIcons[link.platform];
-                    const label = platformLabels[link.platform];
-                    return (
-                      <motion.a
-                        key={link.id}
-                        layout="position"
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${label} profile`}
-                        className="flex items-center gap-1 text-black"
-                      >
-                        <Icon className="h-3.5 w-3.5" />
-                        <span className="text-xs font-medium">{label}</span>
-                      </motion.a>
-                    );
-                  })}
+                  {personalInfo.email && (
+                    <motion.span
+                      key="email"
+                      layoutId="email"
+                      layout="position"
+                      className="flex items-center gap-1"
+                    >
+                      <Mail className="h-3.5 w-3.5" />
+                      {personalInfo.email}
+                    </motion.span>
+                  )}
+                  {personalInfo.phone && (
+                    <motion.span
+                      key="phone"
+                      layoutId="phone"
+                      layout="position"
+                      className="flex items-center gap-1"
+                    >
+                      <Phone className="h-3.5 w-3.5" />
+                      {personalInfo.phone}
+                    </motion.span>
+                  )}
+                  {personalInfo.location && (
+                    <motion.span
+                      key="location"
+                      layoutId="location"
+                      layout="position"
+                      className="flex items-center gap-1"
+                    >
+                      <MapPin className="h-3.5 w-3.5" />
+                      {personalInfo.location}
+                    </motion.span>
+                  )}
                 </motion.div>
-              )}
+
+                {/* Social Links - Center alignment */}
+                {personalInfo.socialLinks &&
+                  personalInfo.socialLinks.length > 0 && (
+                    <motion.div
+                      layout="position"
+                      className={cn(
+                        "mt-3 flex flex-wrap items-center gap-2 text-sm text-black",
+                        contactJustify
+                      )}
+                    >
+                      {personalInfo.socialLinks.map((link) => {
+                        const Icon = platformIcons[link.platform];
+                        const label = platformLabels[link.platform];
+                        return (
+                          <motion.a
+                            key={link.id}
+                            layoutId={`social-${link.id}`}
+                            layout="position"
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${label} profile`}
+                            className="flex items-center gap-1 text-black"
+                          >
+                            <Icon className="h-3.5 w-3.5" />
+                            <span className="text-xs font-medium">{label}</span>
+                          </motion.a>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+              </>
+            ) : (
+              /* Left/Right alignment - split layout */
+              <motion.div
+                layout="position"
+                className="mt-3 flex justify-between items-start text-sm text-black"
+              >
+                {/* Left column */}
+                <div className="flex flex-col gap-2">
+                  {personalInfo.headerAlign === "left" ? (
+                    <>
+                      {/* Left alignment: Email and Phone on left */}
+                      {personalInfo.email && (
+                        <motion.span
+                          key="email"
+                          layoutId="email"
+                          layout="position"
+                          className="flex items-center gap-1"
+                        >
+                          <Mail className="h-3.5 w-3.5" />
+                          {personalInfo.email}
+                        </motion.span>
+                      )}
+                      {personalInfo.phone && (
+                        <motion.span
+                          key="phone"
+                          layoutId="phone"
+                          layout="position"
+                          className="flex items-center gap-1"
+                        >
+                          <Phone className="h-3.5 w-3.5" />
+                          {personalInfo.phone}
+                        </motion.span>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {/* Right alignment: Location and Social Links on left */}
+                      {personalInfo.location && (
+                        <motion.span
+                          key="location"
+                          layoutId="location"
+                          layout="position"
+                          className="flex items-center gap-1"
+                        >
+                          <MapPin className="h-3.5 w-3.5" />
+                          {personalInfo.location}
+                        </motion.span>
+                      )}
+                      {/* Social Links in left column for right alignment */}
+                      {personalInfo.socialLinks &&
+                        personalInfo.socialLinks.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-2">
+                            {personalInfo.socialLinks.map((link) => {
+                              const Icon = platformIcons[link.platform];
+                              const label = platformLabels[link.platform];
+                              return (
+                                <motion.a
+                                  key={link.id}
+                                  layoutId={`social-${link.id}`}
+                                  layout="position"
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  aria-label={`${label} profile`}
+                                  className="flex items-center gap-1 text-black"
+                                >
+                                  <Icon className="h-3.5 w-3.5" />
+                                  <span className="text-xs font-medium">
+                                    {label}
+                                  </span>
+                                </motion.a>
+                              );
+                            })}
+                          </div>
+                        )}
+                    </>
+                  )}
+                </div>
+
+                {/* Right column */}
+                <div className="flex flex-col gap-2">
+                  {personalInfo.headerAlign === "left" ? (
+                    <>
+                      {/* Left alignment: Location and Social Links on right */}
+                      {personalInfo.location && (
+                        <motion.span
+                          key="location"
+                          layoutId="location"
+                          layout="position"
+                          className="flex items-center gap-1"
+                        >
+                          <MapPin className="h-3.5 w-3.5" />
+                          {personalInfo.location}
+                        </motion.span>
+                      )}
+                      {/* Social Links in right column for left alignment */}
+                      {personalInfo.socialLinks &&
+                        personalInfo.socialLinks.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-2">
+                            {personalInfo.socialLinks.map((link) => {
+                              const Icon = platformIcons[link.platform];
+                              const label = platformLabels[link.platform];
+                              return (
+                                <motion.a
+                                  key={link.id}
+                                  layoutId={`social-${link.id}`}
+                                  layout="position"
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  aria-label={`${label} profile`}
+                                  className="flex items-center gap-1 text-black"
+                                >
+                                  <Icon className="h-3.5 w-3.5" />
+                                  <span className="text-xs font-medium">
+                                    {label}
+                                  </span>
+                                </motion.a>
+                              );
+                            })}
+                          </div>
+                        )}
+                    </>
+                  ) : (
+                    <>
+                      {/* Right alignment: Email and Phone on right */}
+                      {personalInfo.email && (
+                        <motion.span
+                          key="email"
+                          layoutId="email"
+                          layout="position"
+                          className="flex items-center gap-1"
+                        >
+                          <Mail className="h-3.5 w-3.5" />
+                          {personalInfo.email}
+                        </motion.span>
+                      )}
+                      {personalInfo.phone && (
+                        <motion.span
+                          key="phone"
+                          layoutId="phone"
+                          layout="position"
+                          className="flex items-center gap-1"
+                        >
+                          <Phone className="h-3.5 w-3.5" />
+                          {personalInfo.phone}
+                        </motion.span>
+                      )}
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Sections */}

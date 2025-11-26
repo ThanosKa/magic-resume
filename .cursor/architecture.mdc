@@ -1,33 +1,12 @@
 ---
-description: Architecture boundaries and layering
-globs: []
 alwaysApply: false
 ---
 
-# Project Architecture
+# Architecture
 
-## Tech Stack
-- Package manager: pnpm
-- Framework: Next.js 16 (App Router) with React 19
-- Styling: Tailwind CSS 4, Radix UI primitives, Framer Motion
-- State: Zustand; validation via Zod + React Hook Form
-- Build: Turbopack for dev, Next build for prod
-
-## Package/Repo Structure
-- `.cursor/` – assistant rules and guidelines
-- `.claude/agents/` – agent definitions (planning, etc.)
-- `app/` – routes and layout (App Router)
-- `components/landing/` – marketing/landing UI
-- `components/editor/` – CV editor UI; previews and forms
-- `components/ui/` – shared UI primitives (stateless/styled)
-- `store/` – Zustand store for CV state
-- `types/` – shared TypeScript types
-- `lib/` – utilities/helpers
-- `styles/` – Tailwind and global styles
-
-## Key Principles
-- Keep UI primitives reusable and stateless; control styling via props/classes.
-- Let Zustand own the source-of-truth CV data; components consume via selectors to minimize rerenders.
-- Prefer composition: small sections (forms, previews, lists) should be swappable without changing global state.
-- Isolate async/side effects (AI helpers, network) in `lib/`; keep components declarative.
-- Avoid hydration drift by keeping random IDs and browser-only logic out of server-rendered branches.
+- Landing page components live in `components/landing`; editor pieces live under `components/editor` with state in `store/`.
+- Keep UI primitives in `components/ui` reusable and stateless; styling should be controlled via props/classes.
+- Zustand store should own source-of-truth CV data; components consume via selectors to minimize rerenders.
+- Shared types belong in `types/`; avoid duplicating shape definitions between editor and preview.
+- Prefer composition over configuration: small sections (forms, previews, lists) should be swappable without touching global state.
+- Keep async/side-effect code (API calls, AI helpers) isolated in `lib/` so components stay declarative.

@@ -1,43 +1,12 @@
 ---
-description: React usage notes for Magic Resume
-globs:
-  - "**/*.ts"
-  - "**/*.tsx"
 alwaysApply: false
 ---
 
 # React Guidelines
 
-## Core Rules
-- Functional components only; keep client components lean.
-- Prefer event handlers over `useEffect` for user-driven state updates.
-- Use small, focused components with a single responsibility.
-
-## Component Structure
-- Destructure props in signatures; type all props.
-- Use composition; extract complex logic into hooks.
-
-## Server/Remote State
-- Keep data in the existing state/store patterns (Zustand) or Next data routes; avoid ad-hoc fetch in random components.
-- Invalidate/refresh state after mutations where applicable.
-
-## Event Handlers
-- Handle user actions directly; avoid `useEffect` to mirror events.
-- Use functional state updates when based on previous state.
-
-## Local State
-- `useState` for simple slices; multiple states for unrelated concerns.
-- `useReducer` for multi-field or complex state machines.
-
-## Performance
-- Memoize expensive components and callbacks passed to memoized children.
-- Prefer CSS/transforms for motion; avoid layout thrash.
-
-## Data Flow
-- Props down, events up; avoid two-way binding; use callbacks.
-- Use context sparingly for shared concerns.
-
-## Best Practices
-- Guard browser-only logic to prevent hydration drift (no random IDs/`Date.now()` on render).
-- Use `Link` for navigation; `Button` with `asChild` when wrapping anchors; add aria labels for icon-only controls.
-- Handle loading and error states explicitly.
+- Default to Server Components; mark interactive pieces with `"use client"` and keep them lean.
+- Prevent hydration drift: avoid random IDs/`Date.now()` during render, and gate browser-only code with a mounted check.
+- Co-locate animations and event handlers inside client components; keep data/logic in hooks or stores.
+- Use `Link` for navigation, `Button` with `asChild` when wrapping anchor elements, and keep aria labels on icon-only controls.
+- Keep component props small and serializable; prefer passing IDs and selectors to Zustand rather than whole objects.
+- Memoize expensive calculations and prefer CSS/transforms over layout-thrashing animations.

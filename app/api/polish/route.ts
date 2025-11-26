@@ -1,18 +1,28 @@
 import { streamText } from "ai"
 
+const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+const MODEL = "openai/gpt-4o-mini"
+
 export async function POST(req: Request) {
-  const { content, apiKey } = await req.json()
+  const { content } = await req.json()
+  const apiKey = process.env.OPENROUTER_API_KEY
 
   if (!content) {
     return new Response("Content is required", { status: 400 })
   }
 
   if (!apiKey) {
-    return new Response("API key is required", { status: 400 })
+    return new Response("OpenRouter API key is not configured on the server", { status: 500 })
   }
 
   const result = streamText({
-    model: "openai/gpt-4o-mini",
+    model: MODEL,
+    baseUrl: OPENROUTER_BASE_URL,
+    apiKey,
+    headers: {
+      "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+      "X-Title": "Magic Resume",
+    },
     system: `You are an expert CV/resume writer. Your task is to improve the provided CV content to make it more professional and impactful.
 
 Guidelines:

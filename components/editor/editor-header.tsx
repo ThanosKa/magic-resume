@@ -9,7 +9,7 @@ import {
   ChevronDown,
   Key,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,12 +32,10 @@ import {
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useCVStore } from "@/store/cv-store";
 import type { CVData } from "@/types/cv";
-import { ApiKeyDialog } from "./api-key-dialog";
 
 export function EditorHeader() {
   const { cv, setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [showKeyDialog, setShowKeyDialog] = useState(false);
 
   const handleExportJSON = () => {
     const dataStr = JSON.stringify(cv, null, 2);
@@ -148,8 +146,8 @@ export function EditorHeader() {
             variant="ghost"
             size="icon"
             className="h-9 w-9"
-            onClick={() => setShowKeyDialog(true)}
-            title="API Key Settings"
+            disabled
+            title="API key is managed on the server"
           >
             <Key className="h-4 w-4" />
           </Button>
@@ -157,12 +155,6 @@ export function EditorHeader() {
           <ThemeToggle />
         </div>
       </div>
-
-      <ApiKeyDialog
-        open={showKeyDialog}
-        onOpenChange={setShowKeyDialog}
-        onSave={() => toast.success("API key saved")}
-      />
     </header>
   );
 }

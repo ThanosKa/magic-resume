@@ -1,37 +1,26 @@
-# Repository Guidelines
+# AI Agent Guide
 
-## Project Structure & Module Organization
+Instructions below are for AI assistants. Keep responses concise and aligned with the `.cursor` canonical files.
 
-- Next.js App Router app with landing components in `components/landing`, editor in `components/editor`, shared UI in `components/ui`, state in `store`, types in `types`, helpers in `lib`.
+## Repo Map
+- Next.js App Router. Landing UI in `components/landing`; editor pieces in `components/editor` with state in `store/`; shared primitives in `components/ui`; helpers in `lib/`; types in `types/`.
 
-## Build, Test, and Development Commands
-
+## Runbook
 - Install: `pnpm install`
 - Dev: `pnpm dev`
 - Build: `pnpm build`
 - Lint: `pnpm lint`
-- Start: `pnpm start` (after build)
+- Start (after build): `pnpm start`
 
-## Coding Style & Naming Conventions
+## Behavior Rules
+- Prefer pnpm; avoid destructive git commands and respect existing changes.
+- Default to server components; gate browser-only logic to avoid hydration drift.
+- Keep UI in the neutral Radix/Tailwind style; avoid new dependencies without approval.
+- Provide manual verification steps when relevant; skip adding tests unless asked.
 
-- TypeScript + React; follow Tailwind/Radix styling patterns.
-- Use aliases (`@/`) over deep relatives; keep components PascalCase, utilities kebab-case.
-- See `.cursor` code-style and TypeScript guidelines for details.
+## Code Style & Stack
+- See `.cursor/code-style.mdc` for full coding conventions (imports, TS/React patterns, formatting).
 
-## Rules
-
-- Prefer pnpm; avoid destructive git operations.
-- Keep UI consistent with the established neutral/Radix/Tailwind look.
-- Avoid hydration issues: no random IDs or browser-only logic during SSR.
-
-## Testing Guidelines
-
-- No automated tests required unless requested; provide manual verification steps when relevant.
-
-## Canonical Rules & Conventions
-
-- Reference `.cursor/` files for architecture overview, TypeScript, React, and code style guidance.
-
-## Agents
-
-- `tech-lead` agent (`.claude/agents/tech-lead.md`) for planning and task breakdowns.
+## References
+- Canonical files: `.cursor/general.mdc` (behavior) and `.cursor/code-style.mdc` (coding/stack).
+- For planning requests, refer to `.claude/agents/tech-lead.md`.

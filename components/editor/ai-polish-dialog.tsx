@@ -4,7 +4,6 @@ import { useState, useCallback } from "react"
 import { Sparkles, RefreshCw, Check, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ApiKeyDialog } from "./api-key-dialog"
 
 interface AiPolishDialogProps {
   open: boolean
@@ -16,10 +15,9 @@ interface AiPolishDialogProps {
 export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }: AiPolishDialogProps) {
   const [polishedContent, setPolishedContent] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [showKeyDialog, setShowKeyDialog] = useState(false)
 
   const polish = useCallback(
-    async (key: string) => {
+    async () => {
       setIsLoading(true)
       setPolishedContent("")
 
@@ -27,11 +25,12 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
         const response = await fetch("/api/polish", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content: originalContent, apiKey: key }),
+          body: JSON.stringify({ content: originalContent }),
         })
 
         if (!response.ok) {
-          throw new Error("Failed to polish content")
+          const errorText = await response.text()
+          throw new Error(errorText || "Failed to polish content")
         }
 
         const reader = response.body?.getReader()
@@ -47,7 +46,9 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
         }
       } catch (error) {
         console.error("Polish error:", error)
-        setPolishedContent("Error: Failed to polish content. Please check your API key and try again.")
+        setPolishedContent(
+          "Error: Failed to polish content. Please verify the server OpenRouter API key configuration and try again.",
+        )
       } finally {
         setIsLoading(false)
       }
@@ -56,17 +57,8 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
   )
 
   const handlePolish = useCallback(() => {
-    const storedKey = localStorage.getItem("openrouter-api-key")
-    if (storedKey) {
-      polish(storedKey)
-    } else {
-      setShowKeyDialog(true)
-    }
+    polish()
   }, [polish])
-
-  const handleKeySubmit = (key: string) => {
-    polish(key)
-  }
 
   const handleApply = () => {
     onApply(polishedContent)
@@ -148,8 +140,6 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <ApiKeyDialog open={showKeyDialog} onOpenChange={setShowKeyDialog} onSave={handleKeySubmit} />
     </>
   )
 }

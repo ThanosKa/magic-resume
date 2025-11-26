@@ -34,7 +34,13 @@ AI-assisted CV builder with live preview, templated sections, and quick exports.
    ```
 
 ## Environment
-Create a `.env.local` if you add secrets (API keys for AI providers, analytics, etc.). Nothing is required to run locally today.
+Create `.env.local` with the required keys (server-managed; no keys are stored in the browser):
+```bash
+cat <<'EOF' > .env.local
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+OPENROUTER_API_KEY=sk-or-your-openrouter-key
+EOF
+```
 
 ## Deployment
 - **Vercel** (recommended): `vercel` from the repo root or connect the GitHub repo and set `NEXT_PUBLIC` env vars as needed.

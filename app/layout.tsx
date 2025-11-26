@@ -4,16 +4,51 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "sonner"
+import { metadataBase, siteMetadata, siteUrl } from "@/lib/seo"
 import "./globals.css"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" })
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
-  title: "CV Builder - Create Professional Resumes in Minutes",
-  description:
-    "Build stunning, professional CVs with our easy-to-use editor. Real-time preview, AI-powered suggestions, and instant PDF export.",
-  generator: "v0.app",
+  metadataBase,
+  title: {
+    default: siteMetadata.title,
+    template: `%s | ${siteMetadata.name}`,
+  },
+  description: siteMetadata.description,
+  applicationName: siteMetadata.name,
+  keywords: siteMetadata.keywords,
+  creator: siteMetadata.name,
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: siteMetadata.name,
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    images: [
+      {
+        url: siteMetadata.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteMetadata.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    images: [siteMetadata.ogImage],
+  },
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [
       {

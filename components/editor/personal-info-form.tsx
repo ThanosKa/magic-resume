@@ -5,9 +5,9 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { AlignSelector } from "@/components/editor/align-selector"
 import { useCVStore } from "@/store/cv-store"
-import { AlignLeft, AlignCenter, AlignRight, Plus, Trash2, Linkedin, Github, Twitter, Globe, Link } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Plus, Trash2, Linkedin, Github, Twitter, Globe, Link } from "lucide-react"
 
 const platformIcons = {
   linkedin: Linkedin,
@@ -36,26 +36,10 @@ export function PersonalInfoForm() {
       {/* Align Section */}
       <div className="space-y-3">
         <Label className="text-sm font-medium">Header Alignment</Label>
-        <div className="flex gap-2">
-          {(["left", "center", "right"] as const).map((align) => {
-            const Icon = align === "left" ? AlignLeft : align === "center" ? AlignCenter : AlignRight
-            return (
-              <button
-                key={align}
-                type="button"
-                onClick={() => updatePersonalInfo({ headerAlign: align })}
-                className={cn(
-                  "flex h-12 w-16 items-center justify-center rounded-lg border-2 transition-colors",
-                  (personalInfo.headerAlign ?? "left") === align
-                    ? "border-primary bg-primary/10"
-                    : "border-border hover:border-primary/50",
-                )}
-              >
-                <Icon className="h-5 w-5" />
-              </button>
-            )
-          })}
-        </div>
+        <AlignSelector
+          value={personalInfo.headerAlign ?? "center"}
+          onChange={(value) => updatePersonalInfo({ headerAlign: value })}
+        />
       </div>
 
       <Separator />

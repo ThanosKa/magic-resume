@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef } from "react";
+import { motion } from "framer-motion";
 import {
   Mail,
   Phone,
@@ -13,7 +14,6 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { buttonVariants } from "@/components/ui/button";
 import type { CVData } from "@/types/cv";
 import { cn } from "@/lib/utils";
 
@@ -219,48 +219,65 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
         }}
       >
         <div className="p-8">
-          {/* Header - with alignment support */}
-          <div className={cn("mb-6", alignmentClass)}>
-            <h1 className="text-2xl font-bold text-black">
+          {/* Header - with Framer Motion alignment support */}
+          <motion.div layout="position" className={cn("mb-6", alignmentClass)}>
+            <motion.h1
+              layout="position"
+              className="text-2xl font-bold text-black"
+            >
               {personalInfo.name || "Your Name"}
-            </h1>
+            </motion.h1>
             {personalInfo.title && (
-              <p className="mt-1 text-lg font-medium text-black">
+              <motion.p
+                layout="position"
+                className="mt-1 text-lg font-medium text-black"
+              >
                 {personalInfo.title}
-              </p>
+              </motion.p>
             )}
 
             {/* Contact info */}
-            <div
+            <motion.div
+              layout="position"
               className={cn(
                 "mt-3 flex flex-wrap items-center gap-4 text-sm text-black",
                 contactJustify
               )}
             >
               {personalInfo.email && (
-                <span className="flex items-center gap-1">
+                <motion.span
+                  layout="position"
+                  className="flex items-center gap-1"
+                >
                   <Mail className="h-3.5 w-3.5" />
                   {personalInfo.email}
-                </span>
+                </motion.span>
               )}
               {personalInfo.phone && (
-                <span className="flex items-center gap-1">
+                <motion.span
+                  layout="position"
+                  className="flex items-center gap-1"
+                >
                   <Phone className="h-3.5 w-3.5" />
                   {personalInfo.phone}
-                </span>
+                </motion.span>
               )}
               {personalInfo.location && (
-                <span className="flex items-center gap-1">
+                <motion.span
+                  layout="position"
+                  className="flex items-center gap-1"
+                >
                   <MapPin className="h-3.5 w-3.5" />
                   {personalInfo.location}
-                </span>
+                </motion.span>
               )}
-            </div>
+            </motion.div>
 
             {/* Social Links */}
             {personalInfo.socialLinks &&
               personalInfo.socialLinks.length > 0 && (
-                <div
+                <motion.div
+                  layout="position"
                   className={cn(
                     "mt-3 flex flex-wrap items-center gap-2 text-sm text-black",
                     contactJustify
@@ -270,8 +287,9 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     const Icon = platformIcons[link.platform];
                     const label = platformLabels[link.platform];
                     return (
-                      <a
+                      <motion.a
                         key={link.id}
+                        layout="position"
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -280,12 +298,12 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                       >
                         <Icon className="h-3.5 w-3.5" />
                         <span className="text-xs font-medium">{label}</span>
-                      </a>
+                      </motion.a>
                     );
                   })}
-                </div>
+                </motion.div>
               )}
-          </div>
+          </motion.div>
 
           {/* Sections */}
           {enabledSections.map(renderSection)}

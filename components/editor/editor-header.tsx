@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import Link from "next/link"
 import { FileText, Download, Upload, FilePlus, ChevronDown, Key } from "lucide-react"
 import { useRef, useState } from "react"
@@ -24,11 +22,7 @@ import { useCVStore } from "@/store/cv-store"
 import type { CVData } from "@/types/cv"
 import { ApiKeyDialog } from "./api-key-dialog"
 
-interface EditorHeaderProps {
-  previewRef: React.RefObject<HTMLDivElement | null>
-}
-
-export function EditorHeader({ previewRef }: EditorHeaderProps) {
+export function EditorHeader() {
   const { cv, setCVData, reset } = useCVStore()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [showKeyDialog, setShowKeyDialog] = useState(false)

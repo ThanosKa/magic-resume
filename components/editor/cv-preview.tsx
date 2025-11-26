@@ -3,6 +3,7 @@
 import { forwardRef } from "react"
 import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Globe, Link, ExternalLink } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
+import { buttonVariants } from "@/components/ui/button"
 import type { CVData } from "@/types/cv"
 import { cn } from "@/lib/utils"
 
@@ -16,6 +17,14 @@ const platformIcons = {
   twitter: Twitter,
   portfolio: Globe,
   other: Link,
+}
+
+const platformLabels: Record<keyof typeof platformIcons, string> = {
+  linkedin: "LinkedIn",
+  github: "GitHub",
+  twitter: "Twitter",
+  portfolio: "Portfolio",
+  other: "Link",
 }
 
 export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(({ cv }, ref) => {
@@ -192,24 +201,24 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(({ cv }, ref
 
           {/* Social Links */}
           {personalInfo.socialLinks && personalInfo.socialLinks.length > 0 && (
-            <div className={cn("mt-2 flex flex-wrap items-center gap-3 text-sm text-black", contactJustify)}>
+            <div className={cn("mt-3 flex flex-wrap items-center gap-2 text-sm text-black", contactJustify)}>
               {personalInfo.socialLinks.map((link) => {
                 const Icon = platformIcons[link.platform]
-                // Extract display text from URL
-                const displayText = link.url
-                  .replace(/^https?:\/\//, "")
-                  .replace(/^www\./, "")
-                  .replace(/\/$/, "")
+                const label = platformLabels[link.platform]
                 return (
                   <a
                     key={link.id}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:underline"
+                    aria-label={`${label} profile`}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "sm" }),
+                      "border border-black/5 bg-neutral-100 text-black hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800",
+                    )}
                   >
                     <Icon className="h-3.5 w-3.5" />
-                    {displayText}
+                    <span className="text-xs font-medium">{label}</span>
                   </a>
                 )
               })}

@@ -3,6 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Underline from "@tiptap/extension-underline"
+import Placeholder from "@tiptap/extension-placeholder"
 import { Bold, Italic, UnderlineIcon, List, ListOrdered, Undo, Redo } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -30,6 +31,11 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
         },
       }),
       Underline,
+      Placeholder.configure({
+        placeholder: placeholder || "Add your content...",
+        emptyEditorClass:
+          "before:text-muted-foreground before:content-[attr(data-placeholder)] before:pointer-events-none before:block",
+      }),
     ],
     content: content || "",
     editorProps: {

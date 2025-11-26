@@ -34,7 +34,7 @@ export default function EditorPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <EditorHeader previewRef={previewRef} />
+      <EditorHeader />
 
       <div className="flex flex-1 flex-col lg:flex-row">
         {/* Editor Panel */}
@@ -47,14 +47,14 @@ export default function EditorPage() {
 
         {/* Preview Panel */}
         <div className="flex-1 bg-muted/50 p-4 lg:p-8 print:bg-transparent print:p-0">
-          <div className="mx-auto max-w-4xl print:max-w-none">
+          <div className="cv-preview-container mx-auto max-w-4xl print:max-w-none">
             <CVPreview ref={previewRef} cv={cv} />
           </div>
         </div>
       </div>
 
       {/* Print Styles */}
-      <style jsx global>{`
+      <style>{`
         @media print {
           body * {
             visibility: hidden;

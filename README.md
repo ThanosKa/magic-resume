@@ -1,30 +1,52 @@
-# CV builder state
+# Magic Resume
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+AI-assisted CV builder with live preview, templated sections, and quick exports.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/thanoskas-projects/v0-cv-builder-state)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/uVLZ2BOiNyn)
+## Features
+- Guided editor for personal details, experience, education, projects, and skills
+- AI polishing + live preview that mirrors your inputs
+- Social/contact buttons with icons instead of raw URLs
+- Theme toggle, responsive layout, and animated hero CTA to jump into the editor
 
-## Overview
+## Tech Stack
+- Next.js 16 (App Router, Turbopack for dev)
+- React 19, TypeScript 5.7
+- Tailwind CSS 4, Radix UI primitives, Framer Motion
+- Zustand for state, Zod + React Hook Form for validation
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## Getting Started
+1. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+2. **Run the dev server**
+   ```bash
+   pnpm dev
+   ```
+   Open http://localhost:3000.
+3. **Lint**
+   ```bash
+   pnpm lint
+   ```
+4. **Production build**
+   ```bash
+   pnpm build && pnpm start
+   ```
+
+## Environment
+Create a `.env.local` if you add secrets (API keys for AI providers, analytics, etc.). Nothing is required to run locally today.
 
 ## Deployment
+- **Vercel** (recommended): `vercel` from the repo root or connect the GitHub repo and set `NEXT_PUBLIC` env vars as needed.
+- **Static export**: `pnpm build` then `next export` if you add an export path.
 
-Your project is live at:
+## Troubleshooting
+- If you see hydration mismatches, ensure the app renders only client-safe components (theme toggle is guarded) and avoid random IDs in server-rendered branches.
+- Upgrade dependencies with `pnpm up` and rerun `pnpm lint` if you change ESLint/TypeScript configs.
 
-**[https://vercel.com/thanoskas-projects/v0-cv-builder-state](https://vercel.com/thanoskas-projects/v0-cv-builder-state)**
-
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.app/chat/uVLZ2BOiNyn](https://v0.app/chat/uVLZ2BOiNyn)**
-
-## How It Works
-
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## Project Structure
+- `app/` – routes and layout
+- `components/` – UI primitives and landing/editor components
+- `store/` – Zustand state
+- `styles/` – Tailwind and global styles
+- `types/` – shared TypeScript types

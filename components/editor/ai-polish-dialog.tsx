@@ -17,7 +17,6 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
   const [polishedContent, setPolishedContent] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showKeyDialog, setShowKeyDialog] = useState(false)
-  const [apiKey, setApiKey] = useState<string | null>(null)
 
   const polish = useCallback(
     async (key: string) => {
@@ -59,7 +58,6 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
   const handlePolish = useCallback(() => {
     const storedKey = localStorage.getItem("openrouter-api-key")
     if (storedKey) {
-      setApiKey(storedKey)
       polish(storedKey)
     } else {
       setShowKeyDialog(true)
@@ -67,7 +65,6 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
   }, [polish])
 
   const handleKeySubmit = (key: string) => {
-    setApiKey(key)
     polish(key)
   }
 
@@ -113,7 +110,7 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
                 {polishedContent ? (
                   <div dangerouslySetInnerHTML={{ __html: polishedContent }} />
                 ) : !isLoading ? (
-                  <p className="text-muted-foreground">Click "Polish" to enhance your content with AI</p>
+                  <p className="text-muted-foreground">Click the Polish button to enhance your content with AI</p>
                 ) : null}
               </div>
             </div>

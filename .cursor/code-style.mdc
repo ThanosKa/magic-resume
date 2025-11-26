@@ -1,0 +1,38 @@
+---
+description: Code style and formatting preferences
+globs:
+  - "**/*.ts"
+  - "**/*.tsx"
+alwaysApply: false
+---
+
+# Code Style Guidelines
+
+## Formatting Standards
+- Use Prettier defaults (2-space indent, double quotes, trailing commas where valid, semicolons on).
+- Run `pnpm lint` (includes formatting/lint rules); keep imports ordered.
+
+## Naming Conventions
+- Variables/functions: `camelCase`, descriptive (avoid abbreviations).
+- Constants: `SCREAMING_SNAKE_CASE` (object constants `as const`).
+- Types/interfaces/classes: `PascalCase`; component props suffix `Props`.
+- Files/folders: kebab-case for folders/utilities; components in `PascalCase` files.
+
+## Import Organization
+- Order: external → internal aliases (`@/`) → relative.
+- Use aliases instead of deep relatives.
+- Use `import type` for type-only imports; remove unused imports.
+
+## Comments
+- JSDoc for exported functions/utilities when behavior isn’t obvious.
+- Inline comments only for “why” or complex logic; avoid restating code.
+- Use TODO sparingly with owner/context.
+
+## Error Handling
+- Prefer explicit errors with context; avoid silent failures.
+- Use custom error types where helpful; log with actionable info.
+
+## Function Structure & Best Practices
+- Small, focused functions; required params first.
+- Prefer `const`; extract complex logic into helpers/hooks.
+- Keep TS strict; avoid `any`; use `cn` for conditional classes and avoid nested ternaries in JSX.

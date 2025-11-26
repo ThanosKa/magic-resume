@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight, Sparkles } from "lucide-react"
+import { ArrowRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text"
 import { cn } from "@/lib/utils"
@@ -16,17 +17,21 @@ export function Hero() {
       <div className="container mx-auto max-w-6xl px-4 py-24 md:py-32 lg:py-40">
         <div className="flex flex-col items-center text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div
+            <Link
+              href="/editor"
+              prefetch
               className={cn(
-                "group rounded-full border border-black/5 bg-neutral-100 text-base transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800",
+                "group inline-flex items-center rounded-full border border-gray-200/80 bg-gray-100/80 px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm transition-all ease-in",
+                "hover:-translate-y-[1px] hover:border-gray-300 hover:bg-gray-200 hover:text-gray-800",
+                "dark:border-white/10 dark:bg-neutral-900/90 dark:text-neutral-100 dark:hover:border-white/20 dark:hover:bg-neutral-800",
               )}
             >
-              <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1.5 text-sm text-muted-foreground transition ease-out hover:text-foreground hover:duration-300">
-                <Sparkles className="mr-2 h-4 w-4" />
+              <AnimatedShinyText className="inline-flex items-center justify-center gap-2 text-sm text-inherit transition ease-out">
+                <Sparkles className="h-4 w-4" />
                 <span>AI-Powered CV Enhancement</span>
-                <ArrowRight className="ml-2 h-3 w-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+                <ArrowRightIcon className="h-3 w-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
               </AnimatedShinyText>
-            </div>
+            </Link>
           </motion.div>
 
           {/* Headline */}

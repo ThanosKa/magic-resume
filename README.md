@@ -135,7 +135,6 @@ curl -X POST http://localhost:3000/api/generate-pdf \
 - Maintained by the Magic Resume team. For questions or proposals, open an issue.
 - **Contributions are welcome!** Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request.
 - We follow a [Code of Conduct](.github/CODE_OF_CONDUCT.md) to ensure a welcoming environment for all contributors.
-- For security vulnerabilities, please see our [Security Policy](.github/SECURITY.md).
 
 ### Quick Start for Contributors
 

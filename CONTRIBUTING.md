@@ -245,7 +245,6 @@ Have an idea for a new feature? We'd love to hear it!
 
 - **GitHub Discussions**: For questions, ideas, or general discussion
 - **GitHub Issues**: For bugs and feature requests
-- **Security Issues**: Please see [SECURITY.md](.github/SECURITY.md) for reporting security vulnerabilities
 
 ## Project Structure
 
@@ -283,4 +282,3 @@ Contributors will be recognized in:
 - Project documentation
 
 Thank you for contributing to Magic Resume! 🎉
-

@@ -17,6 +17,13 @@
 
 </div>
 
+## 📸 Screenshots
+
+<div align="center">
+  <img src="./public/light.png" alt="Magic Resume light mode" width="49%" />
+  <img src="./public/dark.png" alt="Magic Resume dark mode" width="49%" />
+</div>
+
 ## What It Does
 
 Magic Resume is a Next.js (App Router) application for creating professional CVs quickly:

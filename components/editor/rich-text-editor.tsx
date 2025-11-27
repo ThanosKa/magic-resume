@@ -47,6 +47,7 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML())
     },
+    immediatelyRender: false,
   })
 
   // Sync external content changes

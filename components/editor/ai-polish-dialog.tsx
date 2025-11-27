@@ -33,17 +33,14 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
           throw new Error(errorText || "Failed to polish content")
         }
 
-        const reader = response.body?.getReader()
-        const decoder = new TextDecoder()
+        const data = (await response.json()) as { polished?: string }
+        const polished = data.polished?.trim()
 
-        if (reader) {
-          while (true) {
-            const { done, value } = await reader.read()
-            if (done) break
-            const chunk = decoder.decode(value)
-            setPolishedContent((prev) => prev + chunk)
-          }
+        if (!polished) {
+          throw new Error("No content returned from AI polish")
         }
+
+        setPolishedContent(polished)
       } catch (error) {
         console.error("Polish error:", error)
         setPolishedContent(

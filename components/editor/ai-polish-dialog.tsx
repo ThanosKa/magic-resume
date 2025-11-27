@@ -63,7 +63,6 @@ export function AiPolishDialog({
         description: 'Review the suggested improvements before applying.',
       });
     } catch (error) {
-      console.error('Polish error:', error);
       const message = 'Something went wrong. Please try again.';
       setError(message);
       toast({

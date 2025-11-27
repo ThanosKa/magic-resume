@@ -1,8 +1,26 @@
-# Magic Resume
+<div align="center">
 
-[![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/) [![React 19](https://img.shields.io/badge/React-19-61dafb)](https://react.dev/) [![pnpm](https://img.shields.io/badge/pnpm-%F0%9F%8F%AF-orange)](https://pnpm.io/) [![Deploy to Vercel](https://img.shields.io/badge/Deploy-Vercel-000?logo=vercel)](#deployment) [![Star History](https://img.shields.io/badge/Stars-graph-blue)](#star-history)
+<h1>✨ Magic Resume ✨</h1>
 
-AI-assisted CV builder with a live preview, AI polishing, and one-click export to PDF or JSON.
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19-61dafb)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38bdf8)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-10+-purple)](https://www.framer.com/motion/)
+[![Tiptap](https://img.shields.io/badge/Tiptap-^3-8a2be2)](https://tiptap.dev/)
+[![Zustand](https://img.shields.io/badge/Zustand-state-8a3ffc)](https://zustand-demo.pmnd.rs/)
+[![pnpm](https://img.shields.io/badge/pnpm-%F0%9F%8F%AF-orange)](https://pnpm.io/)
+[![Deploy to Vercel](https://img.shields.io/badge/Deploy-Vercel-000?logo=vercel)](#deployment)
+[![GitHub stars](https://img.shields.io/github/stars/<owner>/<repo>?style=social)](https://github.com/<owner>/<repo>/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/<owner>/<repo>?style=social)](https://github.com/<owner>/<repo>/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/<owner>/<repo>)](https://github.com/<owner>/<repo>/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/<owner>/<repo>)](https://github.com/<owner>/<repo>/pulls)
+[![Last commit](https://img.shields.io/github/last-commit/<owner>/<repo>)](https://github.com/<owner>/<repo>/commits)
+[![Twitter Follow](https://img.shields.io/twitter/follow/KazakisThanos?style=social)](https://x.com/KazakisThanos)
+
+<p>AI-assisted CV builder with live preview, AI polish, and one-click export to PDF or JSON.</p>
+
+</div>
 
 ## What It Does
 
@@ -78,6 +96,9 @@ curl -X POST http://localhost:3000/api/generate-pdf \
 - In Vercel, **New Project** → import the repo → set env vars (`NEXT_PUBLIC_SITE_URL`, `OPENROUTER_API_KEY`).
 - Framework preset: **Next.js**. Leave build command as `next build` (default) and output as `.next`.
 - For previews, Vercel auto-builds each PR. For production, promote the main branch or trigger a production deployment.
+- One-click deploy (replace `<owner>/<repo>` in the URL if you fork):
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2F<owner>%2Frepo)
 
 **Manual/Other hosts**
 - Build locally: `pnpm build`.

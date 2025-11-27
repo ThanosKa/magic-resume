@@ -31,6 +31,7 @@ import {
 import { ThemeToggle } from '@/components/theme-toggle';
 import { useCVStore } from '@/store/cv-store';
 import type { CVData } from '@/types/cv';
+import { useToast } from '@/components/hooks/use-toast';
 
 const PRINT_STYLES = `
   @page {
@@ -85,7 +86,6 @@ const buildExportHTML = async (previewEl: HTMLElement) => {
           if (!response.ok) return '';
           return await response.text();
         } catch (error) {
-          console.warn('Failed to inline stylesheet for PDF export', error);
           return '';
         }
       }
@@ -117,6 +117,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
+  const { toast } = useToast();
 
   const toSafeFilename = (value?: string) => {
     if (!value) return 'cv';
@@ -150,7 +151,11 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
     if (isExportingPDF) return;
 
     if (!previewRef.current) {
-      console.error('PDF export failed: preview is not ready');
+      toast({
+        variant: 'destructive',
+        title: 'PDF export failed',
+        description: 'Preview is not ready yet. Please try again.',
+      });
       return;
     }
 
@@ -179,7 +184,11 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
       link.click();
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('PDF export failed', error);
+      toast({
+        variant: 'destructive',
+        title: 'PDF export failed',
+        description: 'Please try again in a moment.',
+      });
     } finally {
       setIsExportingPDF(false);
       setIsExportMenuOpen(false);
@@ -203,7 +212,11 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
         }
         setCVData(data);
       } catch {
-        console.error('Failed to import CV');
+        toast({
+          variant: 'destructive',
+          title: 'Import failed',
+          description: 'Please make sure the file is a valid CV export.',
+        });
       }
     };
     reader.readAsText(file);

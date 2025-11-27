@@ -1,7 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { FileText, Download, Upload, FilePlus, ChevronDown } from 'lucide-react';
+import {
+  FileText,
+  Download,
+  Upload,
+  FilePlus,
+  ChevronDown,
+  Loader2,
+} from 'lucide-react';
 import { useRef, useState, type RefObject } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -34,15 +41,17 @@ const PRINT_STYLES = `
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  body {
+  html, body {
     margin: 0;
-    background: white;
+    background: #ffffff;
+    color: #0f172a;
   }
   #cv-preview {
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
     box-shadow: none;
+    background: #ffffff;
   }
   .cv-section {
     break-inside: avoid;
@@ -57,8 +66,8 @@ const PRINT_STYLES = `
     margin-bottom: 0.25rem;
   }
   a {
-    color: #2563eb;
-    text-decoration: underline;
+    color: inherit;
+    text-decoration: none;
   }
 `;
 
@@ -107,6 +116,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
   const { cv, setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
 
   const toSafeFilename = (value?: string) => {
     if (!value) return 'cv';
@@ -146,6 +156,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
 
     try {
       setIsExportingPDF(true);
+      setIsExportMenuOpen(true);
       const html = await buildExportHTML(previewRef.current);
       const response = await fetch('/api/generate-pdf', {
         method: 'POST',
@@ -171,6 +182,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
       console.error('PDF export failed', error);
     } finally {
       setIsExportingPDF(false);
+      setIsExportMenuOpen(false);
     }
   };
 
@@ -220,11 +232,25 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
             <span className="hidden sm:inline">Import</span>
           </Button>
 
-          <DropdownMenu>
+          <DropdownMenu
+            open={isExportMenuOpen}
+            onOpenChange={setIsExportMenuOpen}
+          >
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <Download className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">Export</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-busy={isExportingPDF}
+                disabled={isExportingPDF}
+              >
+                {isExportingPDF ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="mr-2 h-4 w-4" />
+                )}
+                <span className="hidden sm:inline">
+                  {isExportingPDF ? 'Exporting...' : 'Export'}
+                </span>
                 <ChevronDown className="ml-1 h-3 w-3" />
               </Button>
             </DropdownMenuTrigger>
@@ -232,8 +258,21 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
               <DropdownMenuItem onClick={handleExportJSON}>
                 Export as JSON
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleExportPDF}>
-                Export as PDF
+              <DropdownMenuItem
+                disabled={isExportingPDF}
+                onSelect={(event) => {
+                  event.preventDefault();
+                  void handleExportPDF();
+                }}
+              >
+                {isExportingPDF ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Exporting PDF...
+                  </>
+                ) : (
+                  'Export as PDF'
+                )}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handlePrint}>Print</DropdownMenuItem>
             </DropdownMenuContent>

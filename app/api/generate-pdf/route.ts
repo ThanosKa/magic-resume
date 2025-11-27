@@ -35,11 +35,17 @@ export async function POST(req: Request) {
     const page = await browser.newPage();
     await page.setViewport({ width: 1240, height: 1754 }); // Approx A4 at 150 DPI
     await page.setContent(html, { waitUntil: 'networkidle0' });
+    await page.addStyleTag({
+      content:
+        'html, body, #cv-preview { background: #ffffff !important; color: #0f172a; } body { margin: 0; }',
+    });
     await page.emulateMediaType('screen');
 
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
+      preferCSSPageSize: true,
+      omitBackground: false,
       margin: {
         top: '20mm',
         right: '16mm',

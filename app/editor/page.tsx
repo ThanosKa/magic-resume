@@ -37,7 +37,7 @@ export default function EditorPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <EditorHeader previewRef={previewRef} />
+      <EditorHeader previewRef={previewRef} cv={cv} />
       <div className="flex flex-1 flex-col lg:flex-row">
         <div className="w-full border-r border-border bg-muted/30 lg:w-[400px] xl:w-[450px] print:hidden">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
@@ -51,7 +51,7 @@ export default function EditorPage() {
             <CVPreview ref={previewRef} cv={cv} />
           </div>
         </div>
-        </div>
+      </div>
 
       <style>{`
         @page {

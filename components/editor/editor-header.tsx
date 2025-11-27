@@ -10,6 +10,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useRef, useState, type RefObject } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -32,6 +33,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { useCVStore } from '@/store/cv-store';
 import type { CVData } from '@/types/cv';
 import { useToast } from '@/components/hooks/use-toast';
+import { CVPreview } from '@/components/editor/cv-preview';
 
 const PDF_EXPORT_URL = '/api/generate-pdf';
 const PDF_EXPORT_TIMEOUT_MS = 45_000;
@@ -172,35 +174,61 @@ const inlineImages = async (root: HTMLElement) => {
   );
 };
 
-const buildPdfPayload = async (previewEl: HTMLElement) => {
-  const cloned = previewEl.cloneNode(true) as HTMLElement;
+const buildPdfPayload = async (cv: CVData) => {
+  // Create a temporary container to render static preview
+  const container = document.createElement('div');
+  container.style.position = 'absolute';
+  container.style.left = '-9999px';
+  container.style.top = '-9999px';
+  document.body.appendChild(container);
 
-  cloned.querySelectorAll('.page-break-line').forEach((el) => {
-    (el as HTMLElement).style.display = 'none';
-  });
+  try {
+    // Render static preview without animations
+    const root = createRoot(container);
+    await new Promise<void>((resolve) => {
+      root.render(<CVPreview cv={cv} disableAnimations={true} />);
+      // Allow time for render to complete
+      setTimeout(resolve, 100);
+    });
 
-  applyComputedStyles(previewEl, cloned);
-  await inlineImages(cloned);
-  const styles = await collectDocumentStyles();
+    const staticPreview = container.querySelector('#cv-preview') as HTMLElement;
+    if (!staticPreview) {
+      throw new Error('Failed to render static preview');
+    }
 
-  return {
-    content: cloned.outerHTML,
-    styles,
-    margin: {
-      top: '16mm',
-      right: '16mm',
-      bottom: '16mm',
-      left: '16mm',
-    },
-  };
+    const cloned = staticPreview.cloneNode(true) as HTMLElement;
+
+    cloned.querySelectorAll('.page-break-line').forEach((el) => {
+      (el as HTMLElement).style.display = 'none';
+    });
+
+    applyComputedStyles(staticPreview, cloned);
+    await inlineImages(cloned);
+    const styles = await collectDocumentStyles();
+
+    return {
+      content: cloned.outerHTML,
+      styles,
+      margin: {
+        top: '16mm',
+        right: '16mm',
+        bottom: '16mm',
+        left: '16mm',
+      },
+    };
+  } finally {
+    // Clean up
+    document.body.removeChild(container);
+  }
 };
 
 interface EditorHeaderProps {
   previewRef: RefObject<HTMLDivElement | null>;
+  cv: CVData;
 }
 
-export function EditorHeader({ previewRef }: EditorHeaderProps) {
-  const { cv, setCVData, reset } = useCVStore();
+export function EditorHeader({ previewRef, cv }: EditorHeaderProps) {
+  const { setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
@@ -250,7 +278,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
     try {
       setIsExportingPDF(true);
       setIsExportMenuOpen(true);
-      const payload = await buildPdfPayload(previewRef.current);
+      const payload = await buildPdfPayload(cv);
       const controller = new AbortController();
       timeoutId = window.setTimeout(
         () => controller.abort(),

@@ -1,3 +1,4 @@
+import chromium from '@sparticuz/chromium';
 import puppeteer from 'puppeteer';
 import { logger } from '../logger';
 
@@ -33,11 +34,39 @@ export async function POST(req: Request) {
       'Starting PDF generation'
     );
 
-    logger.debug('Launching Puppeteer browser');
-    browser = await puppeteer.launch({
+    const isServerless =
+      process.env.VERCEL === '1' ||
+      !!process.env.AWS_REGION ||
+      !!process.env.LAMBDA_TASK_ROOT;
+
+    const executablePath = isServerless
+      ? await chromium.executablePath()
+      : undefined;
+
+    if (isServerless && !executablePath) {
+      logger.error('Chromium executable path could not be resolved');
+      return new Response('Failed to prepare PDF renderer', { status: 500 });
+    }
+
+    logger.debug(
+      {
+        isServerless,
+        executablePath: executablePath ?? 'puppeteer default',
+      },
+      'Launching Puppeteer browser'
+    );
+
+    const launchOptions: Parameters<typeof puppeteer.launch>[0] = {
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
+      args: isServerless
+        ? chromium.args
+        : ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath,
+      // chromium.defaultViewport is available at runtime, cast to satisfy TS.
+      defaultViewport: isServerless ? (chromium as unknown as { defaultViewport?: any }).defaultViewport : undefined,
+    };
+
+    browser = await puppeteer.launch(launchOptions);
 
     logger.debug('Creating new page and setting viewport');
     const page = await browser.newPage();

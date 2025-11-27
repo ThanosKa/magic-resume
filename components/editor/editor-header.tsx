@@ -75,11 +75,27 @@ const PRINT_STYLES = `
   }
 `;
 
-const STYLE_FILTER_PREFIXES = ['animation', 'transition'];
+const STYLE_FILTER_PREFIXES = [
+  'animation',
+  'transition',
+  'width',
+  'height',
+  'min-',
+  'max-',
+  'flex',
+  'grid',
+  'inline-size',
+  'block-size',
+];
 const STYLE_FILTER_EXACT = [
   'font-family',
   'font-display',
   'font-variation-settings',
+  'left',
+  'right',
+  'top',
+  'bottom',
+  'inset',
 ];
 
 const stripUnsupportedRules = (css: string) =>

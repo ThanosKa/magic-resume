@@ -77,8 +77,8 @@ pnpm seo-check # Basic SEO sanity checks
 ```
 
 PDF generation requirements:
-- Set `PUPPETEER_EXECUTABLE_PATH` to your local Chrome/Chromium binary (e.g., macOS: `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`, Linux: `/usr/bin/chromium`, Windows: `C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe`), or
-- Install the bundled headless Chrome once with `pnpm exec puppeteer browsers install chrome` so Puppeteer can launch without a custom path.
+- Nothing extra needed for local dev—Puppeteer uses your installed Chrome/Chromium.
+- In serverless deploys, a bundled headless Chromium is included via `@sparticuz/chromium`, so no additional setup is required.
 
 ## Usage
 

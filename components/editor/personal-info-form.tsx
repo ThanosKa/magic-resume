@@ -48,6 +48,7 @@ export function PersonalInfoForm() {
     cv,
     updatePersonalInfo,
     updateSummary,
+    clearSummary,
     addSocialLink,
     updateSocialLink,
     removeSocialLink,
@@ -124,16 +125,27 @@ export function PersonalInfoForm() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <Label className="text-sm font-medium">Professional Summary</Label>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 text-xs"
-            onClick={() => setShowSummaryPolish(true)}
-            disabled={!cv.summary}
-          >
-            <Sparkles className="mr-1 h-3 w-3" />
-            AI Polish
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 text-xs"
+              onClick={() => setShowSummaryPolish(true)}
+              disabled={!cv.summary}
+            >
+              <Sparkles className="mr-1 h-3 w-3" />
+              AI Polish
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-destructive"
+              onClick={() => clearSummary()}
+              disabled={!cv.summary}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
         <div className="space-y-2">
           <Textarea

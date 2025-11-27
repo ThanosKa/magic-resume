@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { ChevronDown, ChevronUp, Sparkles, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,7 +10,7 @@ import { useCVStore } from '@/store/cv-store';
 import { AiPolishDialog } from './ai-polish-dialog';
 
 export function SummaryForm() {
-  const { cv, updateSummary } = useCVStore();
+  const { cv, updateSummary, clearSummary } = useCVStore();
   const [showPolish, setShowPolish] = useState(false);
   const [expanded, setExpanded] = useState(true);
 
@@ -41,6 +41,18 @@ export function SummaryForm() {
             >
               <Sparkles className="mr-1 h-3 w-3" />
               AI Polish
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-destructive"
+              onClick={(e) => {
+                e.stopPropagation();
+                clearSummary();
+              }}
+              disabled={!cv.summary}
+            >
+              <Trash2 className="h-4 w-4" />
             </Button>
             {expanded ? (
               <ChevronUp className="h-4 w-4" />

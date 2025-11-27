@@ -44,6 +44,7 @@ interface CVStore {
 
   // Summary
   updateSummary: (summary: string) => void;
+  clearSummary: () => void;
 
   // Sections
   toggleSection: (sectionId: string) => void;
@@ -256,6 +257,15 @@ export const useCVStore = create<CVStore>()(
           cv: {
             ...state.cv,
             summary,
+            updatedAt: new Date().toISOString(),
+          },
+        })),
+
+      clearSummary: () =>
+        set((state) => ({
+          cv: {
+            ...state.cv,
+            summary: '',
             updatedAt: new Date().toISOString(),
           },
         })),

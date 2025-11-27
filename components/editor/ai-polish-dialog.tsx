@@ -55,7 +55,10 @@ export function AiPolishDialog({
       }
 
       setPolishedContent(polished);
-      toast({ title: "Polished content ready to review" });
+      toast({
+        title: "AI polish complete",
+        description: "Review the suggested improvements before applying.",
+      });
     } catch (error) {
       console.error("Polish error:", error);
       const message =
@@ -65,7 +68,7 @@ export function AiPolishDialog({
       setError(message);
       toast({
         variant: "destructive",
-        title: "Polish failed",
+        title: "AI polish failed",
         description: message,
       });
     } finally {

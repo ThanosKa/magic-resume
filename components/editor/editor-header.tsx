@@ -47,7 +47,10 @@ export function EditorHeader() {
     a.download = `${cv.title.replace(/\s+/g, "-").toLowerCase()}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    toast({ title: "CV exported as JSON" });
+    toast({
+      title: "Export started",
+      description: "Your CV JSON download is on the way.",
+    });
   };
 
   const handlePrint = () => {
@@ -70,12 +73,15 @@ export function EditorHeader() {
           throw new Error("Invalid CV data structure");
         }
         setCVData(data);
-        toast({ title: "CV imported successfully" });
+        toast({
+          title: "CV imported",
+          description: "Your saved data has been loaded into the editor.",
+        });
       } catch {
         toast({
           variant: "destructive",
           title: "Failed to import CV",
-          description: "Invalid file format.",
+          description: "The file format looks invalid. Try another export.",
         });
       }
     };

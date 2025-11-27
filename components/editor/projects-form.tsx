@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus, Trash2, ChevronDown, ChevronUp, Eye, EyeOff } from "lucide-react"
+import { Plus, Trash2, ChevronDown, ChevronUp, Eye, EyeOff, Sparkles } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,10 +8,12 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { useCVStore } from "@/store/cv-store"
 import { RichTextEditor } from "./rich-text-editor"
+import { AiPolishDialog } from "./ai-polish-dialog"
 
 export function ProjectsForm() {
   const { cv, addProject, updateProject, removeProject } = useCVStore()
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+  const [polishingId, setPolishingId] = useState<string | null>(null)
 
   const toggleExpanded = (id: string) => {
     const next = new Set(expandedIds)
@@ -109,7 +111,19 @@ export function ProjectsForm() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Description</Label>
+                  <div className="flex items-center justify-between">
+                    <Label>Description</Label>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 text-xs"
+                      onClick={() => setPolishingId(project.id)}
+                      disabled={!project.description}
+                    >
+                      <Sparkles className="mr-1 h-3 w-3" />
+                      AI Polish
+                    </Button>
+                  </div>
                   <RichTextEditor
                     content={project.description}
                     onChange={(content) => updateProject(project.id, { description: content })}
@@ -125,6 +139,17 @@ export function ProjectsForm() {
         <Plus className="mr-2 h-4 w-4" />
         Add Project
       </Button>
+
+      <AiPolishDialog
+        open={!!polishingId}
+        onOpenChange={(open) => !open && setPolishingId(null)}
+        originalContent={cv.projects.find((p) => p.id === polishingId)?.description || ""}
+        onApply={(content) => {
+          if (polishingId) {
+            updateProject(polishingId, { description: content })
+          }
+        }}
+      />
     </div>
   )
 }

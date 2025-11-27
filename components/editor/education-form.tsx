@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus, Trash2, ChevronDown, ChevronUp, Eye, EyeOff } from "lucide-react"
+import { Plus, Trash2, ChevronDown, ChevronUp, Eye, EyeOff, Sparkles } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,10 +8,12 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { useCVStore } from "@/store/cv-store"
 import { RichTextEditor } from "./rich-text-editor"
+import { AiPolishDialog } from "./ai-polish-dialog"
 
 export function EducationForm() {
   const { cv, addEducation, updateEducation, removeEducation } = useCVStore()
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+  const [polishingId, setPolishingId] = useState<string | null>(null)
 
   const toggleExpanded = (id: string) => {
     const next = new Set(expandedIds)
@@ -106,7 +108,19 @@ export function EducationForm() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Description (optional)</Label>
+                  <div className="flex items-center justify-between">
+                    <Label>Description (optional)</Label>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 text-xs"
+                      onClick={() => setPolishingId(edu.id)}
+                      disabled={!edu.description}
+                    >
+                      <Sparkles className="mr-1 h-3 w-3" />
+                      AI Polish
+                    </Button>
+                  </div>
                   <RichTextEditor
                     content={edu.description}
                     onChange={(content) => updateEducation(edu.id, { description: content })}
@@ -122,6 +136,17 @@ export function EducationForm() {
         <Plus className="mr-2 h-4 w-4" />
         Add Education
       </Button>
+
+      <AiPolishDialog
+        open={!!polishingId}
+        onOpenChange={(open) => !open && setPolishingId(null)}
+        originalContent={cv.education.find((e) => e.id === polishingId)?.description || ""}
+        onApply={(content) => {
+          if (polishingId) {
+            updateEducation(polishingId, { description: content })
+          }
+        }}
+      />
     </div>
   )
 }

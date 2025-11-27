@@ -139,9 +139,10 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                       </span>
                     </div>
                     {edu.description && (
-                      <p className="mt-1 text-sm text-black">
-                        {edu.description}
-                      </p>
+                      <div
+                        className="cv-content mt-1 text-sm text-black"
+                        dangerouslySetInnerHTML={{ __html: edu.description }}
+                      />
                     )}
                   </div>
                 ))}
@@ -189,9 +190,10 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                       </p>
                     )}
                     {project.description && (
-                      <p className="mt-1 text-sm text-black">
-                        {project.description}
-                      </p>
+                      <div
+                        className="cv-content mt-1 text-sm text-black"
+                        dangerouslySetInnerHTML={{ __html: project.description }}
+                      />
                     )}
                   </div>
                 ))}
@@ -208,12 +210,14 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                 {section.title}
               </h2>
               <Separator className="my-4 h-[0.5px] w-full" />
-              {skills && (
-                <div
-                  className="cv-content text-sm text-black"
-                  dangerouslySetInnerHTML={{ __html: skills }}
-                />
-              )}
+              <div className="space-y-4">
+                {skills && (
+                  <div
+                    className="cv-content text-sm text-black"
+                    dangerouslySetInnerHTML={{ __html: skills }}
+                  />
+                )}
+              </div>
             </div>
           );
 

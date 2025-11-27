@@ -1,86 +1,94 @@
-"use client"
+"use client";
 
-import { useState, useCallback } from "react"
-import { Sparkles, RefreshCw, Check, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { useToast } from "@/components/hooks/use-toast"
+import { useState, useCallback } from "react";
+import { Sparkles, RefreshCw, Check, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useToast } from "@/components/hooks/use-toast";
 
 interface AiPolishDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  originalContent: string
-  onApply: (content: string) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  originalContent: string;
+  onApply: (content: string) => void;
 }
 
-export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }: AiPolishDialogProps) {
-  const [polishedContent, setPolishedContent] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const { toast } = useToast()
+export function AiPolishDialog({
+  open,
+  onOpenChange,
+  originalContent,
+  onApply,
+}: AiPolishDialogProps) {
+  const [polishedContent, setPolishedContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
-  const polish = useCallback(
-    async () => {
-      setIsLoading(true)
-      setPolishedContent("")
-      setError(null)
+  const polish = useCallback(async () => {
+    setIsLoading(true);
+    setPolishedContent("");
+    setError(null);
 
-      try {
-        const response = await fetch("/api/polish", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content: originalContent }),
-        })
+    try {
+      const response = await fetch("/api/polish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: originalContent }),
+      });
 
-        if (!response.ok) {
-          const errorText = await response.text()
-          throw new Error(errorText || "Failed to polish content")
-        }
-
-        const data = (await response.json()) as { polished?: string }
-        const polished = data.polished?.trim()
-
-        if (!polished) {
-          throw new Error("No content returned from AI polish")
-        }
-
-        setPolishedContent(polished)
-        toast({ title: "Polished content ready to review" })
-      } catch (error) {
-        console.error("Polish error:", error)
-        const message =
-          error instanceof Error && error.message
-            ? error.message
-            : "Failed to polish content. Please try again in a moment."
-        setError(message)
-        toast({
-          variant: "destructive",
-          title: "Polish failed",
-          description: message,
-        })
-      } finally {
-        setIsLoading(false)
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to polish content");
       }
-    },
-    [originalContent],
-  )
+
+      const data = (await response.json()) as { polished?: string };
+      const polished = data.polished?.trim();
+
+      if (!polished) {
+        throw new Error("No content returned from AI polish");
+      }
+
+      setPolishedContent(polished);
+      toast({ title: "Polished content ready to review" });
+    } catch (error) {
+      console.error("Polish error:", error);
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : "Failed to polish content. Please try again in a moment.";
+      setError(message);
+      toast({
+        variant: "destructive",
+        title: "Polish failed",
+        description: message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [originalContent]);
 
   const handlePolish = useCallback(() => {
-    polish()
-  }, [polish])
+    polish();
+  }, [polish]);
 
   const handleApply = () => {
-    onApply(polishedContent)
-    onOpenChange(false)
-    setPolishedContent("")
-    setError(null)
-  }
+    onApply(polishedContent);
+    onOpenChange(false);
+    setPolishedContent("");
+    setError(null);
+  };
 
   const handleClose = () => {
-    onOpenChange(false)
-    setPolishedContent("")
-    setError(null)
-  }
+    onOpenChange(false);
+    setPolishedContent("");
+    setError(null);
+  };
 
   return (
     <>
@@ -95,14 +103,20 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
 
           <div className="grid gap-4 py-4 md:grid-cols-2">
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-muted-foreground">Original</h4>
+              <h4 className="text-sm font-medium text-muted-foreground">
+                Original
+              </h4>
               <div
                 className="min-h-[200px] max-h-[400px] overflow-auto rounded-md border bg-muted/50 p-3 text-sm"
-                dangerouslySetInnerHTML={{ __html: originalContent || "<em>No content</em>" }}
+                dangerouslySetInnerHTML={{
+                  __html: originalContent || "<em>No content</em>",
+                }}
               />
             </div>
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-muted-foreground">Polished</h4>
+              <h4 className="text-sm font-medium text-muted-foreground">
+                Polished
+              </h4>
               <div className="min-h-[200px] max-h-[400px] overflow-auto rounded-md border bg-muted/50 p-3 text-sm">
                 {isLoading && !polishedContent && (
                   <div className="flex items-center gap-2 text-muted-foreground">
@@ -115,14 +129,20 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
                 ) : error ? (
                   <p className="text-destructive">{error}</p>
                 ) : !isLoading ? (
-                  <p className="text-muted-foreground">Click the Polish button to enhance your content with AI</p>
+                  <p className="text-muted-foreground">
+                    Click the Polish button to enhance your content with AI
+                  </p>
                 ) : null}
               </div>
             </div>
           </div>
 
           <DialogFooter className="flex-col gap-2 sm:flex-row">
-            <Button variant="outline" onClick={handlePolish} disabled={isLoading || !originalContent}>
+            <Button
+              variant="outline"
+              onClick={handlePolish}
+              disabled={isLoading || !originalContent}
+            >
               {isLoading ? (
                 <>
                   <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
@@ -145,7 +165,10 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
                 <X className="mr-2 h-4 w-4" />
                 Cancel
               </Button>
-              <Button onClick={handleApply} disabled={!polishedContent || isLoading}>
+              <Button
+                onClick={handleApply}
+                disabled={!polishedContent || isLoading}
+              >
                 <Check className="mr-2 h-4 w-4" />
                 Apply
               </Button>
@@ -154,5 +177,5 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 }

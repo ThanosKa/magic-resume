@@ -5,9 +5,9 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { useCVStore } from "@/store/cv-store"
+import { RichTextEditor } from "./rich-text-editor"
 
 export function ProjectsForm() {
   const { cv, addProject, updateProject, removeProject } = useCVStore()
@@ -110,11 +110,10 @@ export function ProjectsForm() {
                 </div>
                 <div className="space-y-2">
                   <Label>Description</Label>
-                  <Textarea
-                    value={project.description}
-                    onChange={(e) => updateProject(project.id, { description: e.target.value })}
+                  <RichTextEditor
+                    content={project.description}
+                    onChange={(content) => updateProject(project.id, { description: content })}
                     placeholder="Describe the project and your contributions..."
-                    rows={4}
                   />
                 </div>
               </div>

@@ -5,9 +5,9 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { useCVStore } from "@/store/cv-store"
+import { RichTextEditor } from "./rich-text-editor"
 
 export function EducationForm() {
   const { cv, addEducation, updateEducation, removeEducation } = useCVStore()
@@ -107,11 +107,10 @@ export function EducationForm() {
                 </div>
                 <div className="space-y-2">
                   <Label>Description (optional)</Label>
-                  <Textarea
-                    value={edu.description}
-                    onChange={(e) => updateEducation(edu.id, { description: e.target.value })}
+                  <RichTextEditor
+                    content={edu.description}
+                    onChange={(content) => updateEducation(edu.id, { description: content })}
                     placeholder="Achievements, GPA, relevant coursework..."
-                    rows={3}
                   />
                 </div>
               </div>

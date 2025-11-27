@@ -117,7 +117,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
-              <Separator className="my-4 h-[0.5px] w-full" />
+              <Separator className="mb-4 h-[0.5px] w-full" />
               <div className="space-y-4">
                 {visibleEducation.map((edu) => (
                   <div key={edu.id}>
@@ -158,7 +158,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
-              <Separator className="my-4 h-[0.5px] w-full" />
+              <Separator className="mb-4 h-[0.5px] w-full" />
               <div className="space-y-4">
                 {visibleProjects.map((project) => (
                   <div key={project.id}>
@@ -209,7 +209,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
-              <Separator className="my-4 h-[0.5px] w-full" />
+              <Separator className="mb-4 h-[0.5px] w-full" />
               <div className="space-y-4">
                 {skills && (
                   <div

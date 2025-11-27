@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { Button } from "@/components/ui/button";
-import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { ArrowRightIcon } from '@radix-ui/react-icons';
+import { Button } from '@/components/ui/button';
+import { AnimatedShinyText } from '@/components/ui/animated-shiny-text';
+import { cn } from '@/lib/utils';
 
 export function Hero() {
   return (
@@ -25,9 +25,9 @@ export function Hero() {
               href="/editor"
               prefetch
               className={cn(
-                "group inline-flex items-center rounded-full border border-gray-200/80 bg-gray-100/80 px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm transition-all ease-in",
-                "hover:border-gray-300 hover:bg-gray-200 hover:text-gray-800",
-                "dark:border-white/10 dark:bg-neutral-900/90 dark:text-neutral-100 dark:hover:border-white/20 dark:hover:bg-neutral-800"
+                'group inline-flex items-center rounded-full border border-gray-200/80 bg-gray-100/80 px-4 py-1.5 text-sm font-medium text-gray-700 shadow-sm transition-all ease-in',
+                'hover:border-gray-300 hover:bg-gray-200 hover:text-gray-800',
+                'dark:border-white/10 dark:bg-neutral-900/90 dark:text-neutral-100 dark:hover:border-white/20 dark:hover:bg-neutral-800'
               )}
             >
               <AnimatedShinyText className="inline-flex items-center justify-center gap-2 text-sm text-inherit transition ease-out">
@@ -44,7 +44,7 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mt-6 max-w-4xl text-balance text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl"
           >
-            Build Your Professional CV in{" "}
+            Build Your Professional CV in{' '}
             <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
               Minutes
             </span>

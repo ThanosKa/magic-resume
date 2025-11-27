@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import {
   type CVData,
   type Education,
@@ -12,54 +12,54 @@ import {
   type SocialLink,
   defaultCVData,
   generateId,
-} from "@/types/cv"
+} from '@/types/cv';
 
 interface CVStore {
-  cv: CVData
-  activeSection: Section["type"] | null
+  cv: CVData;
+  activeSection: Section['type'] | null;
 
   // Personal Info
-  updatePersonalInfo: (info: Partial<PersonalInfo>) => void
-  addSocialLink: (link?: Partial<SocialLink>) => void
-  updateSocialLink: (id: string, link: Partial<SocialLink>) => void
-  removeSocialLink: (id: string) => void
+  updatePersonalInfo: (info: Partial<PersonalInfo>) => void;
+  addSocialLink: (link?: Partial<SocialLink>) => void;
+  updateSocialLink: (id: string, link: Partial<SocialLink>) => void;
+  removeSocialLink: (id: string) => void;
 
   // Education
-  addEducation: (education?: Partial<Education>) => void
-  updateEducation: (id: string, education: Partial<Education>) => void
-  removeEducation: (id: string) => void
+  addEducation: (education?: Partial<Education>) => void;
+  updateEducation: (id: string, education: Partial<Education>) => void;
+  removeEducation: (id: string) => void;
 
   // Experience
-  addExperience: (experience?: Partial<Experience>) => void
-  updateExperience: (id: string, experience: Partial<Experience>) => void
-  removeExperience: (id: string) => void
+  addExperience: (experience?: Partial<Experience>) => void;
+  updateExperience: (id: string, experience: Partial<Experience>) => void;
+  removeExperience: (id: string) => void;
 
   // Projects
-  addProject: (project?: Partial<Project>) => void
-  updateProject: (id: string, project: Partial<Project>) => void
-  removeProject: (id: string) => void
+  addProject: (project?: Partial<Project>) => void;
+  updateProject: (id: string, project: Partial<Project>) => void;
+  removeProject: (id: string) => void;
 
   // Skills
-  updateSkills: (skills: string) => void
+  updateSkills: (skills: string) => void;
 
   // Summary
-  updateSummary: (summary: string) => void
+  updateSummary: (summary: string) => void;
 
   // Sections
-  toggleSection: (sectionId: string) => void
-  reorderSections: (sections: Section[]) => void
-  setActiveSection: (section: Section["type"] | null) => void
+  toggleSection: (sectionId: string) => void;
+  reorderSections: (sections: Section[]) => void;
+  setActiveSection: (section: Section['type'] | null) => void;
 
   // General
-  setCVData: (cv: CVData) => void
-  reset: () => void
+  setCVData: (cv: CVData) => void;
+  reset: () => void;
 }
 
 export const useCVStore = create<CVStore>()(
   persist(
     (set) => ({
       cv: defaultCVData,
-      activeSection: "experience",
+      activeSection: 'experience',
 
       updatePersonalInfo: (info) =>
         set((state) => ({
@@ -80,8 +80,8 @@ export const useCVStore = create<CVStore>()(
                 ...(state.cv.personalInfo.socialLinks ?? []),
                 {
                   id: generateId(),
-                  platform: "linkedin",
-                  url: "",
+                  platform: 'linkedin',
+                  url: '',
                   ...link,
                 },
               ],
@@ -96,7 +96,9 @@ export const useCVStore = create<CVStore>()(
             ...state.cv,
             personalInfo: {
               ...state.cv.personalInfo,
-              socialLinks: (state.cv.personalInfo.socialLinks ?? []).map((s) => (s.id === id ? { ...s, ...link } : s)),
+              socialLinks: (state.cv.personalInfo.socialLinks ?? []).map((s) =>
+                s.id === id ? { ...s, ...link } : s
+              ),
             },
             updatedAt: new Date().toISOString(),
           },
@@ -108,7 +110,9 @@ export const useCVStore = create<CVStore>()(
             ...state.cv,
             personalInfo: {
               ...state.cv.personalInfo,
-              socialLinks: (state.cv.personalInfo.socialLinks ?? []).filter((s) => s.id !== id),
+              socialLinks: (state.cv.personalInfo.socialLinks ?? []).filter(
+                (s) => s.id !== id
+              ),
             },
             updatedAt: new Date().toISOString(),
           },
@@ -122,12 +126,12 @@ export const useCVStore = create<CVStore>()(
               ...state.cv.education,
               {
                 id: generateId(),
-                institution: "",
-                degree: "",
-                field: "",
-                startDate: "",
-                endDate: "",
-                description: "",
+                institution: '',
+                degree: '',
+                field: '',
+                startDate: '',
+                endDate: '',
+                description: '',
                 visible: true,
                 ...education,
               },
@@ -140,7 +144,9 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           cv: {
             ...state.cv,
-            education: state.cv.education.map((e) => (e.id === id ? { ...e, ...education } : e)),
+            education: state.cv.education.map((e) =>
+              e.id === id ? { ...e, ...education } : e
+            ),
             updatedAt: new Date().toISOString(),
           },
         })),
@@ -162,11 +168,11 @@ export const useCVStore = create<CVStore>()(
               ...state.cv.experience,
               {
                 id: generateId(),
-                company: "",
-                position: "",
-                startDate: "",
-                endDate: "",
-                description: "",
+                company: '',
+                position: '',
+                startDate: '',
+                endDate: '',
+                description: '',
                 visible: true,
                 ...experience,
               },
@@ -179,7 +185,9 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           cv: {
             ...state.cv,
-            experience: state.cv.experience.map((e) => (e.id === id ? { ...e, ...experience } : e)),
+            experience: state.cv.experience.map((e) =>
+              e.id === id ? { ...e, ...experience } : e
+            ),
             updatedAt: new Date().toISOString(),
           },
         })),
@@ -201,11 +209,11 @@ export const useCVStore = create<CVStore>()(
               ...state.cv.projects,
               {
                 id: generateId(),
-                name: "",
-                role: "",
-                startDate: "",
-                endDate: "",
-                description: "",
+                name: '',
+                role: '',
+                startDate: '',
+                endDate: '',
+                description: '',
                 visible: true,
                 ...project,
               },
@@ -218,7 +226,9 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           cv: {
             ...state.cv,
-            projects: state.cv.projects.map((p) => (p.id === id ? { ...p, ...project } : p)),
+            projects: state.cv.projects.map((p) =>
+              p.id === id ? { ...p, ...project } : p
+            ),
             updatedAt: new Date().toISOString(),
           },
         })),
@@ -254,7 +264,9 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           cv: {
             ...state.cv,
-            sections: state.cv.sections.map((s) => (s.id === sectionId ? { ...s, enabled: !s.enabled } : s)),
+            sections: state.cv.sections.map((s) =>
+              s.id === sectionId ? { ...s, enabled: !s.enabled } : s
+            ),
             updatedAt: new Date().toISOString(),
           },
         })),
@@ -274,12 +286,16 @@ export const useCVStore = create<CVStore>()(
 
       reset: () =>
         set({
-          cv: { ...defaultCVData, id: generateId(), createdAt: new Date().toISOString() },
-          activeSection: "experience",
+          cv: {
+            ...defaultCVData,
+            id: generateId(),
+            createdAt: new Date().toISOString(),
+          },
+          activeSection: 'experience',
         }),
     }),
     {
-      name: "cv-builder-data",
-    },
-  ),
-)
+      name: 'cv-builder-data',
+    }
+  )
+);

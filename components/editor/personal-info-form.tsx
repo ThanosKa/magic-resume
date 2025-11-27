@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { AlignSelector } from "@/components/editor/align-selector";
-import { useCVStore } from "@/store/cv-store";
+} from '@/components/ui/select';
+import { AlignSelector } from '@/components/editor/align-selector';
+import { useCVStore } from '@/store/cv-store';
 import {
   Plus,
   Trash2,
@@ -24,8 +24,8 @@ import {
   Globe,
   Link,
   Sparkles,
-} from "lucide-react";
-import { AiPolishDialog } from "./ai-polish-dialog";
+} from 'lucide-react';
+import { AiPolishDialog } from './ai-polish-dialog';
 
 const platformIcons = {
   linkedin: Linkedin,
@@ -36,11 +36,11 @@ const platformIcons = {
 };
 
 const platformLabels = {
-  linkedin: "LinkedIn",
-  github: "GitHub",
-  twitter: "Twitter",
-  portfolio: "Portfolio",
-  other: "Other",
+  linkedin: 'LinkedIn',
+  github: 'GitHub',
+  twitter: 'Twitter',
+  portfolio: 'Portfolio',
+  other: 'Other',
 };
 
 export function PersonalInfoForm() {
@@ -63,7 +63,7 @@ export function PersonalInfoForm() {
       <div className="space-y-3">
         <Label className="text-sm font-medium">Header Alignment</Label>
         <AlignSelector
-          value={personalInfo.headerAlign ?? "center"}
+          value={personalInfo.headerAlign ?? 'center'}
           onChange={(value) => updatePersonalInfo({ headerAlign: value })}
         />
       </div>

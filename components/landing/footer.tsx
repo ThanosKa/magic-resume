@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { FileText } from "lucide-react"
+import { motion } from 'framer-motion';
+import { FileText } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -18,9 +18,11 @@ export function Footer() {
             <FileText className="h-5 w-5" />
             <span className="font-medium">CV Builder</span>
           </div>
-          <p className="text-sm text-muted-foreground">{new Date().getFullYear()} CV Builder. Built with Next.js.</p>
+          <p className="text-sm text-muted-foreground">
+            {new Date().getFullYear()} CV Builder. Built with Next.js.
+          </p>
         </div>
       </div>
     </motion.footer>
-  )
+  );
 }

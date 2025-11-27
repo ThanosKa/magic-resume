@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { forwardRef } from "react";
-import { motion } from "framer-motion";
+import { forwardRef } from 'react';
+import { motion } from 'framer-motion';
 import {
   Mail,
   Phone,
@@ -12,10 +12,10 @@ import {
   Globe,
   Link,
   ExternalLink,
-} from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import type { CVData } from "@/types/cv";
-import { cn } from "@/lib/utils";
+} from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import type { CVData } from '@/types/cv';
+import { cn } from '@/lib/utils';
 
 interface CVPreviewProps {
   cv: CVData;
@@ -30,29 +30,34 @@ const platformIcons = {
 };
 
 const platformLabels: Record<keyof typeof platformIcons, string> = {
-  linkedin: "LinkedIn",
-  github: "GitHub",
-  twitter: "Twitter",
-  portfolio: "Portfolio",
-  other: "Link",
+  linkedin: 'LinkedIn',
+  github: 'GitHub',
+  twitter: 'Twitter',
+  portfolio: 'Portfolio',
+  other: 'Link',
 };
 
 export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
   ({ cv }, ref) => {
-    const { personalInfo, summary, education, experience, projects, skills, sections } =
-      cv;
+    const {
+      personalInfo,
+      summary,
+      education,
+      experience,
+      projects,
+      skills,
+      sections,
+    } = cv;
 
     const visibleExperience = experience.filter((item) => item.visible);
     const visibleEducation = education.filter((item) => item.visible);
     const visibleProjects = projects.filter((item) => item.visible);
-    const hasSummaryContent =
-      !!summary &&
-      summary.trim().length > 0;
+    const hasSummaryContent = !!summary && summary.trim().length > 0;
     const hasSkillsContent =
       !!skills &&
       skills
-        .replace(/<[^\u003e]*\u003e/g, "")
-        .replace(/&nbsp;/g, " ")
+        .replace(/<[^\u003e]*\u003e/g, '')
+        .replace(/&nbsp;/g, ' ')
         .trim().length > 0;
 
     const enabledSections = sections
@@ -60,20 +65,20 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
       .sort((a, b) => a.order - b.order);
 
     const alignmentClass = {
-      left: "text-left",
-      center: "text-center",
-      right: "text-right",
-    }[personalInfo.headerAlign || "center"];
+      left: 'text-left',
+      center: 'text-center',
+      right: 'text-right',
+    }[personalInfo.headerAlign || 'center'];
 
     const contactJustify = {
-      left: "justify-start",
-      center: "justify-center",
-      right: "justify-end",
-    }[personalInfo.headerAlign || "center"];
+      left: 'justify-start',
+      center: 'justify-center',
+      right: 'justify-end',
+    }[personalInfo.headerAlign || 'center'];
 
     const renderSection = (section: (typeof sections)[0]) => {
       switch (section.type) {
-        case "experience":
+        case 'experience':
           if (visibleExperience.length === 0) return null;
 
           return (
@@ -88,15 +93,15 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-bold text-black">
-                          {exp.company || "Company Name"}
+                          {exp.company || 'Company Name'}
                         </h3>
                         <p className="text-sm font-medium text-black">
-                          {exp.position || "Position"}
+                          {exp.position || 'Position'}
                         </p>
                       </div>
                       <span className="text-sm font-medium text-black">
                         {exp.startDate}
-                        {exp.startDate && exp.endDate && " - "}
+                        {exp.startDate && exp.endDate && ' - '}
                         {exp.endDate}
                       </span>
                     </div>
@@ -112,7 +117,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
             </div>
           );
 
-        case "education":
+        case 'education':
           if (visibleEducation.length === 0) return null;
 
           return (
@@ -127,17 +132,17 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-bold text-black">
-                          {edu.institution || "Institution Name"}
+                          {edu.institution || 'Institution Name'}
                         </h3>
                         <p className="text-sm font-medium text-black">
                           {edu.degree}
-                          {edu.degree && edu.field && " in "}
+                          {edu.degree && edu.field && ' in '}
                           {edu.field}
                         </p>
                       </div>
                       <span className="text-sm font-medium text-black">
                         {edu.startDate}
-                        {edu.startDate && edu.endDate && " - "}
+                        {edu.startDate && edu.endDate && ' - '}
                         {edu.endDate}
                       </span>
                     </div>
@@ -153,7 +158,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
             </div>
           );
 
-        case "projects":
+        case 'projects':
           if (visibleProjects.length === 0) return null;
 
           return (
@@ -168,7 +173,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-2">
                         <h3 className="font-bold text-black">
-                          {project.name || "Project Name"}
+                          {project.name || 'Project Name'}
                         </h3>
                         {project.link && (
                           <a
@@ -183,7 +188,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                       </div>
                       <span className="text-sm font-medium text-black">
                         {project.startDate}
-                        {project.startDate && project.endDate && " - "}
+                        {project.startDate && project.endDate && ' - '}
                         {project.endDate}
                       </span>
                     </div>
@@ -195,7 +200,9 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     {project.description && (
                       <div
                         className="cv-content mt-1 text-sm text-black"
-                        dangerouslySetInnerHTML={{ __html: project.description }}
+                        dangerouslySetInnerHTML={{
+                          __html: project.description,
+                        }}
                       />
                     )}
                   </div>
@@ -204,7 +211,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
             </div>
           );
 
-        case "skills":
+        case 'skills':
           if (!hasSkillsContent) return null;
 
           return (
@@ -224,7 +231,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
             </div>
           );
 
-        case "summary":
+        case 'summary':
           if (!hasSummaryContent) return null;
 
           return (
@@ -249,17 +256,17 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
         ref={ref}
         className="mx-auto aspect-[1/1.414] w-full max-w-[210mm] origin-top bg-white text-black shadow-lg"
         style={{
-          fontFamily: "system-ui, -apple-system, sans-serif",
+          fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
         <div className="p-8">
           {/* Header - with Framer Motion alignment support */}
-          <motion.div layout="position" className={cn("mb-6", alignmentClass)}>
+          <motion.div layout="position" className={cn('mb-6', alignmentClass)}>
             <motion.h1
               layout="position"
               className="text-2xl font-bold text-black"
             >
-              {personalInfo.name || "Your Name"}
+              {personalInfo.name || 'Your Name'}
             </motion.h1>
             {personalInfo.title && (
               <motion.p
@@ -271,13 +278,13 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
             )}
 
             {/* Contact info - Split layout for left/right alignment */}
-            {personalInfo.headerAlign === "center" ? (
+            {personalInfo.headerAlign === 'center' ? (
               <>
                 {/* Center alignment - single row */}
                 <motion.div
                   layout="position"
                   className={cn(
-                    "mt-3 flex flex-wrap items-center gap-4 text-sm text-black",
+                    'mt-3 flex flex-wrap items-center gap-4 text-sm text-black',
                     contactJustify
                   )}
                 >
@@ -322,7 +329,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     <motion.div
                       layout="position"
                       className={cn(
-                        "mt-3 flex flex-wrap items-center gap-2 text-sm text-black",
+                        'mt-3 flex flex-wrap items-center gap-2 text-sm text-black',
                         contactJustify
                       )}
                     >
@@ -356,7 +363,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               >
                 {/* Left column */}
                 <div className="flex flex-col gap-2">
-                  {personalInfo.headerAlign === "left" ? (
+                  {personalInfo.headerAlign === 'left' ? (
                     <>
                       {/* Left alignment: Email and Phone on left */}
                       {personalInfo.email && (
@@ -429,7 +436,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
 
                 {/* Right column */}
                 <div className="flex flex-col gap-2">
-                  {personalInfo.headerAlign === "left" ? (
+                  {personalInfo.headerAlign === 'left' ? (
                     <>
                       {/* Left alignment: Location and Social Links on right */}
                       {personalInfo.location && (
@@ -511,4 +518,4 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
   }
 );
 
-CVPreview.displayName = "CVPreview";
+CVPreview.displayName = 'CVPreview';

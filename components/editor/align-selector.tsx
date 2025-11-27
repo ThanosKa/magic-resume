@@ -1,40 +1,44 @@
-"use client";
+'use client';
 
-import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface AlignSelectorProps {
-  value: "left" | "center" | "right";
-  onChange: (value: "left" | "center" | "right") => void;
+  value: 'left' | 'center' | 'right';
+  onChange: (value: 'left' | 'center' | 'right') => void;
   className?: string;
 }
 
 const alignments = [
   {
-    value: "left" as const,
+    value: 'left' as const,
     icon: AlignLeft,
-    label: "Left align",
+    label: 'Left align',
   },
   {
-    value: "center" as const,
+    value: 'center' as const,
     icon: AlignCenter,
-    label: "Center align",
+    label: 'Center align',
   },
   {
-    value: "right" as const,
+    value: 'right' as const,
     icon: AlignRight,
-    label: "Right align",
+    label: 'Right align',
   },
 ];
 
-export function AlignSelector({ value, onChange, className }: AlignSelectorProps) {
+export function AlignSelector({
+  value,
+  onChange,
+  className,
+}: AlignSelectorProps) {
   return (
-    <div className={cn("flex items-center gap-1", className)}>
+    <div className={cn('flex items-center gap-1', className)}>
       {alignments.map(({ value: alignValue, icon: Icon, label }) => (
         <Button
           key={alignValue}
-          variant={value === alignValue ? "default" : "outline"}
+          variant={value === alignValue ? 'default' : 'outline'}
           size="sm"
           onClick={() => onChange(alignValue)}
           className="h-8 w-8 p-0"

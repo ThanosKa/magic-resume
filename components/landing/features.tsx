@@ -1,34 +1,35 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { Eye, Sparkles, Download, Shield } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { motion } from 'framer-motion';
+import { Eye, Sparkles, Download, Shield } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 const features = [
   {
     icon: Eye,
-    title: "Real-Time Preview",
+    title: 'Real-Time Preview',
     description:
-      "See your CV update instantly as you type. No guessing, no surprises - what you see is exactly what you get.",
+      'See your CV update instantly as you type. No guessing, no surprises - what you see is exactly what you get.',
   },
   {
     icon: Sparkles,
-    title: "AI-Powered Polish",
+    title: 'AI-Powered Polish',
     description:
-      "Enhance your content with intelligent suggestions. Our AI helps you articulate your achievements more effectively.",
+      'Enhance your content with intelligent suggestions. Our AI helps you articulate your achievements more effectively.',
   },
   {
     icon: Download,
-    title: "Export Anywhere",
-    description: "Download as JSON for backup or print directly to PDF. Your CV, your format, your choice.",
+    title: 'Export Anywhere',
+    description:
+      'Download as JSON for backup or print directly to PDF. Your CV, your format, your choice.',
   },
   {
     icon: Shield,
-    title: "Privacy First",
+    title: 'Privacy First',
     description:
-      "Your data stays in your browser. No account required, no data sent to servers unless you use AI features.",
+      'Your data stays in your browser. No account required, no data sent to servers unless you use AI features.',
   },
-]
+];
 
 const container = {
   hidden: { opacity: 0 },
@@ -38,12 +39,12 @@ const container = {
       staggerChildren: 0.15,
     },
   },
-}
+};
 
 const item = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-}
+};
 
 export function Features() {
   return (
@@ -56,8 +57,12 @@ export function Features() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Everything You Need</h2>
-          <p className="mt-4 text-lg text-muted-foreground">Powerful features to help you create the perfect CV</p>
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            Everything You Need
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Powerful features to help you create the perfect CV
+          </p>
         </motion.div>
 
         <motion.div
@@ -75,7 +80,9 @@ export function Features() {
                     <feature.icon className="h-6 w-6 text-foreground" />
                   </div>
                   <h3 className="mb-2 font-semibold">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -83,5 +90,5 @@ export function Features() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

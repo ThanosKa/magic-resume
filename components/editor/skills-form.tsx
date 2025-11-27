@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { ChevronDown, ChevronUp } from "lucide-react"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
-import { useCVStore } from "@/store/cv-store"
-import { RichTextEditor } from "./rich-text-editor"
+import { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { useCVStore } from '@/store/cv-store';
+import { RichTextEditor } from './rich-text-editor';
 
 export function SkillsForm() {
-  const { cv, updateSkills } = useCVStore()
-  const [expanded, setExpanded] = useState(true)
+  const { cv, updateSkills } = useCVStore();
+  const [expanded, setExpanded] = useState(true);
 
   return (
     <div className="space-y-4">
@@ -20,10 +20,16 @@ export function SkillsForm() {
         >
           <div className="flex-1 truncate">
             <p className="font-medium">Skills</p>
-            <p className="text-sm text-muted-foreground">List your skills with bullets and emphasis.</p>
+            <p className="text-sm text-muted-foreground">
+              List your skills with bullets and emphasis.
+            </p>
           </div>
           <div className="flex items-center gap-2">
-            {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            {expanded ? (
+              <ChevronUp className="h-4 w-4" />
+            ) : (
+              <ChevronDown className="h-4 w-4" />
+            )}
           </div>
         </div>
 
@@ -31,14 +37,19 @@ export function SkillsForm() {
           <CardContent className="border-t pt-4">
             <div className="space-y-2">
               <Label>Skills</Label>
-              <RichTextEditor content={cv.skills} onChange={updateSkills} placeholder="List your skills..." />
+              <RichTextEditor
+                content={cv.skills}
+                onChange={updateSkills}
+                placeholder="List your skills..."
+              />
               <p className="text-xs text-muted-foreground">
-                Use the toolbar to format your skills with bullets and bold text.
+                Use the toolbar to format your skills with bullets and bold
+                text.
               </p>
             </div>
           </CardContent>
         )}
       </Card>
     </div>
-  )
+  );
 }

@@ -1,24 +1,24 @@
-import type { Metadata } from "next"
-import { Header } from "@/components/landing/header"
-import { Hero } from "@/components/landing/hero"
-import { Features } from "@/components/landing/features"
-import { FAQ } from "@/components/landing/faq"
-import { CTA } from "@/components/landing/cta"
-import { Footer } from "@/components/landing/footer"
-import { JsonLd } from "@/components/seo/json-ld"
-import { faqs } from "@/lib/faqs"
-import { faqJsonLd, organizationJsonLd, siteMetadata } from "@/lib/seo"
+import type { Metadata } from 'next';
+import { Header } from '@/components/landing/header';
+import { Hero } from '@/components/landing/hero';
+import { Features } from '@/components/landing/features';
+import { FAQ } from '@/components/landing/faq';
+import { CTA } from '@/components/landing/cta';
+import { Footer } from '@/components/landing/footer';
+import { JsonLd } from '@/components/seo/json-ld';
+import { faqs } from '@/lib/faqs';
+import { faqJsonLd, organizationJsonLd, siteMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: siteMetadata.title,
   description: siteMetadata.description,
   alternates: {
-    canonical: "/",
+    canonical: '/',
   },
   openGraph: {
     title: siteMetadata.title,
     description: siteMetadata.description,
-    url: "/",
+    url: '/',
     images: [
       {
         url: siteMetadata.ogImage,
@@ -29,12 +29,12 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     title: siteMetadata.title,
     description: siteMetadata.description,
     images: [siteMetadata.ogImage],
   },
-}
+};
 
 export default function LandingPage() {
   return (
@@ -49,5 +49,5 @@ export default function LandingPage() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

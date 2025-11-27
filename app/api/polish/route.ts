@@ -1,10 +1,10 @@
-import { logger } from "../logger";
+import { logger } from '../logger';
 
-const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
+const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 // const MODEL = "openai/gpt-4o-mini";
-const MODEL = "x-ai/grok-4.1-fast:free";
+const MODEL = 'x-ai/grok-4.1-fast:free';
 
-type PolishType = "title" | "summary" | "description";
+type PolishType = 'title' | 'summary' | 'description';
 
 const POLISH_PROMPTS = {
   title: {
@@ -54,21 +54,21 @@ Guidelines:
 
 export async function POST(req: Request) {
   try {
-    const { content, polishType = "description" } = (await req.json()) as {
+    const { content, polishType = 'description' } = (await req.json()) as {
       content: string;
       polishType?: PolishType;
     };
     const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!content) {
-      logger.warn("Missing content payload for polish request");
-      return new Response("Content is required", { status: 400 });
+      logger.warn('Missing content payload for polish request');
+      return new Response('Content is required', { status: 400 });
     }
 
     if (!apiKey) {
-      logger.error("OpenRouter API key is missing on the server");
+      logger.error('OpenRouter API key is missing on the server');
       return new Response(
-        "OpenRouter API key is not configured on the server",
+        'OpenRouter API key is not configured on the server',
         { status: 500 }
       );
     }
@@ -78,28 +78,28 @@ export async function POST(req: Request) {
 
     logger.info(
       { model: MODEL, polishType },
-      "Sending polish request to OpenRouter"
+      'Sending polish request to OpenRouter'
     );
 
     const response = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer":
-          process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-        "X-Title": "Magic Resume",
+        'Content-Type': 'application/json',
+        'HTTP-Referer':
+          process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+        'X-Title': 'Magic Resume',
       },
       body: JSON.stringify({
         model: MODEL,
         stream: false,
         messages: [
           {
-            role: "system",
+            role: 'system',
             content: prompt.system,
           },
           {
-            role: "user",
+            role: 'user',
             content: prompt.user(content),
           },
         ],
@@ -110,10 +110,10 @@ export async function POST(req: Request) {
       const errorText = await response.text();
       logger.error(
         { status: response.status, statusText: response.statusText, errorText },
-        "OpenRouter request failed"
+        'OpenRouter request failed'
       );
       return new Response(
-        `OpenRouter error: ${errorText || response.statusText || "Unknown error"}`,
+        `OpenRouter error: ${errorText || response.statusText || 'Unknown error'}`,
         { status: response.status || 500 }
       );
     }
@@ -124,14 +124,14 @@ export async function POST(req: Request) {
     const polished = data?.choices?.[0]?.message?.content?.trim();
 
     if (!polished) {
-      logger.error("OpenRouter returned no content");
-      return new Response("OpenRouter did not return content", { status: 500 });
+      logger.error('OpenRouter returned no content');
+      return new Response('OpenRouter did not return content', { status: 500 });
     }
 
-    logger.info("Polish request succeeded");
+    logger.info('Polish request succeeded');
     return Response.json({ polished });
   } catch (error) {
-    logger.error({ err: error }, "Unexpected error in polish route");
-    return new Response("An unexpected error occurred", { status: 500 });
+    logger.error({ err: error }, 'Unexpected error in polish route');
+    return new Response('An unexpected error occurred', { status: 500 });
   }
 }

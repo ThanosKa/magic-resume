@@ -1,63 +1,75 @@
-"use client"
+'use client';
 
-import { useEditor, EditorContent } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import Underline from "@tiptap/extension-underline"
-import Placeholder from "@tiptap/extension-placeholder"
-import { Bold, Italic, UnderlineIcon, List, ListOrdered, Undo, Redo } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { useEffect } from "react"
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import Placeholder from '@tiptap/extension-placeholder';
+import {
+  Bold,
+  Italic,
+  UnderlineIcon,
+  List,
+  ListOrdered,
+  Undo,
+  Redo,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { useEffect } from 'react';
 
 interface RichTextEditorProps {
-  content: string
-  onChange: (content: string) => void
-  placeholder?: string
+  content: string;
+  onChange: (content: string) => void;
+  placeholder?: string;
 }
 
-export function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
+export function RichTextEditor({
+  content,
+  onChange,
+  placeholder,
+}: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         bulletList: {
           HTMLAttributes: {
-            class: "list-disc pl-4 space-y-1",
+            class: 'list-disc pl-4 space-y-1',
           },
         },
         orderedList: {
           HTMLAttributes: {
-            class: "list-decimal pl-4 space-y-1",
+            class: 'list-decimal pl-4 space-y-1',
           },
         },
       }),
       Underline,
       Placeholder.configure({
-        placeholder: placeholder || "Add your content...",
+        placeholder: placeholder || 'Add your content...',
         emptyEditorClass:
-          "before:text-muted-foreground before:content-[attr(data-placeholder)] before:pointer-events-none before:block",
+          'before:text-muted-foreground before:content-[attr(data-placeholder)] before:pointer-events-none before:block',
       }),
     ],
-    content: content || "",
+    content: content || '',
     editorProps: {
       attributes: {
         class:
-          "min-h-[150px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 prose prose-sm max-w-none",
+          'min-h-[150px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 prose prose-sm max-w-none',
       },
     },
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML())
+      onChange(editor.getHTML());
     },
     immediatelyRender: false,
-  })
+  });
 
   // Sync external content changes
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content || "")
+      editor.commands.setContent(content || '');
     }
-  }, [content, editor])
+  }, [content, editor]);
 
-  if (!editor) return null
+  if (!editor) return null;
 
   return (
     <div className="space-y-2">
@@ -67,7 +79,7 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
           type="button"
           variant="ghost"
           size="sm"
-          className={cn("h-8 w-8 p-0", editor.isActive("bold") && "bg-accent")}
+          className={cn('h-8 w-8 p-0', editor.isActive('bold') && 'bg-accent')}
           onClick={() => editor.chain().focus().toggleBold().run()}
         >
           <Bold className="h-4 w-4" />
@@ -76,7 +88,10 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
           type="button"
           variant="ghost"
           size="sm"
-          className={cn("h-8 w-8 p-0", editor.isActive("italic") && "bg-accent")}
+          className={cn(
+            'h-8 w-8 p-0',
+            editor.isActive('italic') && 'bg-accent'
+          )}
           onClick={() => editor.chain().focus().toggleItalic().run()}
         >
           <Italic className="h-4 w-4" />
@@ -85,7 +100,10 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
           type="button"
           variant="ghost"
           size="sm"
-          className={cn("h-8 w-8 p-0", editor.isActive("underline") && "bg-accent")}
+          className={cn(
+            'h-8 w-8 p-0',
+            editor.isActive('underline') && 'bg-accent'
+          )}
           onClick={() => editor.chain().focus().toggleUnderline().run()}
         >
           <UnderlineIcon className="h-4 w-4" />
@@ -97,7 +115,10 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
           type="button"
           variant="ghost"
           size="sm"
-          className={cn("h-8 w-8 p-0", editor.isActive("bulletList") && "bg-accent")}
+          className={cn(
+            'h-8 w-8 p-0',
+            editor.isActive('bulletList') && 'bg-accent'
+          )}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
         >
           <List className="h-4 w-4" />
@@ -106,7 +127,10 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
           type="button"
           variant="ghost"
           size="sm"
-          className={cn("h-8 w-8 p-0", editor.isActive("orderedList") && "bg-accent")}
+          className={cn(
+            'h-8 w-8 p-0',
+            editor.isActive('orderedList') && 'bg-accent'
+          )}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
         >
           <ListOrdered className="h-4 w-4" />
@@ -139,5 +163,5 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
       {/* Editor */}
       <EditorContent editor={editor} />
     </div>
-  )
+  );
 }

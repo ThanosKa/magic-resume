@@ -1,10 +1,10 @@
-import pino from "pino";
+import pino from 'pino';
 
-const isDev = process.env.NODE_ENV !== "production";
+const isDev = process.env.NODE_ENV !== 'production';
 
 export const logger = pino({
-  level: process.env.LOG_LEVEL ?? (isDev ? "debug" : "info"),
-  base: { service: "magic-resume" },
+  level: process.env.LOG_LEVEL ?? (isDev ? 'debug' : 'info'),
+  base: { service: 'magic-resume' },
   formatters: {
     level: (label) => ({ level: label }),
   },
@@ -12,10 +12,10 @@ export const logger = pino({
   // Correctly configure the transport for pretty printing in development
   transport: isDev
     ? {
-        target: "pino-pretty",
+        target: 'pino-pretty',
         options: {
           colorize: true,
-          ignore: "pid,hostname", // Optional: removes noise from the log line
+          ignore: 'pid,hostname', // Optional: removes noise from the log line
         },
       }
     : undefined, // Use default JSON logging in production

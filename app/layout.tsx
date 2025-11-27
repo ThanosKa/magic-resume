@@ -1,14 +1,17 @@
-import type React from "react"
-import type { Metadata, Viewport } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
-import { metadataBase, siteMetadata, siteUrl } from "@/lib/seo"
-import "./globals.css"
+import type React from 'react';
+import type { Metadata, Viewport } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
+import { metadataBase, siteMetadata, siteUrl } from '@/lib/seo';
+import './globals.css';
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" })
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' });
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  variable: '--font-geist-mono',
+});
 
 export const metadata: Metadata = {
   metadataBase,
@@ -21,8 +24,8 @@ export const metadata: Metadata = {
   keywords: siteMetadata.keywords,
   creator: siteMetadata.name,
   openGraph: {
-    type: "website",
-    locale: "en_US",
+    type: 'website',
+    locale: 'en_US',
     url: siteUrl,
     siteName: siteMetadata.name,
     title: siteMetadata.title,
@@ -37,13 +40,13 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     title: siteMetadata.title,
     description: siteMetadata.description,
     images: [siteMetadata.ogImage],
   },
   alternates: {
-    canonical: "/",
+    canonical: '/',
   },
   robots: {
     index: true,
@@ -52,43 +55,50 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
+        url: '/icon-light-32x32.png',
+        media: '(prefers-color-scheme: light)',
       },
       {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
+        url: '/icon-dark-32x32.png',
+        media: '(prefers-color-scheme: dark)',
       },
       {
-        url: "/icon.svg",
-        type: "image/svg+xml",
+        url: '/icon.svg',
+        type: 'image/svg+xml',
       },
     ],
-    apple: "/apple-icon.png",
+    apple: '/apple-icon.png',
   },
-}
+};
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
   ],
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geist.className} ${geistMono.variable} font-sans antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body
+        className={`${geist.className} ${geistMono.variable} font-sans antialiased`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
           <Toaster />
         </ThemeProvider>
         <Analytics />
       </body>
     </html>
-  )
+  );
 }

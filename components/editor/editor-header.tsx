@@ -1,16 +1,22 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { pdf } from "@react-pdf/renderer";
-import { FileText, Download, Upload, FilePlus, ChevronDown } from "lucide-react";
-import { useRef, useState, type RefObject } from "react";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { pdf } from '@react-pdf/renderer';
+import {
+  FileText,
+  Download,
+  Upload,
+  FilePlus,
+  ChevronDown,
+} from 'lucide-react';
+import { useRef, useState, type RefObject } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,11 +27,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { CVPDFDocument } from "@/components/editor/cv-pdf-document";
-import { useCVStore } from "@/store/cv-store";
-import type { CVData } from "@/types/cv";
+} from '@/components/ui/alert-dialog';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { CVPDFDocument } from '@/components/editor/cv-pdf-document';
+import { useCVStore } from '@/store/cv-store';
+import type { CVData } from '@/types/cv';
 
 interface EditorHeaderProps {
   previewRef: RefObject<HTMLDivElement>;
@@ -38,14 +44,14 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
 
   const safeTitle =
     cv.title && cv.title.trim().length > 0
-      ? cv.title.replace(/\s+/g, "-").toLowerCase()
-      : "cv";
+      ? cv.title.replace(/\s+/g, '-').toLowerCase()
+      : 'cv';
 
   const handleExportJSON = () => {
     const dataStr = JSON.stringify(cv, null, 2);
-    const blob = new Blob([dataStr], { type: "application/json" });
+    const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
     a.download = `${safeTitle}.json`;
     a.click();
@@ -67,13 +73,13 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
       setIsExportingPDF(true);
       const blob = await pdf(<CVPDFDocument cv={cv} />).toBlob();
       const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
+      const link = document.createElement('a');
       link.href = url;
       link.download = `${safeTitle}.pdf`;
       link.click();
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("PDF export failed", error);
+      console.error('PDF export failed', error);
     } finally {
       setIsExportingPDF(false);
     }
@@ -92,15 +98,15 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
       try {
         const data = JSON.parse(event.target?.result as string) as CVData;
         if (!data.personalInfo || !data.sections) {
-          throw new Error("Invalid CV data structure");
+          throw new Error('Invalid CV data structure');
         }
         setCVData(data);
       } catch {
-        console.error("Failed to import CV");
+        console.error('Failed to import CV');
       }
     };
     reader.readAsText(file);
-    e.target.value = "";
+    e.target.value = '';
   };
 
   return (

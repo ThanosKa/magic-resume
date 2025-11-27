@@ -1,39 +1,39 @@
-"use client"
+'use client';
 
-import { useRef } from "react"
-import { useCVStore } from "@/store/cv-store"
-import { CVPreview } from "@/components/editor/cv-preview"
-import { EditorHeader } from "@/components/editor/editor-header"
-import { SectionTabs } from "@/components/editor/section-tabs"
-import { PersonalInfoForm } from "@/components/editor/personal-info-form"
-import { SummaryForm } from "@/components/editor/summary-form"
-import { ExperienceForm } from "@/components/editor/experience-form"
-import { EducationForm } from "@/components/editor/education-form"
-import { ProjectsForm } from "@/components/editor/projects-form"
-import { SkillsForm } from "@/components/editor/skills-form"
+import { useRef } from 'react';
+import { useCVStore } from '@/store/cv-store';
+import { CVPreview } from '@/components/editor/cv-preview';
+import { EditorHeader } from '@/components/editor/editor-header';
+import { SectionTabs } from '@/components/editor/section-tabs';
+import { PersonalInfoForm } from '@/components/editor/personal-info-form';
+import { SummaryForm } from '@/components/editor/summary-form';
+import { ExperienceForm } from '@/components/editor/experience-form';
+import { EducationForm } from '@/components/editor/education-form';
+import { ProjectsForm } from '@/components/editor/projects-form';
+import { SkillsForm } from '@/components/editor/skills-form';
 
 export default function EditorPage() {
-  const { cv, activeSection } = useCVStore()
-  const previewRef = useRef<HTMLDivElement>(null)
+  const { cv, activeSection } = useCVStore();
+  const previewRef = useRef<HTMLDivElement>(null);
 
   const renderForm = () => {
     switch (activeSection) {
       case null:
-        return <PersonalInfoForm />
-      case "summary":
-        return <SummaryForm />
-      case "experience":
-        return <ExperienceForm />
-      case "education":
-        return <EducationForm />
-      case "projects":
-        return <ProjectsForm />
-      case "skills":
-        return <SkillsForm />
+        return <PersonalInfoForm />;
+      case 'summary':
+        return <SummaryForm />;
+      case 'experience':
+        return <ExperienceForm />;
+      case 'education':
+        return <EducationForm />;
+      case 'projects':
+        return <ProjectsForm />;
+      case 'skills':
+        return <SkillsForm />;
       default:
-        return <PersonalInfoForm />
+        return <PersonalInfoForm />;
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -82,5 +82,5 @@ export default function EditorPage() {
         }
       `}</style>
     </div>
-  )
+  );
 }

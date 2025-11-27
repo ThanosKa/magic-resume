@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function CTA() {
   return (
@@ -20,10 +20,14 @@ export function CTA() {
             Ready to Build Your Professional CV?
           </h2>
           <p className="mt-4 max-w-xl text-pretty text-lg text-muted-foreground">
-            Join thousands of professionals who have created stunning CVs with our builder. No sign-up required - start
-            building right now.
+            Join thousands of professionals who have created stunning CVs with
+            our builder. No sign-up required - start building right now.
           </p>
-          <Button asChild size="lg" className="mt-8 rounded-full px-8 text-base">
+          <Button
+            asChild
+            size="lg"
+            className="mt-8 rounded-full px-8 text-base"
+          >
             <Link href="/editor">
               Start Building
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -32,5 +36,5 @@ export function CTA() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

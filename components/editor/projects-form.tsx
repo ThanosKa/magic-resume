@@ -1,29 +1,37 @@
-"use client"
+'use client';
 
-import { Plus, Trash2, ChevronDown, ChevronUp, Eye, EyeOff, Sparkles } from "lucide-react"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
-import { useCVStore } from "@/store/cv-store"
-import { RichTextEditor } from "./rich-text-editor"
-import { AiPolishDialog } from "./ai-polish-dialog"
+import {
+  Plus,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  Eye,
+  EyeOff,
+  Sparkles,
+} from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { useCVStore } from '@/store/cv-store';
+import { RichTextEditor } from './rich-text-editor';
+import { AiPolishDialog } from './ai-polish-dialog';
 
 export function ProjectsForm() {
-  const { cv, addProject, updateProject, removeProject } = useCVStore()
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
-  const [polishingId, setPolishingId] = useState<string | null>(null)
+  const { cv, addProject, updateProject, removeProject } = useCVStore();
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [polishingId, setPolishingId] = useState<string | null>(null);
 
   const toggleExpanded = (id: string) => {
-    const next = new Set(expandedIds)
+    const next = new Set(expandedIds);
     if (next.has(id)) {
-      next.delete(id)
+      next.delete(id);
     } else {
-      next.add(id)
+      next.add(id);
     }
-    setExpandedIds(next)
-  }
+    setExpandedIds(next);
+  };
 
   return (
     <div className="space-y-4">
@@ -34,8 +42,10 @@ export function ProjectsForm() {
             onClick={() => toggleExpanded(project.id)}
           >
             <div className="flex-1 truncate">
-              <p className="font-medium">{project.name || "New Project"}</p>
-              <p className="text-sm text-muted-foreground">{project.role || "Add role"}</p>
+              <p className="font-medium">{project.name || 'New Project'}</p>
+              <p className="text-sm text-muted-foreground">
+                {project.role || 'Add role'}
+              </p>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -43,24 +53,32 @@ export function ProjectsForm() {
                 size="icon"
                 className="h-8 w-8"
                 onClick={(e) => {
-                  e.stopPropagation()
-                  updateProject(project.id, { visible: !project.visible })
+                  e.stopPropagation();
+                  updateProject(project.id, { visible: !project.visible });
                 }}
               >
-                {project.visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}
+                {project.visible ? (
+                  <Eye className="h-4 w-4" />
+                ) : (
+                  <EyeOff className="h-4 w-4 text-muted-foreground" />
+                )}
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 text-destructive"
                 onClick={(e) => {
-                  e.stopPropagation()
-                  removeProject(project.id)
+                  e.stopPropagation();
+                  removeProject(project.id);
                 }}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
-              {expandedIds.has(project.id) ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              {expandedIds.has(project.id) ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
             </div>
           </div>
           {expandedIds.has(project.id) && (
@@ -71,7 +89,9 @@ export function ProjectsForm() {
                     <Label>Project Name</Label>
                     <Input
                       value={project.name}
-                      onChange={(e) => updateProject(project.id, { name: e.target.value })}
+                      onChange={(e) =>
+                        updateProject(project.id, { name: e.target.value })
+                      }
                       placeholder="Project name"
                     />
                   </div>
@@ -79,7 +99,9 @@ export function ProjectsForm() {
                     <Label>Role</Label>
                     <Input
                       value={project.role}
-                      onChange={(e) => updateProject(project.id, { role: e.target.value })}
+                      onChange={(e) =>
+                        updateProject(project.id, { role: e.target.value })
+                      }
                       placeholder="Your role"
                     />
                   </div>
@@ -89,7 +111,9 @@ export function ProjectsForm() {
                     <Label>Start Date</Label>
                     <Input
                       value={project.startDate}
-                      onChange={(e) => updateProject(project.id, { startDate: e.target.value })}
+                      onChange={(e) =>
+                        updateProject(project.id, { startDate: e.target.value })
+                      }
                       placeholder="2022"
                     />
                   </div>
@@ -97,7 +121,9 @@ export function ProjectsForm() {
                     <Label>End Date</Label>
                     <Input
                       value={project.endDate}
-                      onChange={(e) => updateProject(project.id, { endDate: e.target.value })}
+                      onChange={(e) =>
+                        updateProject(project.id, { endDate: e.target.value })
+                      }
                       placeholder="Present"
                     />
                   </div>
@@ -105,8 +131,10 @@ export function ProjectsForm() {
                 <div className="space-y-2">
                   <Label>Link (optional)</Label>
                   <Input
-                    value={project.link || ""}
-                    onChange={(e) => updateProject(project.id, { link: e.target.value })}
+                    value={project.link || ''}
+                    onChange={(e) =>
+                      updateProject(project.id, { link: e.target.value })
+                    }
                     placeholder="https://github.com/..."
                   />
                 </div>
@@ -126,7 +154,9 @@ export function ProjectsForm() {
                   </div>
                   <RichTextEditor
                     content={project.description}
-                    onChange={(content) => updateProject(project.id, { description: content })}
+                    onChange={(content) =>
+                      updateProject(project.id, { description: content })
+                    }
                     placeholder="Describe the project and your contributions..."
                   />
                 </div>
@@ -135,7 +165,11 @@ export function ProjectsForm() {
           )}
         </Card>
       ))}
-      <Button variant="outline" className="w-full bg-transparent" onClick={() => addProject()}>
+      <Button
+        variant="outline"
+        className="w-full bg-transparent"
+        onClick={() => addProject()}
+      >
         <Plus className="mr-2 h-4 w-4" />
         Add Project
       </Button>
@@ -143,14 +177,16 @@ export function ProjectsForm() {
       <AiPolishDialog
         open={!!polishingId}
         onOpenChange={(open) => !open && setPolishingId(null)}
-        originalContent={cv.projects.find((p) => p.id === polishingId)?.description || ""}
+        originalContent={
+          cv.projects.find((p) => p.id === polishingId)?.description || ''
+        }
         onApply={(content) => {
           if (polishingId) {
-            updateProject(polishingId, { description: content })
+            updateProject(polishingId, { description: content });
           }
         }}
         polishType="description"
       />
     </div>
-  )
+  );
 }

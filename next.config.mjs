@@ -8,7 +8,6 @@ const nextConfig = {
   },
   // Add 'pino' and 'pino-pretty' to serverExternalPackages (moved from experimental in Next.js 16)
   serverExternalPackages: ['pino', 'pino-pretty'],
+};
 
-}
-
-export default nextConfig
+export default nextConfig;

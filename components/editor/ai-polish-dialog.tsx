@@ -1,74 +1,73 @@
-"use client";
+'use client';
 
-import { useState, useCallback } from "react";
-import { Sparkles, RefreshCw, Check, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState, useCallback } from 'react';
+import { Sparkles, RefreshCw, Check, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useToast } from "@/components/hooks/use-toast";
+} from '@/components/ui/dialog';
+import { useToast } from '@/components/hooks/use-toast';
 
 interface AiPolishDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   originalContent: string;
   onApply: (content: string) => void;
-  polishType?: "title" | "summary" | "description";
+  polishType?: 'title' | 'summary' | 'description';
 }
-
 
 export function AiPolishDialog({
   open,
   onOpenChange,
   originalContent,
   onApply,
-  polishType = "description",
+  polishType = 'description',
 }: AiPolishDialogProps) {
-  const [polishedContent, setPolishedContent] = useState("");
+  const [polishedContent, setPolishedContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const polish = useCallback(async () => {
     setIsLoading(true);
-    setPolishedContent("");
+    setPolishedContent('');
     setError(null);
 
     try {
-      const response = await fetch("/api/polish", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/polish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: originalContent, polishType }),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || "Failed to polish content");
+        throw new Error(errorText || 'Failed to polish content');
       }
 
       const data = (await response.json()) as { polished?: string };
       const polished = data.polished?.trim();
 
       if (!polished) {
-        throw new Error("No content returned from AI polish");
+        throw new Error('No content returned from AI polish');
       }
 
       setPolishedContent(polished);
       toast({
-        title: "AI polish complete",
-        description: "Review the suggested improvements before applying.",
+        title: 'AI polish complete',
+        description: 'Review the suggested improvements before applying.',
       });
     } catch (error) {
-      console.error("Polish error:", error);
-      const message = "Something went wrong. Please try again.";
+      console.error('Polish error:', error);
+      const message = 'Something went wrong. Please try again.';
       setError(message);
       toast({
-        variant: "destructive",
-        title: "AI polish failed",
+        variant: 'destructive',
+        title: 'AI polish failed',
         description: message,
       });
     } finally {
@@ -83,13 +82,13 @@ export function AiPolishDialog({
   const handleApply = () => {
     onApply(polishedContent);
     onOpenChange(false);
-    setPolishedContent("");
+    setPolishedContent('');
     setError(null);
   };
 
   const handleClose = () => {
     onOpenChange(false);
-    setPolishedContent("");
+    setPolishedContent('');
     setError(null);
   };
 
@@ -100,11 +99,11 @@ export function AiPolishDialog({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Sparkles className="h-5 w-5" />
-              {polishType === "title"
-                ? "Polish Professional Title"
-                : polishType === "summary"
-                  ? "Polish Professional Summary"
-                  : "AI Polish"}
+              {polishType === 'title'
+                ? 'Polish Professional Title'
+                : polishType === 'summary'
+                  ? 'Polish Professional Summary'
+                  : 'AI Polish'}
             </DialogTitle>
           </DialogHeader>
 
@@ -116,7 +115,7 @@ export function AiPolishDialog({
               <div
                 className="min-h-[200px] max-h-[400px] overflow-auto rounded-md border bg-muted/50 p-3 text-sm"
                 dangerouslySetInnerHTML={{
-                  __html: originalContent || "<em>No content</em>",
+                  __html: originalContent || '<em>No content</em>',
                 }}
               />
             </div>
@@ -128,11 +127,11 @@ export function AiPolishDialog({
                 {isLoading && !polishedContent && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <RefreshCw className="h-4 w-4 animate-spin" />
-                    {polishType === "title"
-                      ? "Optimizing your professional title..."
-                      : polishType === "summary"
-                        ? "Crafting a compelling summary..."
-                        : "Polishing..."}
+                    {polishType === 'title'
+                      ? 'Optimizing your professional title...'
+                      : polishType === 'summary'
+                        ? 'Crafting a compelling summary...'
+                        : 'Polishing...'}
                   </div>
                 )}
                 {polishedContent ? (
@@ -141,11 +140,11 @@ export function AiPolishDialog({
                   <p className="text-destructive">{error}</p>
                 ) : !isLoading ? (
                   <p className="text-muted-foreground">
-                    {polishType === "title"
-                      ? "Click the Polish button to optimize your professional title"
-                      : polishType === "summary"
-                        ? "Click the Polish button to create a compelling professional summary"
-                        : "Click the Polish button to enhance your content with AI"}
+                    {polishType === 'title'
+                      ? 'Click the Polish button to optimize your professional title'
+                      : polishType === 'summary'
+                        ? 'Click the Polish button to create a compelling professional summary'
+                        : 'Click the Polish button to enhance your content with AI'}
                   </p>
                 ) : null}
               </div>

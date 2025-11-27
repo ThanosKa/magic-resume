@@ -1,8 +1,13 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { faqs } from "@/lib/faqs"
+import { motion } from 'framer-motion';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { faqs } from '@/lib/faqs';
 
 const container = {
   hidden: { opacity: 0 },
@@ -12,12 +17,12 @@ const container = {
       staggerChildren: 0.1,
     },
   },
-}
+};
 
 const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
-}
+};
 
 export function FAQ() {
   return (
@@ -30,8 +35,12 @@ export function FAQ() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Frequently Asked Questions</h2>
-          <p className="mt-4 text-lg text-muted-foreground">Everything you need to know about our CV builder</p>
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            Frequently Asked Questions
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Everything you need to know about our CV builder
+          </p>
         </motion.div>
 
         <motion.div
@@ -45,8 +54,12 @@ export function FAQ() {
             {faqs.map((faq, index) => (
               <motion.div key={index} variants={item}>
                 <AccordionItem value={`item-${index}`}>
-                  <AccordionTrigger className="text-left text-base font-medium">{faq.question}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+                  <AccordionTrigger className="text-left text-base font-medium">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {faq.answer}
+                  </AccordionContent>
                 </AccordionItem>
               </motion.div>
             ))}
@@ -54,5 +67,5 @@ export function FAQ() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

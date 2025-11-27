@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { Header } from "@/components/landing/header";
-import { Footer } from "@/components/landing/footer";
-import { Button } from "@/components/ui/button";
-import { siteMetadata } from "@/lib/seo";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Header } from '@/components/landing/header';
+import { Footer } from '@/components/landing/footer';
+import { Button } from '@/components/ui/button';
+import { siteMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: "Page Not Found | " + siteMetadata.name,
+  title: 'Page Not Found | ' + siteMetadata.name,
   description:
     "Sorry, the page you're looking for doesn't exist. Let's get you back on track with your resume creation.",
 };

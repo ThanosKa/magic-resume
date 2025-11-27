@@ -11,11 +11,11 @@
 [![Zustand](https://img.shields.io/badge/Zustand-state-8a3ffc)](https://zustand-demo.pmnd.rs/)
 [![pnpm](https://img.shields.io/badge/pnpm-%F0%9F%8F%AF-orange)](https://pnpm.io/)
 [![Deploy to Vercel](https://img.shields.io/badge/Deploy-Vercel-000?logo=vercel)](#deployment)
-[![GitHub stars](https://img.shields.io/github/stars/<owner>/<repo>?style=social)](https://github.com/<owner>/<repo>/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/<owner>/<repo>?style=social)](https://github.com/<owner>/<repo>/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/<owner>/<repo>)](https://github.com/<owner>/<repo>/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/<owner>/<repo>)](https://github.com/<owner>/<repo>/pulls)
-[![Last commit](https://img.shields.io/github/last-commit/<owner>/<repo>)](https://github.com/<owner>/<repo>/commits)
+[![GitHub stars](https://img.shields.io/github/stars/ThanosKa/magic-resume?style=social)](https://github.com/ThanosKa/magic-resume/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ThanosKa/magic-resume?style=social)](https://github.com/ThanosKa/magic-resume/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/ThanosKa/magic-resume)](https://github.com/ThanosKa/magic-resume/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/ThanosKa/magic-resume)](https://github.com/ThanosKa/magic-resume/pulls)
+[![Last commit](https://img.shields.io/github/last-commit/ThanosKa/magic-resume)](https://github.com/ThanosKa/magic-resume/commits)
 [![Twitter Follow](https://img.shields.io/twitter/follow/KazakisThanos?style=social)](https://x.com/KazakisThanos)
 
 <p>AI-assisted CV builder with live preview, AI polish, and one-click export to PDF or JSON.</p>
@@ -25,6 +25,7 @@
 ## What It Does
 
 Magic Resume is a Next.js (App Router) application for creating professional CVs quickly:
+
 - Guided editor for personal info, experience, education, projects, skills, and summaries
 - Real-time preview with flexible header alignment and section ordering/toggles
 - Import/export JSON, print-friendly view, and server-side PDF generation via Puppeteer
@@ -42,12 +43,14 @@ Magic Resume is a Next.js (App Router) application for creating professional CVs
 
 Prerequisites: Node 18.18+ and pnpm installed.
 
-1) Install dependencies
+1. Install dependencies
+
 ```bash
 pnpm install
 ```
 
-2) Configure environment (required for AI polish)
+2. Configure environment (required for AI polish)
+
 ```bash
 cp .env.example .env.local
 # Add your OpenRouter key
@@ -55,13 +58,15 @@ OPENROUTER_API_KEY=sk-...
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-3) Run the app locally
+3. Run the app locally
+
 ```bash
 pnpm dev
 # Visit http://localhost:3000 for the landing page and /editor for the builder
 ```
 
 Useful scripts:
+
 ```bash
 pnpm lint     # ESLint
 pnpm build    # Production build
@@ -77,6 +82,7 @@ pnpm seo-check # Basic SEO sanity checks
 - Data is persisted locally under the `cv-builder-data` store key so you can pick up where you left off.
 
 API examples (local dev):
+
 ```bash
 # Polish content
 curl -X POST http://localhost:3000/api/polish \
@@ -92,15 +98,17 @@ curl -X POST http://localhost:3000/api/generate-pdf \
 ## Deployment
 
 **Vercel (recommended)**
+
 - Push your branch to GitHub/GitLab/Bitbucket so Vercel can pull it.
 - In Vercel, **New Project** → import the repo → set env vars (`NEXT_PUBLIC_SITE_URL`, `OPENROUTER_API_KEY`).
 - Framework preset: **Next.js**. Leave build command as `next build` (default) and output as `.next`.
 - For previews, Vercel auto-builds each PR. For production, promote the main branch or trigger a production deployment.
-- One-click deploy (replace `<owner>/<repo>` in the URL if you fork):
+- One-click deploy:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2F<owner>%2Frepo)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FThanosKa%2Fmagic-resume)
 
 **Manual/Other hosts**
+
 - Build locally: `pnpm build`.
 - Start: `pnpm start` (expects `.env.local` with required variables).
 - Ensure the host supports Node.js 18+ and Next.js server output.
@@ -133,8 +141,21 @@ curl -X POST http://localhost:3000/api/generate-pdf \
 
 ## Star History
 
-If this repository is public on GitHub, you can show star growth by replacing `<owner>/<repo>` with your slug:
+[![Star History Chart](https://api.star-history.com/svg?repos=ThanosKa/magic-resume&type=Date)](https://star-history.com/#ThanosKa/magic-resume&Date)
 
-```md
-[![Star History Chart](https://api.star-history.com/svg?repos=<owner>/<repo>&type=Date)](https://star-history.com/#<owner>/<repo>&Date)
-```
+## Contributions
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+![Contributors](https://img.shields.io/github/contributors/ThanosKa/magic-resume)
+![Activity](https://img.shields.io/github/commit-activity/m/ThanosKa/magic-resume)
+
+### Contribution Graph
+
+![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=ThanosKa&repo=magic-resume&theme=github-compact)
+
+## License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 2.0 Generic License. See the [LICENSE](LICENSE) file for details.
+
+**Note:** Commercial use requires explicit permission from the author. For commercial licensing inquiries, please open an issue or contact the maintainer.

@@ -69,6 +69,10 @@ pnpm start    # Start after a build
 pnpm seo-check # Basic SEO sanity checks
 ```
 
+PDF generation requirements:
+- Set `PUPPETEER_EXECUTABLE_PATH` to your local Chrome/Chromium binary (e.g., macOS: `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`, Linux: `/usr/bin/chromium`, Windows: `C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe`), or
+- Install the bundled headless Chrome once with `pnpm exec puppeteer browsers install chrome` so Puppeteer can launch without a custom path.
+
 ## Usage
 
 - Open `/editor`, fill each section, and toggle/order sections as needed.
@@ -169,4 +173,4 @@ Your support helps keep the project maintained and allows me to work on new feat
 
 This project is licensed under the GNU Affero General Public License v3.0. See the [LICENSE](LICENSE) file for details.
 
-**Note:** Commercial use requires explicit permission from the author. For commercial licensing inquiries, please open an issue or contact the maintainer.
+The AGPL permits commercial use, modification, and redistribution as long as you keep the same license and provide source (including for network use). If you need a different licensing arrangement, please open an issue or contact the maintainer.

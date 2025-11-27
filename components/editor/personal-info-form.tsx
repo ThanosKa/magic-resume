@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -57,6 +57,28 @@ export function PersonalInfoForm() {
   const [showSummaryPolish, setShowSummaryPolish] = useState(false);
 
   const socialLinks = personalInfo.socialLinks ?? [];
+  const socialItemRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const previousSocialCount = useRef(socialLinks.length);
+
+  useEffect(() => {
+    const addedLink =
+      socialLinks.length > previousSocialCount.current
+        ? socialLinks[socialLinks.length - 1]
+        : null;
+
+    if (addedLink) {
+      const target = socialItemRefs.current[addedLink.id];
+      requestAnimationFrame(() => {
+        target?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const firstInput = target?.querySelector('input');
+        if (firstInput instanceof HTMLElement) {
+          firstInput.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    previousSocialCount.current = socialLinks.length;
+  }, [socialLinks]);
 
   return (
     <div className="space-y-6">
@@ -178,7 +200,13 @@ export function PersonalInfoForm() {
           {socialLinks.map((link) => {
             const Icon = platformIcons[link.platform];
             return (
-              <div key={link.id} className="flex items-center gap-2">
+              <div
+                key={link.id}
+                ref={(node) => {
+                  socialItemRefs.current[link.id] = node;
+                }}
+                className="flex items-center gap-2"
+              >
                 <Select
                   value={link.platform}
                   onValueChange={(value) =>

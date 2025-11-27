@@ -28,7 +28,7 @@ export function SectionTabs() {
           key={type}
           onClick={() => setActiveSection(type === 'personal' ? null : type)}
           className={cn(
-            'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+            'flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
             (type === 'personal' && activeSection === null) ||
               activeSection === type
               ? 'bg-primary text-primary-foreground'

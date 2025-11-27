@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -88,30 +89,15 @@ export function Hero() {
             className="mt-16 w-full max-w-4xl"
           >
             <div className="relative rounded-xl border border-border bg-muted/30 p-2 shadow-2xl">
-              <div className="aspect-[16/10] overflow-hidden rounded-lg border border-border bg-background">
-                <div className="flex h-full">
-                  <div className="w-2/5 border-r border-border bg-muted/50 p-4">
-                    <div className="space-y-3">
-                      <div className="h-3 w-1/2 rounded bg-foreground/10" />
-                      <div className="h-8 w-full rounded bg-foreground/5" />
-                      <div className="h-8 w-full rounded bg-foreground/5" />
-                      <div className="mt-4 h-3 w-1/3 rounded bg-foreground/10" />
-                      <div className="h-20 w-full rounded bg-foreground/5" />
-                    </div>
-                  </div>
-                  <div className="flex-1 bg-white p-6 dark:bg-white">
-                    <div className="space-y-4">
-                      <div className="h-6 w-1/3 rounded bg-gray-200" />
-                      <div className="h-3 w-1/4 rounded bg-gray-100" />
-                      <div className="mt-6 h-3 w-1/5 rounded bg-gray-300" />
-                      <div className="space-y-2">
-                        <div className="h-2 w-full rounded bg-gray-100" />
-                        <div className="h-2 w-5/6 rounded bg-gray-100" />
-                        <div className="h-2 w-4/6 rounded bg-gray-100" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="relative aspect-[16/9] overflow-hidden rounded-lg border border-border bg-background">
+                <Image
+                  src="/dark.png"
+                  alt="CV builder preview"
+                  fill
+                  priority
+                  className="object-contain"
+                  sizes="(min-width: 1024px) 800px, 100vw"
+                />
               </div>
             </div>
           </motion.div>

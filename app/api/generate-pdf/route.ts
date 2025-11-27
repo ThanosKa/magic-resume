@@ -20,27 +20,50 @@ export async function POST(req: Request) {
       filename?: string;
     };
 
+    logger.info({ filename }, 'PDF generation request received');
+
     if (!html || typeof html !== 'string') {
       logger.warn('Missing HTML content for PDF generation');
       return new Response('HTML content is required', { status: 400 });
     }
 
     const safeFilename = sanitizeFilename(filename);
+    logger.info(
+      { originalFilename: filename, safeFilename, htmlLength: html.length },
+      'Starting PDF generation'
+    );
 
+    logger.debug('Launching Puppeteer browser');
     browser = await puppeteer.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
+    logger.debug('Creating new page and setting viewport');
     const page = await browser.newPage();
-    await page.setViewport({ width: 1240, height: 1754 }); // Approx A4 at 150 DPI
+    await page.setViewport({ width: 1240, height: 1754 });
+
+    logger.debug('Setting page content');
     await page.setContent(html, { waitUntil: 'networkidle0' });
+
+    logger.debug('Adding CSS styles for proper PDF rendering');
     await page.addStyleTag({
-      content:
-        'html, body, #cv-preview { background: #ffffff !important; color: #0f172a; } body { margin: 0; }',
+      content: `
+        html, body, #cv-preview {
+          background:rgb(255, 255, 255) !important;
+          color: #0f172a !important;
+          -webkit-print-color-adjust: exact !important;
+        }
+        body {
+          margin: 0;
+        }
+      `,
     });
+
+    logger.debug('Emulating screen media type');
     await page.emulateMediaType('screen');
 
+    logger.debug('Generating PDF with Puppeteer');
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
@@ -54,8 +77,15 @@ export async function POST(req: Request) {
       },
     });
 
+    logger.info({ pdfSize: pdfBuffer.length }, 'PDF generated successfully');
+
     const pdfBytes = new Uint8Array(pdfBuffer.byteLength);
     pdfBytes.set(pdfBuffer);
+
+    logger.info(
+      { filename: safeFilename },
+      'PDF generation completed, sending response'
+    );
 
     return new Response(pdfBytes.buffer, {
       status: 200,
@@ -69,6 +99,7 @@ export async function POST(req: Request) {
     return new Response('Failed to generate PDF', { status: 500 });
   } finally {
     if (browser) {
+      logger.debug('Closing browser');
       await browser.close();
     }
   }

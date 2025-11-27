@@ -1,6 +1,6 @@
 # Magic Resume
 
-[![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/) [![React 19](https://img.shields.io/badge/React-19-61dafb)](https://react.dev/) [![pnpm](https://img.shields.io/badge/pnpm-%F0%9F%8F%AF-orange)](https://pnpm.io/)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/) [![React 19](https://img.shields.io/badge/React-19-61dafb)](https://react.dev/) [![pnpm](https://img.shields.io/badge/pnpm-%F0%9F%8F%AF-orange)](https://pnpm.io/) [![Deploy to Vercel](https://img.shields.io/badge/Deploy-Vercel-000?logo=vercel)](#deployment) [![Star History](https://img.shields.io/badge/Stars-graph-blue)](#star-history)
 
 AI-assisted CV builder with a live preview, AI polishing, and one-click export to PDF or JSON.
 
@@ -71,6 +71,19 @@ curl -X POST http://localhost:3000/api/generate-pdf \
   -d '{"html":"<html>...</html>","filename":"cv"}' --output cv.pdf
 ```
 
+## Deployment
+
+**Vercel (recommended)**
+- Push your branch to GitHub/GitLab/Bitbucket so Vercel can pull it.
+- In Vercel, **New Project** → import the repo → set env vars (`NEXT_PUBLIC_SITE_URL`, `OPENROUTER_API_KEY`).
+- Framework preset: **Next.js**. Leave build command as `next build` (default) and output as `.next`.
+- For previews, Vercel auto-builds each PR. For production, promote the main branch or trigger a production deployment.
+
+**Manual/Other hosts**
+- Build locally: `pnpm build`.
+- Start: `pnpm start` (expects `.env.local` with required variables).
+- Ensure the host supports Node.js 18+ and Next.js server output.
+
 ## Project Structure
 
 - `app/` – App Router pages (`/`, `/editor`, API routes)
@@ -91,4 +104,16 @@ curl -X POST http://localhost:3000/api/generate-pdf \
 ## Maintainers & Contributing
 
 - Maintained by the Magic Resume team. For questions or proposals, open an issue.
-- Contributions welcome: create a PR, follow the existing TypeScript/Next.js style, and run `pnpm lint` (and `pnpm build` if you touch build/runtime code) before submitting.
+- Contributions welcome:
+  - Fork and create a feature branch.
+  - Keep PRs scoped; include before/after context for UI changes (screenshots or short GIFs).
+  - Run `pnpm lint` (and `pnpm build` if you touch build/runtime code) before submitting.
+  - Prefer existing patterns (Radix + Tailwind, server-first components; guard client-only code).
+
+## Star History
+
+If this repository is public on GitHub, you can show star growth by replacing `<owner>/<repo>` with your slug:
+
+```md
+[![Star History Chart](https://api.star-history.com/svg?repos=<owner>/<repo>&type=Date)](https://star-history.com/#<owner>/<repo>&Date)
+```

@@ -6,31 +6,113 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
+
+const MAX_CONTENT_SIZE = 5 * 1024 * 1024; // ~5MB
+const DEFAULT_MARGINS = {
+  top: '20mm',
+  right: '16mm',
+  bottom: '20mm',
+  left: '16mm',
+};
+
 const sanitizeFilename = (value?: string) => {
   if (!value) return 'cv';
   const cleaned = value.replace(/[<>:"/\\|?*\u0000-\u001F]/g, '').trim();
   return cleaned.length > 0 ? cleaned : 'cv';
 };
 
+const normalizeMarginValue = (
+  value: string | number | undefined,
+  fallback: string
+) => {
+  if (typeof value === 'number') {
+    return `${value}mm`;
+  }
+  if (typeof value === 'string' && value.trim().length > 0) {
+    return value;
+  }
+  return fallback;
+};
+
+const buildHtmlDocument = (content?: string, styles?: string) => {
+  if (!content) return null;
+  const safeStyles = styles ?? '';
+  return `<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <style>${safeStyles}</style>
+    </head>
+    <body>
+      ${content}
+    </body>
+  </html>`;
+};
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: CORS_HEADERS,
+  });
+}
+
 export async function POST(req: Request) {
   let browser: Awaited<ReturnType<typeof puppeteer.launch>> | null = null;
 
   try {
-    const { html, filename } = (await req.json()) as {
+    const contentLengthHeader = req.headers.get('content-length');
+    if (contentLengthHeader) {
+      const contentLength = Number(contentLengthHeader);
+      if (Number.isFinite(contentLength) && contentLength > MAX_CONTENT_SIZE) {
+        logger.warn({ contentLength }, 'PDF request exceeds size limit');
+        return new Response('Payload too large', {
+          status: 413,
+          headers: CORS_HEADERS,
+        });
+      }
+    }
+
+    const { html, filename, content, styles, margin } = (await req.json()) as {
       html?: string;
       filename?: string;
+      content?: string;
+      styles?: string;
+      margin?: Partial<typeof DEFAULT_MARGINS>;
     };
 
     logger.info({ filename }, 'PDF generation request received');
 
-    if (!html || typeof html !== 'string') {
+    const normalizedHtml = html ?? buildHtmlDocument(content, styles);
+
+    if (!normalizedHtml || typeof normalizedHtml !== 'string') {
       logger.warn('Missing HTML content for PDF generation');
-      return new Response('HTML content is required', { status: 400 });
+      return new Response('HTML content is required', {
+        status: 400,
+        headers: CORS_HEADERS,
+      });
+    }
+
+    const htmlBytes = new TextEncoder().encode(normalizedHtml).length;
+    if (htmlBytes > MAX_CONTENT_SIZE) {
+      logger.warn({ htmlBytes }, 'HTML content exceeds size limit');
+      return new Response('Payload too large', {
+        status: 413,
+        headers: CORS_HEADERS,
+      });
     }
 
     const safeFilename = sanitizeFilename(filename);
     logger.info(
-      { originalFilename: filename, safeFilename, htmlLength: html.length },
+      {
+        originalFilename: filename,
+        safeFilename,
+        htmlLength: normalizedHtml.length,
+      },
       'Starting PDF generation'
     );
 
@@ -42,6 +124,7 @@ export async function POST(req: Request) {
     const executablePath = isServerless
       ? await chromium.executablePath()
       : undefined;
+    const channel = isServerless ? undefined : 'chrome';
 
     if (isServerless && !executablePath) {
       logger.error('Chromium executable path could not be resolved');
@@ -52,6 +135,7 @@ export async function POST(req: Request) {
       {
         isServerless,
         executablePath: executablePath ?? 'puppeteer default',
+        channel: channel ?? 'none',
       },
       'Launching Puppeteer browser'
     );
@@ -62,6 +146,8 @@ export async function POST(req: Request) {
         ? chromium.args
         : ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath,
+      // channel is only used in non-serverless environments to pick a locally installed Chrome
+      channel,
       // chromium.defaultViewport is available at runtime, cast to satisfy TS.
       defaultViewport: isServerless ? (chromium as unknown as { defaultViewport?: any }).defaultViewport : undefined,
     };
@@ -73,7 +159,7 @@ export async function POST(req: Request) {
     await page.setViewport({ width: 1240, height: 1754 });
 
     logger.debug('Setting page content');
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+    await page.setContent(normalizedHtml, { waitUntil: 'networkidle0' });
 
     logger.debug('Adding CSS styles for proper PDF rendering');
     await page.addStyleTag({
@@ -93,16 +179,27 @@ export async function POST(req: Request) {
     await page.emulateMediaType('screen');
 
     logger.debug('Generating PDF with Puppeteer');
+    const marginTop = normalizeMarginValue(margin?.top, DEFAULT_MARGINS.top);
+    const marginRight = normalizeMarginValue(
+      margin?.right,
+      DEFAULT_MARGINS.right
+    );
+    const marginBottom = normalizeMarginValue(
+      margin?.bottom,
+      DEFAULT_MARGINS.bottom
+    );
+    const marginLeft = normalizeMarginValue(margin?.left, DEFAULT_MARGINS.left);
+
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
       preferCSSPageSize: true,
       omitBackground: false,
       margin: {
-        top: '20mm',
-        right: '16mm',
-        bottom: '20mm',
-        left: '16mm',
+        top: marginTop,
+        right: marginRight,
+        bottom: marginBottom,
+        left: marginLeft,
       },
     });
 
@@ -119,13 +216,17 @@ export async function POST(req: Request) {
     return new Response(pdfBytes.buffer, {
       status: 200,
       headers: {
+        ...CORS_HEADERS,
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${safeFilename}.pdf"`,
       },
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to generate PDF');
-    return new Response('Failed to generate PDF', { status: 500 });
+    return new Response('Failed to generate PDF', {
+      status: 500,
+      headers: CORS_HEADERS,
+    });
   } finally {
     if (browser) {
       logger.debug('Closing browser');

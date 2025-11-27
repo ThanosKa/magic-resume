@@ -39,13 +39,15 @@ const normalizeMarginValue = (
   return fallback;
 };
 
-const buildHtmlDocument = (content?: string, styles?: string) => {
+const buildHtmlDocument = (content?: string, styles?: string, baseHref?: string) => {
   if (!content) return null;
   const safeStyles = styles ?? '';
+  const baseTag = baseHref ? `<base href="${baseHref}/" />` : '';
   return `<!DOCTYPE html>
   <html>
     <head>
       <meta charset="UTF-8" />
+      ${baseTag}
       <style>${safeStyles}</style>
     </head>
     <body>
@@ -87,7 +89,10 @@ export async function POST(req: Request) {
 
     logger.info({ filename }, 'PDF generation request received');
 
-    const normalizedHtml = html ?? buildHtmlDocument(content, styles);
+    const { origin } = new URL(req.url);
+
+    const normalizedHtml =
+      html ?? buildHtmlDocument(content, styles, origin);
 
     if (!normalizedHtml || typeof normalizedHtml !== 'string') {
       logger.warn('Missing HTML content for PDF generation');

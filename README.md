@@ -133,11 +133,18 @@ curl -X POST http://localhost:3000/api/generate-pdf \
 ## Maintainers & Contributing
 
 - Maintained by the Magic Resume team. For questions or proposals, open an issue.
-- Contributions welcome:
-  - Fork and create a feature branch.
-  - Keep PRs scoped; include before/after context for UI changes (screenshots or short GIFs).
-  - Run `pnpm lint` (and `pnpm build` if you touch build/runtime code) before submitting.
-  - Prefer existing patterns (Radix + Tailwind, server-first components; guard client-only code).
+- **Contributions are welcome!** Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request.
+- We follow a [Code of Conduct](.github/CODE_OF_CONDUCT.md) to ensure a welcoming environment for all contributors.
+- For security vulnerabilities, please see our [Security Policy](.github/SECURITY.md).
+
+### Quick Start for Contributors
+
+- Fork and create a feature branch.
+- Keep PRs scoped; include before/after context for UI changes (screenshots or short GIFs).
+- Run `pnpm lint` (and `pnpm build` if you touch build/runtime code) before submitting.
+- Prefer existing patterns (Radix + Tailwind, server-first components; guard client-only code).
+
+For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Star History
 

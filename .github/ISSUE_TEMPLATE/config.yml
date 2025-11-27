@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/ThanosKa/magic-resume/discussions
+    about: Ask questions, share ideas, or discuss the project
+  - name: Security Issues
+    url: https://github.com/ThanosKa/magic-resume/security/advisories/new
+    about: Report security vulnerabilities privately
+

@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "sonner"
+import { Toaster } from "@/components/ui/toaster"
 import { metadataBase, siteMetadata, siteUrl } from "@/lib/seo"
 import "./globals.css"
 
@@ -85,7 +85,7 @@ export default function RootLayout({
       <body className={`${geist.className} ${geistMono.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
-          <Toaster position="bottom-right" richColors />
+          <Toaster />
         </ThemeProvider>
         <Analytics />
       </body>

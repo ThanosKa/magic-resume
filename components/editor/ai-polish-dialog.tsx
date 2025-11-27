@@ -4,6 +4,7 @@ import { useState, useCallback } from "react"
 import { Sparkles, RefreshCw, Check, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useToast } from "@/components/hooks/use-toast"
 
 interface AiPolishDialogProps {
   open: boolean
@@ -15,11 +16,14 @@ interface AiPolishDialogProps {
 export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }: AiPolishDialogProps) {
   const [polishedContent, setPolishedContent] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const { toast } = useToast()
 
   const polish = useCallback(
     async () => {
       setIsLoading(true)
       setPolishedContent("")
+      setError(null)
 
       try {
         const response = await fetch("/api/polish", {
@@ -41,11 +45,19 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
         }
 
         setPolishedContent(polished)
+        toast({ title: "Polished content ready to review" })
       } catch (error) {
         console.error("Polish error:", error)
-        setPolishedContent(
-          "Error: Failed to polish content. Please verify the server OpenRouter API key configuration and try again.",
-        )
+        const message =
+          error instanceof Error && error.message
+            ? error.message
+            : "Failed to polish content. Please try again in a moment."
+        setError(message)
+        toast({
+          variant: "destructive",
+          title: "Polish failed",
+          description: message,
+        })
       } finally {
         setIsLoading(false)
       }
@@ -61,11 +73,13 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
     onApply(polishedContent)
     onOpenChange(false)
     setPolishedContent("")
+    setError(null)
   }
 
   const handleClose = () => {
     onOpenChange(false)
     setPolishedContent("")
+    setError(null)
   }
 
   return (
@@ -98,6 +112,8 @@ export function AiPolishDialog({ open, onOpenChange, originalContent, onApply }:
                 )}
                 {polishedContent ? (
                   <div dangerouslySetInnerHTML={{ __html: polishedContent }} />
+                ) : error ? (
+                  <p className="text-destructive">{error}</p>
                 ) : !isLoading ? (
                   <p className="text-muted-foreground">Click the Polish button to enhance your content with AI</p>
                 ) : null}

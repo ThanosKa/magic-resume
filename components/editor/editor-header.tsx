@@ -10,7 +10,6 @@ import {
   Key,
 } from "lucide-react";
 import { useRef } from "react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -30,12 +29,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useToast } from "@/components/hooks/use-toast";
 import { useCVStore } from "@/store/cv-store";
 import type { CVData } from "@/types/cv";
 
 export function EditorHeader() {
   const { cv, setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const handleExportJSON = () => {
     const dataStr = JSON.stringify(cv, null, 2);
@@ -46,7 +47,7 @@ export function EditorHeader() {
     a.download = `${cv.title.replace(/\s+/g, "-").toLowerCase()}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("CV exported as JSON");
+    toast({ title: "CV exported as JSON" });
   };
 
   const handlePrint = () => {
@@ -69,9 +70,13 @@ export function EditorHeader() {
           throw new Error("Invalid CV data structure");
         }
         setCVData(data);
-        toast.success("CV imported successfully");
+        toast({ title: "CV imported successfully" });
       } catch {
-        toast.error("Failed to import CV. Invalid file format.");
+        toast({
+          variant: "destructive",
+          title: "Failed to import CV",
+          description: "Invalid file format.",
+        });
       }
     };
     reader.readAsText(file);

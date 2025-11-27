@@ -42,6 +42,16 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
     const { personalInfo, education, experience, projects, skills, sections } =
       cv;
 
+    const visibleExperience = experience.filter((item) => item.visible);
+    const visibleEducation = education.filter((item) => item.visible);
+    const visibleProjects = projects.filter((item) => item.visible);
+    const hasSkillsContent =
+      !!skills &&
+      skills
+        .replace(/<[^>]*>/g, "")
+        .replace(/&nbsp;/g, " ")
+        .trim().length > 0;
+
     const enabledSections = sections
       .filter((s) => s.enabled)
       .sort((a, b) => a.order - b.order);
@@ -61,141 +71,143 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
     const renderSection = (section: (typeof sections)[0]) => {
       switch (section.type) {
         case "experience":
+          if (visibleExperience.length === 0) return null;
+
           return (
             <div key={section.id} className="mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
-              <Separator className="mb-3 bg-black" />
+              <Separator className="my-4 h-[0.5px] w-full" />
               <div className="space-y-4">
-                {experience
-                  .filter((e) => e.visible)
-                  .map((exp) => (
-                    <div key={exp.id}>
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="font-bold text-black">
-                            {exp.company || "Company Name"}
-                          </h3>
-                          <p className="text-sm font-medium text-black">
-                            {exp.position || "Position"}
-                          </p>
-                        </div>
-                        <span className="text-sm font-medium text-black">
-                          {exp.startDate}
-                          {exp.startDate && exp.endDate && " – "}
-                          {exp.endDate}
-                        </span>
+                {visibleExperience.map((exp) => (
+                  <div key={exp.id}>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-bold text-black">
+                          {exp.company || "Company Name"}
+                        </h3>
+                        <p className="text-sm font-medium text-black">
+                          {exp.position || "Position"}
+                        </p>
                       </div>
-                      {exp.description && (
-                        <div
-                          className="cv-content mt-2 text-sm text-black"
-                          dangerouslySetInnerHTML={{ __html: exp.description }}
-                        />
-                      )}
+                      <span className="text-sm font-medium text-black">
+                        {exp.startDate}
+                        {exp.startDate && exp.endDate && " - "}
+                        {exp.endDate}
+                      </span>
                     </div>
-                  ))}
+                    {exp.description && (
+                      <div
+                        className="cv-content mt-2 text-sm text-black"
+                        dangerouslySetInnerHTML={{ __html: exp.description }}
+                      />
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           );
 
         case "education":
+          if (visibleEducation.length === 0) return null;
+
           return (
             <div key={section.id} className="mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
-              <Separator className="mb-3 bg-black" />
+              <Separator className="my-4 h-[0.5px] w-full" />
               <div className="space-y-4">
-                {education
-                  .filter((e) => e.visible)
-                  .map((edu) => (
-                    <div key={edu.id}>
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="font-bold text-black">
-                            {edu.institution || "Institution Name"}
-                          </h3>
-                          <p className="text-sm font-medium text-black">
-                            {edu.degree}
-                            {edu.degree && edu.field && " in "}
-                            {edu.field}
-                          </p>
-                        </div>
-                        <span className="text-sm font-medium text-black">
-                          {edu.startDate}
-                          {edu.startDate && edu.endDate && " – "}
-                          {edu.endDate}
-                        </span>
-                      </div>
-                      {edu.description && (
-                        <p className="mt-1 text-sm text-black">
-                          {edu.description}
+                {visibleEducation.map((edu) => (
+                  <div key={edu.id}>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-bold text-black">
+                          {edu.institution || "Institution Name"}
+                        </h3>
+                        <p className="text-sm font-medium text-black">
+                          {edu.degree}
+                          {edu.degree && edu.field && " in "}
+                          {edu.field}
                         </p>
-                      )}
+                      </div>
+                      <span className="text-sm font-medium text-black">
+                        {edu.startDate}
+                        {edu.startDate && edu.endDate && " - "}
+                        {edu.endDate}
+                      </span>
                     </div>
-                  ))}
+                    {edu.description && (
+                      <p className="mt-1 text-sm text-black">
+                        {edu.description}
+                      </p>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           );
 
         case "projects":
+          if (visibleProjects.length === 0) return null;
+
           return (
             <div key={section.id} className="mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
-              <Separator className="mb-3 bg-black" />
+              <Separator className="my-4 h-[0.5px] w-full" />
               <div className="space-y-4">
-                {projects
-                  .filter((p) => p.visible)
-                  .map((project) => (
-                    <div key={project.id}>
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-bold text-black">
-                            {project.name || "Project Name"}
-                          </h3>
-                          {project.link && (
-                            <a
-                              href={project.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-black hover:text-gray-600"
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                            </a>
-                          )}
-                        </div>
-                        <span className="text-sm font-medium text-black">
-                          {project.startDate}
-                          {project.startDate && project.endDate && " – "}
-                          {project.endDate}
-                        </span>
+                {visibleProjects.map((project) => (
+                  <div key={project.id}>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold text-black">
+                          {project.name || "Project Name"}
+                        </h3>
+                        {project.link && (
+                          <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-black hover:text-gray-600"
+                          >
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
                       </div>
-                      {project.role && (
-                        <p className="text-sm font-medium text-black">
-                          {project.role}
-                        </p>
-                      )}
-                      {project.description && (
-                        <p className="mt-1 text-sm text-black">
-                          {project.description}
-                        </p>
-                      )}
+                      <span className="text-sm font-medium text-black">
+                        {project.startDate}
+                        {project.startDate && project.endDate && " - "}
+                        {project.endDate}
+                      </span>
                     </div>
-                  ))}
+                    {project.role && (
+                      <p className="text-sm font-medium text-black">
+                        {project.role}
+                      </p>
+                    )}
+                    {project.description && (
+                      <p className="mt-1 text-sm text-black">
+                        {project.description}
+                      </p>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           );
 
         case "skills":
+          if (!hasSkillsContent) return null;
+
           return (
             <div key={section.id} className="mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
-              <Separator className="mb-3 bg-black" />
+              <Separator className="my-4 h-[0.5px] w-full" />
               {skills && (
                 <div
                   className="cv-content text-sm text-black"

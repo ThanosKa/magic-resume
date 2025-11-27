@@ -10,12 +10,7 @@
 [![Tiptap](https://img.shields.io/badge/Tiptap-^3-8a2be2)](https://tiptap.dev/)
 [![Zustand](https://img.shields.io/badge/Zustand-state-8a3ffc)](https://zustand-demo.pmnd.rs/)
 [![pnpm](https://img.shields.io/badge/pnpm-%F0%9F%8F%AF-orange)](https://pnpm.io/)
-[![Deploy to Vercel](https://img.shields.io/badge/Deploy-Vercel-000?logo=vercel)](#deployment)
-[![GitHub stars](https://img.shields.io/github/stars/ThanosKa/magic-resume?style=social)](https://github.com/ThanosKa/magic-resume/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/ThanosKa/magic-resume?style=social)](https://github.com/ThanosKa/magic-resume/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/ThanosKa/magic-resume)](https://github.com/ThanosKa/magic-resume/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/ThanosKa/magic-resume)](https://github.com/ThanosKa/magic-resume/pulls)
-[![Last commit](https://img.shields.io/github/last-commit/ThanosKa/magic-resume)](https://github.com/ThanosKa/magic-resume/commits)
+
 [![Twitter Follow](https://img.shields.io/twitter/follow/KazakisThanos?style=social)](https://x.com/KazakisThanos)
 
 <p>AI-assisted CV builder with live preview, AI polish, and one-click export to PDF or JSON.</p>

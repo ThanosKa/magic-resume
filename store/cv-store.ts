@@ -19,39 +19,31 @@ interface CVStore {
   activeSection: Section['type'] | null;
 
   updatePersonalInfo: (info: Partial<PersonalInfo>) => void;
-  updatePersonalInfo: (info: Partial<PersonalInfo>) => void;
   addSocialLink: (link?: Partial<SocialLink>) => void;
   updateSocialLink: (id: string, link: Partial<SocialLink>) => void;
   removeSocialLink: (id: string) => void;
 
   addEducation: (education?: Partial<Education>) => void;
-  addEducation: (education?: Partial<Education>) => void;
   updateEducation: (id: string, education: Partial<Education>) => void;
   removeEducation: (id: string) => void;
 
-  addExperience: (experience?: Partial<Experience>) => void;
   addExperience: (experience?: Partial<Experience>) => void;
   updateExperience: (id: string, experience: Partial<Experience>) => void;
   removeExperience: (id: string) => void;
 
   addProject: (project?: Partial<Project>) => void;
-  addProject: (project?: Partial<Project>) => void;
   updateProject: (id: string, project: Partial<Project>) => void;
   removeProject: (id: string) => void;
 
   updateSkills: (skills: string) => void;
-  updateSkills: (skills: string) => void;
 
-  updateSummary: (summary: string) => void;
   updateSummary: (summary: string) => void;
   clearSummary: () => void;
 
   toggleSection: (sectionId: string) => void;
-  toggleSection: (sectionId: string) => void;
   reorderSections: (sections: Section[]) => void;
   setActiveSection: (section: Section['type'] | null) => void;
 
-  setCVData: (cv: CVData) => void;
   setCVData: (cv: CVData) => void;
   reset: () => void;
 }

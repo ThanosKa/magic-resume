@@ -234,7 +234,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               </h2>
               <Separator className="mb-4 h-[0.5px] w-full" />
               <div className="space-y-4">
-                <p className="text-sm italic text-black">{summary}</p>
+                <p className="text-sm text-black">{summary}</p>
               </div>
             </div>
           );

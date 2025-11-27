@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -7,7 +8,8 @@ import { Separator } from "@/components/ui/separator"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AlignSelector } from "@/components/editor/align-selector"
 import { useCVStore } from "@/store/cv-store"
-import { Plus, Trash2, Linkedin, Github, Twitter, Globe, Link } from "lucide-react"
+import { Plus, Trash2, Linkedin, Github, Twitter, Globe, Link, Sparkles } from "lucide-react"
+import { AiPolishDialog } from "./ai-polish-dialog"
 
 const platformIcons = {
   linkedin: Linkedin,
@@ -28,6 +30,7 @@ const platformLabels = {
 export function PersonalInfoForm() {
   const { cv, updatePersonalInfo, addSocialLink, updateSocialLink, removeSocialLink } = useCVStore()
   const { personalInfo } = cv
+  const [showTitlePolish, setShowTitlePolish] = useState(false)
 
   const socialLinks = personalInfo.socialLinks ?? []
 
@@ -53,11 +56,23 @@ export function PersonalInfoForm() {
             onChange={(e) => updatePersonalInfo({ name: e.target.value })}
             placeholder="Full Name"
           />
-          <Input
-            value={personalInfo.title}
-            onChange={(e) => updatePersonalInfo({ title: e.target.value })}
-            placeholder="Professional Title"
-          />
+          <div className="flex gap-2">
+            <Input
+              value={personalInfo.title}
+              onChange={(e) => updatePersonalInfo({ title: e.target.value })}
+              placeholder="Professional Title"
+              className="flex-1"
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setShowTitlePolish(true)}
+              disabled={!personalInfo.title}
+              title="AI Polish Title"
+            >
+              <Sparkles className="h-4 w-4" />
+            </Button>
+          </div>
           <Input
             type="email"
             value={personalInfo.email}
@@ -146,6 +161,14 @@ export function PersonalInfoForm() {
           {socialLinks.length === 0 && <p className="text-sm text-muted-foreground">No social links added yet.</p>}
         </div>
       </div>
+
+      <AiPolishDialog
+        open={showTitlePolish}
+        onOpenChange={setShowTitlePolish}
+        originalContent={personalInfo.title}
+        onApply={(content) => updatePersonalInfo({ title: content })}
+        polishType="title"
+      />
     </div>
   )
 }

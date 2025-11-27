@@ -64,10 +64,7 @@ export function AiPolishDialog({
       });
     } catch (error) {
       console.error("Polish error:", error);
-      const message =
-        error instanceof Error && error.message
-          ? error.message
-          : "Failed to polish content. Please try again in a moment.";
+      const message = "Something went wrong. Please try again.";
       setError(message);
       toast({
         variant: "destructive",

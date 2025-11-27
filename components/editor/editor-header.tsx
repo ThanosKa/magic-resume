@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import { pdf } from "@react-pdf/renderer";
 import { FileText, Download, Upload, FilePlus, ChevronDown } from "lucide-react";
-import { useRef, type RefObject } from "react";
+import { useRef, useState, type RefObject } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,6 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { CVPDFDocument } from "@/components/editor/cv-pdf-document";
 import { useCVStore } from "@/store/cv-store";
 import type { CVData } from "@/types/cv";
 
@@ -34,6 +34,12 @@ interface EditorHeaderProps {
 export function EditorHeader({ previewRef }: EditorHeaderProps) {
   const { cv, setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isExportingPDF, setIsExportingPDF] = useState(false);
+
+  const safeTitle =
+    cv.title && cv.title.trim().length > 0
+      ? cv.title.replace(/\s+/g, "-").toLowerCase()
+      : "cv";
 
   const handleExportJSON = () => {
     const dataStr = JSON.stringify(cv, null, 2);
@@ -41,56 +47,35 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${cv.title.replace(/\s+/g, "-").toLowerCase()}.json`;
+    a.download = `${safeTitle}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
   const handlePrint = () => {
+    if (!previewRef.current) {
+      window.print();
+      return;
+    }
     window.print();
   };
 
   const handleExportPDF = async () => {
-    if (!previewRef.current) {
-      return;
-    }
+    if (isExportingPDF) return;
 
     try {
-      const canvas = await html2canvas(previewRef.current, {
-        scale: 2,
-        useCORS: true,
-      });
-
-      const imageData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-      });
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const imageWidth = pageWidth;
-      const imageHeight = (canvas.height * imageWidth) / canvas.width;
-      let heightLeft = imageHeight;
-      let position = 0;
-
-      pdf.addImage(imageData, "PNG", 0, position, imageWidth, imageHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft > 0) {
-        position = heightLeft - imageHeight;
-        pdf.addPage();
-        pdf.addImage(imageData, "PNG", 0, position, imageWidth, imageHeight);
-        heightLeft -= pageHeight;
-      }
-
-      const safeTitle =
-        cv.title && cv.title.trim().length > 0
-          ? cv.title.replace(/\s+/g, "-").toLowerCase()
-          : "cv";
-      pdf.save(`${safeTitle}.pdf`);
-    } catch {
-      console.error("PDF export failed");
+      setIsExportingPDF(true);
+      const blob = await pdf(<CVPDFDocument cv={cv} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${safeTitle}.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("PDF export failed", error);
+    } finally {
+      setIsExportingPDF(false);
     }
   };
 

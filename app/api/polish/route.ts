@@ -1,7 +1,6 @@
 import { logger } from '../logger';
 
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
-// const MODEL = "openai/gpt-4o-mini";
 const MODEL = 'x-ai/grok-4.1-fast:free';
 
 type PolishType = 'title' | 'summary' | 'description';
@@ -73,7 +72,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Get the appropriate prompt for the polish type
     const prompt = POLISH_PROMPTS[polishType] || POLISH_PROMPTS.description;
 
     logger.info(

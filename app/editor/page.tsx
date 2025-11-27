@@ -39,7 +39,6 @@ export default function EditorPage() {
     <div className="flex min-h-screen flex-col">
       <EditorHeader previewRef={previewRef} />
       <div className="flex flex-1 flex-col lg:flex-row">
-        {/* Editor Panel */}
         <div className="w-full border-r border-border bg-muted/30 lg:w-[400px] xl:w-[450px] print:hidden">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
             <SectionTabs />
@@ -47,15 +46,13 @@ export default function EditorPage() {
           </div>
         </div>
 
-        {/* Preview Panel */}
         <div className="flex-1 bg-muted/50 p-4 lg:p-8 print:bg-transparent print:p-0">
           <div className="cv-preview-container mx-auto max-w-4xl print:max-w-none">
             <CVPreview ref={previewRef} cv={cv} />
           </div>
         </div>
-      </div>
+        </div>
 
-      {/* Print Styles */}
       <style>{`
         @page {
           size: A4;

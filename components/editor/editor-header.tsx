@@ -78,18 +78,18 @@ const buildExportHTML = async (previewEl: HTMLElement) => {
     .join('\n');
 
   const externalStyles = await Promise.all(
-    Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')).map(
-      async (link) => {
-        if (!link.href) return '';
-        try {
-          const response = await fetch(link.href);
-          if (!response.ok) return '';
-          return await response.text();
-        } catch (error) {
-          return '';
-        }
+    Array.from(
+      document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')
+    ).map(async (link) => {
+      if (!link.href) return '';
+      try {
+        const response = await fetch(link.href);
+        if (!response.ok) return '';
+        return await response.text();
+      } catch (_) {
+        return '';
       }
-    )
+    })
   );
 
   const styles = [inlineStyles, ...externalStyles, PRINT_STYLES]
@@ -183,7 +183,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
       link.download = `${safeTitle}.pdf`;
       link.click();
       URL.revokeObjectURL(url);
-    } catch (error) {
+    } catch (_) {
       toast({
         variant: 'destructive',
         title: 'PDF export failed',

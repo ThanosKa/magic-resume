@@ -261,7 +261,6 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
         }}
       >
         <div className="p-8">
-          {/* Header - with Framer Motion alignment support */}
           <motion.div layout="position" className={cn('mb-6', alignmentClass)}>
             <motion.h1
               layout="position"
@@ -278,10 +277,8 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               </motion.p>
             )}
 
-            {/* Contact info - Split layout for left/right alignment */}
             {personalInfo.headerAlign === 'center' ? (
               <>
-                {/* Center alignment - single row */}
                 <motion.div
                   layout="position"
                   className={cn(
@@ -324,7 +321,6 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                   )}
                 </motion.div>
 
-                {/* Social Links - Center alignment */}
                 {personalInfo.socialLinks &&
                   personalInfo.socialLinks.length > 0 && (
                     <motion.div
@@ -357,16 +353,13 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                   )}
               </>
             ) : (
-              /* Left/Right alignment - split layout */
               <motion.div
                 layout="position"
                 className="mt-3 flex justify-between items-start text-sm text-black"
               >
-                {/* Left column */}
                 <div className="flex flex-col gap-2">
                   {personalInfo.headerAlign === 'left' ? (
                     <>
-                      {/* Left alignment: Email and Phone on left */}
                       {personalInfo.email && (
                         <motion.span
                           key="email"
@@ -392,7 +385,6 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     </>
                   ) : (
                     <>
-                      {/* Right alignment: Location and Social Links on left */}
                       {personalInfo.location && (
                         <motion.span
                           key="location"
@@ -404,7 +396,6 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                           {personalInfo.location}
                         </motion.span>
                       )}
-                      {/* Social Links in left column for right alignment */}
                       {personalInfo.socialLinks &&
                         personalInfo.socialLinks.length > 0 && (
                           <div className="flex flex-wrap items-center gap-2">
@@ -435,11 +426,9 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                   )}
                 </div>
 
-                {/* Right column */}
                 <div className="flex flex-col gap-2">
                   {personalInfo.headerAlign === 'left' ? (
                     <>
-                      {/* Left alignment: Location and Social Links on right */}
                       {personalInfo.location && (
                         <motion.span
                           key="location"
@@ -451,7 +440,6 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                           {personalInfo.location}
                         </motion.span>
                       )}
-                      {/* Social Links in right column for left alignment */}
                       {personalInfo.socialLinks &&
                         personalInfo.socialLinks.length > 0 && (
                           <div className="flex flex-wrap items-center gap-2">
@@ -481,7 +469,6 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     </>
                   ) : (
                     <>
-                      {/* Right alignment: Email and Phone on right */}
                       {personalInfo.email && (
                         <motion.span
                           key="email"
@@ -511,7 +498,6 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
             )}
           </motion.div>
 
-          {/* Sections */}
           {enabledSections.map(renderSection)}
         </div>
       </div>

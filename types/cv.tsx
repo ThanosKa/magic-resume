@@ -1,5 +1,3 @@
-// CV Builder TypeScript Type Definitions
-
 export interface SocialLink {
   id: string;
   platform: 'linkedin' | 'github' | 'twitter' | 'portfolio' | 'other';
@@ -36,7 +34,7 @@ export interface Experience {
   position: string;
   startDate: string;
   endDate: string;
-  description: string; // HTML string for rich text
+  description: string;
   visible: boolean;
 }
 
@@ -65,20 +63,18 @@ export interface CVData {
   createdAt: string;
   updatedAt: string;
   personalInfo: PersonalInfo;
-  summary: string; // Professional summary/profile
+  summary: string;
   education: Education[];
   experience: Experience[];
   projects: Project[];
-  skills: string; // HTML string for rich text
+  skills: string;
   sections: Section[];
 }
 
-// Helper function to generate unique IDs
 export function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-// Default/Sample CV Data
 export const defaultCVData: CVData = {
   id: generateId(),
   title: 'My Professional CV',

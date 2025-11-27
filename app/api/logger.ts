@@ -9,14 +9,13 @@ export const logger = pino({
     level: (label) => ({ level: label }),
   },
   timestamp: pino.stdTimeFunctions.isoTime,
-  // Correctly configure the transport for pretty printing in development
   transport: isDev
     ? {
         target: 'pino-pretty',
         options: {
           colorize: true,
-          ignore: 'pid,hostname', // Optional: removes noise from the log line
+          ignore: 'pid,hostname',
         },
       }
-    : undefined, // Use default JSON logging in production
+    : undefined,
 });

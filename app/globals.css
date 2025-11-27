@@ -3,7 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Added smooth scroll behavior */
 html {
   scroll-behavior: smooth;
 }
@@ -129,7 +128,6 @@ html {
   }
 }
 
-/* Added shimmer animation for AnimatedShinyText */
 @keyframes shimmer {
   0%,
   90%,
@@ -146,7 +144,6 @@ html {
   animation: shimmer 8s infinite;
 }
 
-/* CV Preview Content Styles */
 .cv-content ul {
   list-style-type: disc;
   padding-left: 1.5rem;
@@ -157,7 +154,6 @@ html {
   margin-bottom: 0.25rem;
 }
 
-/* Added Tiptap editor styles */
 .ProseMirror {
   outline: none;
 }
@@ -188,7 +184,6 @@ html {
   height: 0;
 }
 
-/* Print Styles */
 @media print {
   body * {
     visibility: hidden;

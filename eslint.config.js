@@ -36,10 +36,13 @@ export default [
       ...react.configs.recommended.rules,
       ...typescriptEslint.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off', // Disable prop-types for TypeScript projects
+      'react/prop-types': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { argsIgnorePattern: '^_' },
+        {
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
     },

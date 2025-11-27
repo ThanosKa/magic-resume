@@ -62,7 +62,6 @@ export function RichTextEditor({
     immediatelyRender: false,
   });
 
-  // Sync external content changes
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
       editor.commands.setContent(content || '');
@@ -73,7 +72,6 @@ export function RichTextEditor({
 
   return (
     <div className="space-y-2">
-      {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-1 rounded-md border border-input bg-muted/50 p-1">
         <Button
           type="button"
@@ -160,7 +158,6 @@ export function RichTextEditor({
         </Button>
       </div>
 
-      {/* Editor */}
       <EditorContent editor={editor} />
     </div>
   );

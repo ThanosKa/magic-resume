@@ -60,7 +60,6 @@ export function PersonalInfoForm() {
 
   return (
     <div className="space-y-6">
-      {/* Align Section */}
       <div className="space-y-3">
         <Label className="text-sm font-medium">Header Alignment</Label>
         <AlignSelector
@@ -71,7 +70,6 @@ export function PersonalInfoForm() {
 
       <Separator />
 
-      {/* Basic Info */}
       <div className="space-y-4">
         <Label className="text-sm font-medium">Basic Information</Label>
         <div className="space-y-3">
@@ -121,7 +119,6 @@ export function PersonalInfoForm() {
 
       <Separator />
 
-      {/* Professional Summary */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <Label className="text-sm font-medium">Professional Summary</Label>
@@ -163,7 +160,6 @@ export function PersonalInfoForm() {
 
       <Separator />
 
-      {/* Social Links */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <Label className="text-sm font-medium">Social Links</Label>

@@ -62,7 +62,7 @@ export function AiPolishDialog({
         title: 'AI polish complete',
         description: 'Review the suggested improvements before applying.',
       });
-    } catch (error) {
+    } catch (_) {
       const message = 'Something went wrong. Please try again.';
       setError(message);
       toast({

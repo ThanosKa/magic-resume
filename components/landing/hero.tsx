@@ -11,7 +11,6 @@ import { cn } from '@/lib/utils';
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* Background gradient */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-muted via-background to-background" />
 
       <div className="container mx-auto max-w-6xl px-4 py-24 md:py-32 lg:py-40">
@@ -37,7 +36,6 @@ export function Hero() {
             </Link>
           </motion.div>
 
-          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -50,7 +48,6 @@ export function Hero() {
             </span>
           </motion.h1>
 
-          {/* Subheading */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -62,7 +59,6 @@ export function Hero() {
             anywhere.
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -85,7 +81,6 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          {/* Preview mockup */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -95,7 +90,6 @@ export function Hero() {
             <div className="relative rounded-xl border border-border bg-muted/30 p-2 shadow-2xl">
               <div className="aspect-[16/10] overflow-hidden rounded-lg border border-border bg-background">
                 <div className="flex h-full">
-                  {/* Editor mockup */}
                   <div className="w-2/5 border-r border-border bg-muted/50 p-4">
                     <div className="space-y-3">
                       <div className="h-3 w-1/2 rounded bg-foreground/10" />
@@ -105,7 +99,6 @@ export function Hero() {
                       <div className="h-20 w-full rounded bg-foreground/5" />
                     </div>
                   </div>
-                  {/* Preview mockup */}
                   <div className="flex-1 bg-white p-6 dark:bg-white">
                     <div className="space-y-4">
                       <div className="h-6 w-1/3 rounded bg-gray-200" />

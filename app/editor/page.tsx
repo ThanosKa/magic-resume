@@ -14,7 +14,7 @@ import { SkillsForm } from '@/components/editor/skills-form';
 
 export default function EditorPage() {
   const { cv, activeSection } = useCVStore();
-  const previewRef = useRef<HTMLDivElement>(null);
+  const previewRef = useRef<HTMLDivElement | null>(null);
 
   const renderForm = () => {
     switch (activeSection) {
@@ -57,7 +57,29 @@ export default function EditorPage() {
 
       {/* Print Styles */}
       <style>{`
+        @page {
+          size: A4;
+          margin: 16mm;
+        }
+        #cv-preview {
+          box-shadow: none;
+        }
+        .cv-content ul {
+          list-style-type: disc;
+          padding-left: 1.5rem;
+          margin-top: 0.25rem;
+        }
+        .cv-content li {
+          margin-bottom: 0.25rem;
+        }
         @media print {
+          * {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          body {
+            background: white;
+          }
           body * {
             visibility: hidden;
           }
@@ -71,14 +93,14 @@ export default function EditorPage() {
             top: 0;
             width: 100%;
           }
-        }
-        .cv-content ul {
-          list-style-type: disc;
-          padding-left: 1.5rem;
-          margin-top: 0.25rem;
-        }
-        .cv-content li {
-          margin-bottom: 0.25rem;
+          .cv-section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+          a {
+            color: #2563eb;
+            text-decoration: underline;
+          }
         }
       `}</style>
     </div>

@@ -82,7 +82,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
           if (visibleExperience.length === 0) return null;
 
           return (
-            <div key={section.id} className="mb-5">
+            <div key={section.id} className="cv-section mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
@@ -121,7 +121,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
           if (visibleEducation.length === 0) return null;
 
           return (
-            <div key={section.id} className="mb-5">
+            <div key={section.id} className="cv-section mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
@@ -162,7 +162,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
           if (visibleProjects.length === 0) return null;
 
           return (
-            <div key={section.id} className="mb-5">
+            <div key={section.id} className="cv-section mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
@@ -215,7 +215,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
           if (!hasSkillsContent) return null;
 
           return (
-            <div key={section.id} className="mb-5">
+            <div key={section.id} className="cv-section mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
@@ -235,7 +235,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
           if (!hasSummaryContent) return null;
 
           return (
-            <div key={section.id} className="mb-5">
+            <div key={section.id} className="cv-section mb-5">
               <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
                 {section.title}
               </h2>
@@ -253,6 +253,7 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
 
     return (
       <div
+        id="cv-preview"
         ref={ref}
         className="mx-auto aspect-[1/1.414] w-full max-w-[210mm] origin-top bg-white text-black shadow-lg"
         style={{

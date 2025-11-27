@@ -93,16 +93,16 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               <div className="space-y-4">
                 {visibleExperience.map((exp) => (
                   <div key={exp.id}>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="font-bold text-black">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="break-words font-bold text-black">
                           {exp.company || 'Company Name'}
                         </h3>
-                        <p className="text-sm font-medium text-black">
+                        <p className="break-words text-sm font-medium text-black">
                           {exp.position || 'Position'}
                         </p>
                       </div>
-                      <span className="text-sm font-medium text-black">
+                      <span className="shrink-0 whitespace-nowrap text-sm font-medium text-black">
                         {exp.startDate}
                         {exp.startDate && exp.endDate && ' - '}
                         {exp.endDate}
@@ -132,18 +132,18 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               <div className="space-y-4">
                 {visibleEducation.map((edu) => (
                   <div key={edu.id}>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="font-bold text-black">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="break-words font-bold text-black">
                           {edu.institution || 'Institution Name'}
                         </h3>
-                        <p className="text-sm font-medium text-black">
+                        <p className="break-words text-sm font-medium text-black">
                           {edu.degree}
                           {edu.degree && edu.field && ' in '}
                           {edu.field}
                         </p>
                       </div>
-                      <span className="text-sm font-medium text-black">
+                      <span className="shrink-0 whitespace-nowrap text-sm font-medium text-black">
                         {edu.startDate}
                         {edu.startDate && edu.endDate && ' - '}
                         {edu.endDate}
@@ -173,9 +173,9 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               <div className="space-y-4">
                 {visibleProjects.map((project) => (
                   <div key={project.id}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-bold text-black">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex min-w-0 flex-1 items-center gap-2">
+                        <h3 className="break-words font-bold text-black">
                           {project.name || 'Project Name'}
                         </h3>
                         {project.link && (
@@ -183,13 +183,13 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                             href={project.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-black hover:text-gray-600"
+                            className="shrink-0 text-black hover:text-gray-600"
                           >
                             <ExternalLink className="h-3 w-3" />
                           </a>
                         )}
                       </div>
-                      <span className="text-sm font-medium text-black">
+                      <span className="shrink-0 whitespace-nowrap text-sm font-medium text-black">
                         {project.startDate}
                         {project.startDate && project.endDate && ' - '}
                         {project.endDate}

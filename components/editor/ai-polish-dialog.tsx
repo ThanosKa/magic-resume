@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { Sparkles, RefreshCw, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import {
   Dialog,
   DialogContent,
@@ -126,7 +127,7 @@ export function AiPolishDialog({
               <div className="min-h-[200px] max-h-[400px] overflow-auto rounded-md border bg-muted/50 p-3 text-sm">
                 {isLoading && !polishedContent && (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <RefreshCw className="h-4 w-4 animate-spin" />
+                    <Spinner className="h-4 w-4" />
                     {polishType === 'title'
                       ? 'Optimizing your professional title...'
                       : polishType === 'summary'
@@ -159,7 +160,7 @@ export function AiPolishDialog({
             >
               {isLoading ? (
                 <>
-                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                  <Spinner className="mr-2 h-4 w-4" />
                   Polishing...
                 </>
               ) : polishedContent ? (

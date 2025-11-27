@@ -7,7 +7,7 @@ const nextConfig = {
     unoptimized: true,
   },
   // Add 'pino' and 'pino-pretty' to serverExternalPackages (moved from experimental in Next.js 16)
-  serverExternalPackages: ['pino', 'pino-pretty'],
+  serverExternalPackages: ['pino', 'pino-pretty', '@sparticuz/chromium'],
 };
 
 export default nextConfig;

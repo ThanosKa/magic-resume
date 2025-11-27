@@ -17,13 +17,16 @@ interface AiPolishDialogProps {
   onOpenChange: (open: boolean) => void;
   originalContent: string;
   onApply: (content: string) => void;
+  polishType?: "title" | "summary" | "description";
 }
+
 
 export function AiPolishDialog({
   open,
   onOpenChange,
   originalContent,
   onApply,
+  polishType = "description",
 }: AiPolishDialogProps) {
   const [polishedContent, setPolishedContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +42,7 @@ export function AiPolishDialog({
       const response = await fetch("/api/polish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: originalContent }),
+        body: JSON.stringify({ content: originalContent, polishType }),
       });
 
       if (!response.ok) {
@@ -74,7 +77,7 @@ export function AiPolishDialog({
     } finally {
       setIsLoading(false);
     }
-  }, [originalContent]);
+  }, [originalContent, polishType]);
 
   const handlePolish = useCallback(() => {
     polish();
@@ -100,7 +103,11 @@ export function AiPolishDialog({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Sparkles className="h-5 w-5" />
-              AI Polish
+              {polishType === "title"
+                ? "Polish Professional Title"
+                : polishType === "summary"
+                  ? "Polish Professional Summary"
+                  : "AI Polish"}
             </DialogTitle>
           </DialogHeader>
 
@@ -124,7 +131,11 @@ export function AiPolishDialog({
                 {isLoading && !polishedContent && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <RefreshCw className="h-4 w-4 animate-spin" />
-                    Polishing...
+                    {polishType === "title"
+                      ? "Optimizing your professional title..."
+                      : polishType === "summary"
+                        ? "Crafting a compelling summary..."
+                        : "Polishing..."}
                   </div>
                 )}
                 {polishedContent ? (
@@ -133,7 +144,11 @@ export function AiPolishDialog({
                   <p className="text-destructive">{error}</p>
                 ) : !isLoading ? (
                   <p className="text-muted-foreground">
-                    Click the Polish button to enhance your content with AI
+                    {polishType === "title"
+                      ? "Click the Polish button to optimize your professional title"
+                      : polishType === "summary"
+                        ? "Click the Polish button to create a compelling professional summary"
+                        : "Click the Polish button to enhance your content with AI"}
                   </p>
                 ) : null}
               </div>

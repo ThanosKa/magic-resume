@@ -39,16 +39,19 @@ const platformLabels: Record<keyof typeof platformIcons, string> = {
 
 export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
   ({ cv }, ref) => {
-    const { personalInfo, education, experience, projects, skills, sections } =
+    const { personalInfo, summary, education, experience, projects, skills, sections } =
       cv;
 
     const visibleExperience = experience.filter((item) => item.visible);
     const visibleEducation = education.filter((item) => item.visible);
     const visibleProjects = projects.filter((item) => item.visible);
+    const hasSummaryContent =
+      !!summary &&
+      summary.trim().length > 0;
     const hasSkillsContent =
       !!skills &&
       skills
-        .replace(/<[^>]*>/g, "")
+        .replace(/<[^\u003e]*\u003e/g, "")
         .replace(/&nbsp;/g, " ")
         .trim().length > 0;
 
@@ -217,6 +220,21 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                     dangerouslySetInnerHTML={{ __html: skills }}
                   />
                 )}
+              </div>
+            </div>
+          );
+
+        case "summary":
+          if (!hasSummaryContent) return null;
+
+          return (
+            <div key={section.id} className="mb-5">
+              <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-black">
+                {section.title}
+              </h2>
+              <Separator className="mb-4 h-[0.5px] w-full" />
+              <div className="space-y-4">
+                <p className="text-sm italic text-black">{summary}</p>
               </div>
             </div>
           );

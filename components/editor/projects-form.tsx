@@ -149,6 +149,7 @@ export function ProjectsForm() {
             updateProject(polishingId, { description: content })
           }
         }}
+        polishType="description"
       />
     </div>
   )

@@ -42,6 +42,9 @@ interface CVStore {
   // Skills
   updateSkills: (skills: string) => void
 
+  // Summary
+  updateSummary: (summary: string) => void
+
   // Sections
   toggleSection: (sectionId: string) => void
   reorderSections: (sections: Section[]) => void
@@ -234,6 +237,15 @@ export const useCVStore = create<CVStore>()(
           cv: {
             ...state.cv,
             skills,
+            updatedAt: new Date().toISOString(),
+          },
+        })),
+
+      updateSummary: (summary) =>
+        set((state) => ({
+          cv: {
+            ...state.cv,
+            summary,
             updatedAt: new Date().toISOString(),
           },
         })),

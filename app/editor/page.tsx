@@ -6,6 +6,7 @@ import { CVPreview } from "@/components/editor/cv-preview"
 import { EditorHeader } from "@/components/editor/editor-header"
 import { SectionTabs } from "@/components/editor/section-tabs"
 import { PersonalInfoForm } from "@/components/editor/personal-info-form"
+import { SummaryForm } from "@/components/editor/summary-form"
 import { ExperienceForm } from "@/components/editor/experience-form"
 import { EducationForm } from "@/components/editor/education-form"
 import { ProjectsForm } from "@/components/editor/projects-form"
@@ -19,6 +20,8 @@ export default function EditorPage() {
     switch (activeSection) {
       case null:
         return <PersonalInfoForm />
+      case "summary":
+        return <SummaryForm />
       case "experience":
         return <ExperienceForm />
       case "education":
@@ -34,8 +37,7 @@ export default function EditorPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <EditorHeader />
-
+      <EditorHeader previewRef={previewRef} />
       <div className="flex flex-1 flex-col lg:flex-row">
         {/* Editor Panel */}
         <div className="w-full border-r border-border bg-muted/30 lg:w-[400px] xl:w-[450px] print:hidden">

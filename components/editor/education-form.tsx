@@ -146,6 +146,7 @@ export function EducationForm() {
             updateEducation(polishingId, { description: content })
           }
         }}
+        polishType="description"
       />
     </div>
   )

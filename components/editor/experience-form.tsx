@@ -140,6 +140,7 @@ export function ExperienceForm() {
             updateExperience(polishingId, { description: content })
           }
         }}
+        polishType="description"
       />
     </div>
   )

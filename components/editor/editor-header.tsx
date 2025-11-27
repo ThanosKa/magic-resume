@@ -1,15 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import {
-  FileText,
-  Download,
-  Upload,
-  FilePlus,
-  ChevronDown,
-  Key,
-} from "lucide-react";
-import { useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { FileText, Download, Upload, FilePlus, ChevronDown } from "lucide-react";
+import { useRef, type RefObject } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -29,14 +24,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useToast } from "@/components/hooks/use-toast";
 import { useCVStore } from "@/store/cv-store";
 import type { CVData } from "@/types/cv";
 
-export function EditorHeader() {
+interface EditorHeaderProps {
+  previewRef: RefObject<HTMLDivElement>;
+}
+
+export function EditorHeader({ previewRef }: EditorHeaderProps) {
   const { cv, setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
 
   const handleExportJSON = () => {
     const dataStr = JSON.stringify(cv, null, 2);
@@ -47,14 +44,54 @@ export function EditorHeader() {
     a.download = `${cv.title.replace(/\s+/g, "-").toLowerCase()}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    toast({
-      title: "Export started",
-      description: "Your CV JSON download is on the way.",
-    });
   };
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleExportPDF = async () => {
+    if (!previewRef.current) {
+      return;
+    }
+
+    try {
+      const canvas = await html2canvas(previewRef.current, {
+        scale: 2,
+        useCORS: true,
+      });
+
+      const imageData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imageWidth = pageWidth;
+      const imageHeight = (canvas.height * imageWidth) / canvas.width;
+      let heightLeft = imageHeight;
+      let position = 0;
+
+      pdf.addImage(imageData, "PNG", 0, position, imageWidth, imageHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imageHeight;
+        pdf.addPage();
+        pdf.addImage(imageData, "PNG", 0, position, imageWidth, imageHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const safeTitle =
+        cv.title && cv.title.trim().length > 0
+          ? cv.title.replace(/\s+/g, "-").toLowerCase()
+          : "cv";
+      pdf.save(`${safeTitle}.pdf`);
+    } catch {
+      console.error("PDF export failed");
+    }
   };
 
   const handleImportClick = () => {
@@ -73,16 +110,8 @@ export function EditorHeader() {
           throw new Error("Invalid CV data structure");
         }
         setCVData(data);
-        toast({
-          title: "CV imported",
-          description: "Your saved data has been loaded into the editor.",
-        });
       } catch {
-        toast({
-          variant: "destructive",
-          title: "Failed to import CV",
-          description: "The file format looks invalid. Try another export.",
-        });
+        console.error("Failed to import CV");
       }
     };
     reader.readAsText(file);
@@ -123,9 +152,10 @@ export function EditorHeader() {
               <DropdownMenuItem onClick={handleExportJSON}>
                 Export as JSON
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handlePrint}>
-                Print / Save as PDF
+              <DropdownMenuItem onClick={handleExportPDF}>
+                Export as PDF
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={handlePrint}>Print</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -152,16 +182,6 @@ export function EditorHeader() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9"
-            disabled
-            title="API key is managed on the server"
-          >
-            <Key className="h-4 w-4" />
-          </Button>
 
           <ThemeToggle />
         </div>

@@ -53,7 +53,7 @@ export interface Project {
 
 export interface Section {
   id: string
-  type: "experience" | "education" | "projects" | "skills"
+  type: "experience" | "education" | "projects" | "skills" | "summary"
   title: string
   enabled: boolean
   order: number
@@ -65,6 +65,7 @@ export interface CVData {
   createdAt: string
   updatedAt: string
   personalInfo: PersonalInfo
+  summary: string // Professional summary/profile
   education: Education[]
   experience: Experience[]
   projects: Project[]
@@ -96,6 +97,8 @@ export const defaultCVData: CVData = {
       { id: generateId(), platform: "github", url: "https://github.com/janedoe" },
     ],
   },
+  summary:
+    "Passionate frontend developer with 8+ years of experience building scalable web applications. Specialized in React, TypeScript, and modern web technologies. Proven track record of leading teams and delivering high-impact projects that serve millions of users.",
   education: [
     {
       id: generateId(),
@@ -177,9 +180,10 @@ export const defaultCVData: CVData = {
     <li><strong>Concepts:</strong> Agile, CI/CD, Design Systems, Accessibility</li>
   </ul>`,
   sections: [
-    { id: generateId(), type: "experience", title: "Experience", enabled: true, order: 0 },
-    { id: generateId(), type: "education", title: "Education", enabled: true, order: 1 },
-    { id: generateId(), type: "projects", title: "Projects", enabled: true, order: 2 },
-    { id: generateId(), type: "skills", title: "Skills", enabled: true, order: 3 },
+    { id: generateId(), type: "summary", title: "Professional Summary", enabled: true, order: 0 },
+    { id: generateId(), type: "experience", title: "Experience", enabled: true, order: 1 },
+    { id: generateId(), type: "education", title: "Education", enabled: true, order: 2 },
+    { id: generateId(), type: "projects", title: "Projects", enabled: true, order: 3 },
+    { id: generateId(), type: "skills", title: "Skills", enabled: true, order: 4 },
   ],
 }

@@ -6,6 +6,7 @@ node_modules
 .next
 out
 .vercel
+next-env.d.ts
 
 # Env files
 .env.local

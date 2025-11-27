@@ -227,8 +227,8 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur print:hidden">
       <div className="flex h-14 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <FileText className="h-5 w-5" />
-          <span className="font-semibold">CV Builder</span>
+          <img src="/icon.svg" alt="Magic Resume Logo" className="h-6 w-6" />
+          <span className="font-semibold">Magic Resume</span>
         </Link>
 
         <div className="flex items-center gap-2">

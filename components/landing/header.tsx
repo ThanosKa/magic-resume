@@ -16,9 +16,9 @@ export function Header() {
     >
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <FileText className="h-6 w-6 text-foreground" />
+          <img src="/icon.svg" alt="Magic Resume Logo" className="h-8 w-8" />
           <span className="text-xl font-semibold tracking-tight">
-            CV Builder
+            Magic Resume
           </span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">

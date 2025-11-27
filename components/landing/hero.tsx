@@ -14,7 +14,7 @@ export function Hero() {
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-muted via-background to-background" />
 
-      <div className="container mx-auto max-w-6xl px-4 py-24 md:py-32 lg:py-40">
+      <div className="container mx-auto max-w-6xl px-4 py-12 md:py-16 lg:py-20">
         <div className="flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

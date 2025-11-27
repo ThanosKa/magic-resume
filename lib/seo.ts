@@ -1,4 +1,4 @@
-const FALLBACK_SITE_URL = 'https://magic-resume.app';
+const FALLBACK_SITE_URL = 'https://magik-resume.dev';
 
 const resolvedSiteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/+$/, '') ||
@@ -28,6 +28,23 @@ export const siteMetadata = {
     'PDF resume',
     'cover letter',
     'curriculum vitae',
+    'free resume builder',
+    'AI resume writer',
+    'professional resume maker',
+    'resume creator online',
+    'CV maker with AI',
+    'build resume fast',
+    'create CV quickly',
+    'resume writing help',
+    'professional CV template',
+    'resume with live preview',
+    'AI-powered resume',
+    'export resume to PDF',
+    'resume editor online',
+    'curriculum vitae builder',
+    'résumé builder',
+    'CV creator',
+    'job application resume',
   ],
   ogImage: '/og-image.png',
 };

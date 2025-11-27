@@ -173,6 +173,6 @@ Your support helps keep the project maintained and allows me to work on new feat
 
 ## License
 
-This project is licensed under the Creative Commons Attribution-NonCommercial 2.0 Generic License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU Affero General Public License v3.0. See the [LICENSE](LICENSE) file for details.
 
 **Note:** Commercial use requires explicit permission from the author. For commercial licensing inquiries, please open an issue or contact the maintainer.

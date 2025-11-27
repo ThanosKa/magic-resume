@@ -157,9 +157,19 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ![Contributors](https://img.shields.io/github/contributors/ThanosKa/magic-resume)
 ![Activity](https://img.shields.io/github/commit-activity/m/ThanosKa/magic-resume)
 
-### Contribution Graph
+### Contributors
 
-![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=ThanosKa&repo=magic-resume&theme=github-compact)
+<a href="https://github.com/ThanosKa/magic-resume/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ThanosKa/magic-resume" />
+</a>
+
+## Sponsor this Project
+
+If you find Magic Resume helpful and would like to support its development, consider buying me a coffee! ☕
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-F16061?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white)](https://buymeacoffee.com/thaka)
+
+Your support helps keep the project maintained and allows me to work on new features. Thank you! 🙏
 
 ## License
 

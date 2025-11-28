@@ -77,6 +77,7 @@ pnpm seo-check # Basic SEO sanity checks
 ```
 
 PDF generation requirements:
+
 - Nothing extra needed for local dev—Puppeteer uses your installed Chrome/Chromium.
 - In serverless deploys, a bundled headless Chromium is included via `@sparticuz/chromium`, so no additional setup is required.
 
@@ -159,13 +160,10 @@ For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-![Contributors](https://img.shields.io/github/contributors/ThanosKa/magic-resume)
-![Activity](https://img.shields.io/github/commit-activity/m/ThanosKa/magic-resume)
-
 ### Contributors
 
 <a href="https://github.com/ThanosKa/magic-resume/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ThanosKa/magic-resume" />
+  <img src="https://contrib.rocks/image?repo=ThanosKa/magic-resume" alt="Contributors"/>
 </a>
 
 ## Sponsor this Project

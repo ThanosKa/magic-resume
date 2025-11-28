@@ -12,7 +12,7 @@ export const faqs = [
   {
     question: 'How does the AI Polish feature work?',
     answer:
-      "Our AI analyzes your text and suggests improvements to make it more professional and impactful. You can choose to accept, modify, or reject any suggestions. You'll need to provide your own API key for this feature.",
+      'Magic resume uses Grok 4.1 fast (a free model) to analyze your text and suggest improvements to make it more professional and impactful. You can choose to accept, modify, or reject any suggestions. For the hosted version, we handle the API costs - no API key needed from you. When running locally, you can configure any AI model but will need your own API key.',
   },
   {
     question: 'Can I export my CV as PDF?',
@@ -22,7 +22,7 @@ export const faqs = [
   {
     question: 'Is this service free?',
     answer:
-      'The CV builder is completely free to use. The AI polishing feature requires your own OpenRouter API key, which has its own pricing based on usage.',
+      'Yes, the entire service is completely free to use, including the AI polishing feature. No API keys or payments required from users.',
   },
   {
     question: 'Can I import an existing CV?',

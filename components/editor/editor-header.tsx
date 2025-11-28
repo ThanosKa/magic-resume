@@ -220,6 +220,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
+  const [isImportMenuOpen, setIsImportMenuOpen] = useState(false);
   const { toast } = useToast();
 
   const toSafeFilename = (value?: string) => {
@@ -359,10 +360,26 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
             className="hidden"
           />
 
-          <Button variant="ghost" size="sm" onClick={handleImportClick}>
-            <Upload className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Import</span>
-          </Button>
+          <DropdownMenu
+            open={isImportMenuOpen}
+            onOpenChange={setIsImportMenuOpen}
+          >
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <Upload className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">Import</span>
+                <ChevronDown className="ml-1 h-3 w-3" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handleImportClick}>
+                Import from JSON
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled className="opacity-50">
+                Import from PDF (soon)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <DropdownMenu
             open={isExportMenuOpen}

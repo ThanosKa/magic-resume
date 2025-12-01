@@ -20,13 +20,24 @@ describe('Social Link Schema Validation', () => {
     expect(() => socialLinkSchema.parse(validData)).not.toThrow();
   });
 
-  test('should invalidate social link with invalid URL', () => {
+  test('should validate social link handle without protocol', () => {
+    const handleData = {
+      id: '123',
+      platform: 'twitter' as const,
+      url: '@johndoe',
+    };
+    expect(() => socialLinkSchema.parse(handleData)).not.toThrow();
+  });
+
+  test('should invalidate social link with empty url', () => {
     const invalidData = {
       id: '123',
       platform: 'github' as const,
-      url: 'not-a-url',
+      url: '   ',
     };
-    expect(() => socialLinkSchema.parse(invalidData)).toThrow('Must be a valid URL');
+    expect(() => socialLinkSchema.parse(invalidData)).toThrow(
+      'Link is required'
+    );
   });
 
   test('should invalidate social link without required fields', () => {
@@ -64,18 +75,33 @@ describe('Personal Info Schema Validation', () => {
       showPhoto: false,
       socialLinks: [],
     };
-    expect(() => personalInfoSchema.parse(invalidData)).toThrow('Must be a valid email');
+    expect(() => personalInfoSchema.parse(invalidData)).toThrow(
+      'Must be a valid email'
+    );
   });
 
   test('should invalidate personal info without required fields', () => {
     const invalidData = {
       name: 'John Doe',
-      // missing title
       email: 'john@example.com',
       phone: '+1 234 567 8900',
       location: 'New York, NY',
     };
     expect(() => personalInfoSchema.parse(invalidData)).toThrow();
+  });
+
+  test('should validate personal info with empty title', () => {
+    const validData = {
+      name: 'John Doe',
+      title: '',
+      email: 'john@example.com',
+      phone: '+1 234 567 8900',
+      location: 'New York, NY',
+      headerAlign: 'center' as const,
+      showPhoto: false,
+      socialLinks: [],
+    };
+    expect(() => personalInfoSchema.parse(validData)).not.toThrow();
   });
 });
 
@@ -127,13 +153,26 @@ describe('Education Schema Validation', () => {
   test('should invalidate education without required fields', () => {
     const invalidData = {
       id: '1',
-      // missing institution
       degree: 'Bachelor',
       field: 'CS',
       startDate: '2020',
       endDate: '2024',
     };
     expect(() => educationSchema.parse(invalidData)).toThrow();
+  });
+
+  test('should validate education with empty strings for optional fields', () => {
+    const validData = {
+      id: '1',
+      institution: '',
+      degree: '',
+      field: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+      visible: true,
+    };
+    expect(() => educationSchema.parse(validData)).not.toThrow();
   });
 });
 
@@ -178,6 +217,19 @@ describe('Experience Schema Validation', () => {
       'End date must be after or equal to start date'
     );
   });
+
+  test('should validate experience with empty strings for optional fields', () => {
+    const validData = {
+      id: '1',
+      company: '',
+      position: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+      visible: true,
+    };
+    expect(() => experienceSchema.parse(validData)).not.toThrow();
+  });
 });
 
 describe('Project Schema Validation', () => {
@@ -219,7 +271,9 @@ describe('Project Schema Validation', () => {
       link: 'not-a-url',
       visible: true,
     };
-    expect(() => projectSchema.parse(invalidData)).toThrow('Must be a valid URL');
+    expect(() => projectSchema.parse(invalidData)).toThrow(
+      'Must be a valid URL'
+    );
   });
 
   test('should invalidate project where end date is before start date', () => {
@@ -235,6 +289,19 @@ describe('Project Schema Validation', () => {
     expect(() => projectSchema.parse(invalidData)).toThrow(
       'End date must be after or equal to start date'
     );
+  });
+
+  test('should validate project with empty strings for optional fields', () => {
+    const validData = {
+      id: '1',
+      name: '',
+      role: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+      visible: true,
+    };
+    expect(() => projectSchema.parse(validData)).not.toThrow();
   });
 });
 
@@ -309,7 +376,7 @@ describe('CV Data Schema Validation', () => {
       personalInfo: {
         name: 'John Doe',
         title: 'Engineer',
-        email: 'invalid-email', // Invalid
+        email: 'invalid-email',
         phone: '+1 234',
         location: 'SF',
         headerAlign: 'center' as const,
@@ -323,6 +390,8 @@ describe('CV Data Schema Validation', () => {
       skills: '',
       sections: [],
     };
-    expect(() => cvDataSchema.parse(invalidData)).toThrow('Must be a valid email');
+    expect(() => cvDataSchema.parse(invalidData)).toThrow(
+      'Must be a valid email'
+    );
   });
 });

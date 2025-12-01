@@ -15,7 +15,7 @@ const sections = [
   { type: 'experience' as const, label: 'Experience', icon: Briefcase },
   { type: 'education' as const, label: 'Education', icon: GraduationCap },
   { type: 'projects' as const, label: 'Projects', icon: FolderKanban },
-  { type: 'skills' as const, label: 'Skills', icon: Wrench },
+  { type: 'skills' as const, label: 'Technical Skills', icon: Wrench },
 ];
 
 export function SectionTabs() {

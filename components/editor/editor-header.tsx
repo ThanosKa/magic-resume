@@ -1,13 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import {
-  Download,
-  Upload,
-  FilePlus,
-  ChevronDown,
-  Loader2,
-} from 'lucide-react';
+import { Download, Upload, FilePlus, ChevronDown, Loader2 } from 'lucide-react';
 import { useRef, useState, type RefObject } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,6 +25,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { useCVStore } from '@/store/cv-store';
 import type { CVData } from '@/types/cv';
 import { useToast } from '@/components/hooks/use-toast';
+import { ImportPdfDialog } from './import-pdf-dialog';
 
 const PDF_EXPORT_URL = '/api/generate-pdf';
 const PDF_EXPORT_TIMEOUT_MS = 45_000;
@@ -180,9 +175,7 @@ const inlineImages = async (root: HTMLElement) => {
       try {
         const dataUrl = await toDataUrl(src);
         img.setAttribute('src', dataUrl);
-      } catch {
-        // Ignore images we can't inline; they just won't render in the PDF.
-      }
+      } catch {}
     })
   );
 };
@@ -220,6 +213,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
   const [isExportingPDF, setIsExportingPDF] = useState(false);
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isImportMenuOpen, setIsImportMenuOpen] = useState(false);
+  const [isImportPdfDialogOpen, setIsImportPdfDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const toSafeFilename = (value?: string) => {
@@ -374,8 +368,13 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
               <DropdownMenuItem onClick={handleImportClick}>
                 Import from JSON
               </DropdownMenuItem>
-              <DropdownMenuItem disabled className="opacity-50">
-                Import from PDF (soon)
+              <DropdownMenuItem
+                onClick={() => {
+                  setIsImportMenuOpen(false);
+                  setIsImportPdfDialogOpen(true);
+                }}
+              >
+                Import from PDF
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -453,6 +452,11 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
           <ThemeToggle />
         </div>
       </div>
+
+      <ImportPdfDialog
+        open={isImportPdfDialogOpen}
+        onOpenChange={setIsImportPdfDialogOpen}
+      />
     </header>
   );
 }

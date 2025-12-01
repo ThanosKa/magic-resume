@@ -32,6 +32,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { useCVStore } from '@/store/cv-store';
 import type { CVData } from '@/types/cv';
 import { useToast } from '@/components/hooks/use-toast';
+import { mapExtractedDataToCV } from '@/lib/pdf-import';
 
 const PDF_EXPORT_URL = '/api/generate-pdf';
 const PDF_EXPORT_TIMEOUT_MS = 45_000;
@@ -218,7 +219,9 @@ interface EditorHeaderProps {
 export function EditorHeader({ previewRef }: EditorHeaderProps) {
   const { cv, setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const pdfInputRef = useRef<HTMLInputElement>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const [isImportingPDF, setIsImportingPDF] = useState(false);
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isImportMenuOpen, setIsImportMenuOpen] = useState(false);
   const { toast } = useToast();
@@ -319,6 +322,10 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
     fileInputRef.current?.click();
   };
 
+  const handlePDFImportClick = () => {
+    pdfInputRef.current?.click();
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -331,6 +338,10 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
           throw new Error('Invalid CV data structure');
         }
         setCVData(data);
+        toast({
+          title: 'Import successful',
+          description: 'CV data has been imported successfully.',
+        });
       } catch {
         toast({
           variant: 'destructive',
@@ -341,6 +352,66 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
     };
     reader.readAsText(file);
     e.target.value = '';
+  };
+
+  const handlePDFFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid file type',
+        description: 'Please select a PDF file.',
+      });
+      e.target.value = '';
+      return;
+    }
+
+    try {
+      setIsImportingPDF(true);
+      setIsImportMenuOpen(false);
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/import-pdf', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Failed to import PDF');
+      }
+
+      const result = await response.json();
+      const extractedData = result.data;
+
+      if (!extractedData) {
+        throw new Error('No data extracted from PDF');
+      }
+
+      const cvData = mapExtractedDataToCV(extractedData);
+      setCVData(cvData);
+
+      toast({
+        title: 'PDF imported successfully',
+        description: 'Your CV has been imported. Please review and make any necessary adjustments.',
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'PDF import failed',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'Failed to import PDF. Please make sure it contains readable text.',
+      });
+    } finally {
+      setIsImportingPDF(false);
+      e.target.value = '';
+    }
   };
 
   return (
@@ -359,24 +430,55 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
             onChange={handleFileChange}
             className="hidden"
           />
+          <input
+            ref={pdfInputRef}
+            type="file"
+            accept=".pdf,application/pdf"
+            onChange={handlePDFFileChange}
+            className="hidden"
+          />
 
           <DropdownMenu
             open={isImportMenuOpen}
             onOpenChange={setIsImportMenuOpen}
           >
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <Upload className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">Import</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={isImportingPDF}
+                aria-busy={isImportingPDF}
+              >
+                {isImportingPDF ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Upload className="mr-2 h-4 w-4" />
+                )}
+                <span className="hidden sm:inline">
+                  {isImportingPDF ? 'Importing...' : 'Import'}
+                </span>
                 <ChevronDown className="ml-1 h-3 w-3" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={handleImportClick}>
+              <DropdownMenuItem
+                onClick={handleImportClick}
+                disabled={isImportingPDF}
+              >
                 Import from JSON
               </DropdownMenuItem>
-              <DropdownMenuItem disabled className="opacity-50">
-                Import from PDF (soon)
+              <DropdownMenuItem
+                onClick={handlePDFImportClick}
+                disabled={isImportingPDF}
+              >
+                {isImportingPDF ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Importing PDF...
+                  </>
+                ) : (
+                  'Import from PDF'
+                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -1,8 +1,73 @@
 import { logger } from '../logger';
-import * as pdfParse from 'pdf-parse';
 
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 const MODEL = 'x-ai/grok-4.1-fast:free';
+
+// Polyfill for DOMMatrix and other browser APIs needed by pdf-parse
+if (typeof globalThis.DOMMatrix === 'undefined') {
+  // Simple DOMMatrix polyfill for Node.js
+  (globalThis as any).DOMMatrix = class DOMMatrix {
+    a = 1;
+    b = 0;
+    c = 0;
+    d = 1;
+    e = 0;
+    f = 0;
+    m11 = 1;
+    m12 = 0;
+    m21 = 0;
+    m22 = 1;
+    m41 = 0;
+    m42 = 0;
+    constructor(init?: string | number[]) {
+      if (init) {
+        // Basic initialization
+      }
+    }
+    static fromMatrix(other?: DOMMatrix) {
+      return new DOMMatrix();
+    }
+    multiply(other?: DOMMatrix) {
+      return new DOMMatrix();
+    }
+    translate(x?: number, y?: number) {
+      return this;
+    }
+    scale(x?: number, y?: number) {
+      return this;
+    }
+    rotate(angle?: number) {
+      return this;
+    }
+    rotateFromVector(x?: number, y?: number) {
+      return this;
+    }
+    flipX() {
+      return this;
+    }
+    flipY() {
+      return this;
+    }
+    skewX(sx?: number) {
+      return this;
+    }
+    skewY(sy?: number) {
+      return this;
+    }
+    inverse() {
+      return new DOMMatrix();
+    }
+    transformPoint(point?: { x: number; y: number }) {
+      return { x: 0, y: 0 };
+    }
+    toFloat32Array() {
+      return new Float32Array([1, 0, 0, 1, 0, 0]);
+    }
+    toFloat64Array() {
+      return new Float64Array([1, 0, 0, 1, 0, 0]);
+    }
+  };
+}
 
 interface ExtractedCVData {
   personalInfo?: {
@@ -45,13 +110,18 @@ interface ExtractedCVData {
 
 async function extractTextFromPDF(pdfBuffer: Buffer): Promise<string> {
   try {
-    // pdf-parse can be imported as default or namespace, handle both cases
+    // Use dynamic import to avoid build-time evaluation issues with browser APIs
+    const pdfParse = await import('pdf-parse');
     const parseFn = (pdfParse as any).default || pdfParse;
     const data = await parseFn(pdfBuffer);
     return data.text;
   } catch (error) {
     logger.error({ err: error }, 'Failed to extract text from PDF');
-    throw new Error('Failed to parse PDF file');
+    throw new Error(
+      error instanceof Error
+        ? `Failed to parse PDF file: ${error.message}`
+        : 'Failed to parse PDF file'
+    );
   }
 }
 

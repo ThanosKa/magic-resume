@@ -13,13 +13,11 @@ const nextConfig = {
     '@sparticuz/chromium',
     'puppeteer-core',
   ],
-  experimental: {
-    // Force trace of Chromium binaries living inside pnpm's store for this route
-    outputFileTracingIncludes: {
-      '/api/generate-pdf/route': [
-        './node_modules/.pnpm/@sparticuz+chromium@*/node_modules/@sparticuz/chromium/bin/**/*',
-      ],
-    },
+  // Force trace of Chromium binaries living inside pnpm's store for this route
+  outputFileTracingIncludes: {
+    '/api/generate-pdf/route': [
+      './node_modules/.pnpm/@sparticuz+chromium@*/node_modules/@sparticuz/chromium/bin/**/*',
+    ],
   },
 };
 

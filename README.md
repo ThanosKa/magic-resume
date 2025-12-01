@@ -72,6 +72,7 @@ Useful scripts:
 
 ```bash
 pnpm lint           # Run ESLint for code quality
+pnpm type-check     # Run TypeScript type checking (--noEmit)
 pnpm build          # Production build
 pnpm start          # Start production server (after build)
 pnpm test           # Run all tests once
@@ -82,9 +83,12 @@ pnpm seo-check      # Basic SEO sanity checks
 
 ## Running Tests
 
-Magic Resume uses Vitest for testing. Tests run automatically on pull requests via GitHub Actions.
+Magic Resume uses Vitest for testing and TypeScript for type checking. Tests run automatically on pull requests via GitHub Actions.
 
 ```bash
+# Run TypeScript type checking
+pnpm type-check
+
 # Run all tests
 pnpm test
 
@@ -138,7 +142,7 @@ PDF generation requirements:
 
 - Fork and create a feature branch.
 - Keep PRs scoped; include before/after context for UI changes (screenshots or short GIFs).
-- Run `pnpm lint` (and `pnpm build` if you touch build/runtime code) before submitting.
+- Run `pnpm lint` and `pnpm type-check` (and `pnpm build` if you touch build/runtime code) before submitting.
 - Prefer existing patterns (Radix + Tailwind, server-first components; guard client-only code).
 
 For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).

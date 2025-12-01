@@ -1,5 +1,20 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest';
+import type { Page, Browser } from 'puppeteer-core';
 import { POST, OPTIONS } from './route';
+
+// Mock types for test mocks
+type MockPage = {
+  setViewport: ReturnType<typeof vi.fn>;
+  setContent: ReturnType<typeof vi.fn>;
+  addStyleTag: ReturnType<typeof vi.fn>;
+  emulateMediaType: ReturnType<typeof vi.fn>;
+  pdf: ReturnType<typeof vi.fn>;
+};
+
+type MockBrowser = {
+  newPage: ReturnType<typeof vi.fn>;
+  close: ReturnType<typeof vi.fn>;
+};
 
 // Mock dependencies
 vi.mock('@sparticuz/chromium', () => ({
@@ -54,8 +69,8 @@ describe('Generate PDF API - OPTIONS', () => {
 });
 
 describe('Generate PDF API - POST', () => {
-  let mockPage: any;
-  let mockBrowser: any;
+  let mockPage: MockPage;
+  let mockBrowser: MockBrowser;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -67,16 +82,16 @@ describe('Generate PDF API - POST', () => {
       addStyleTag: vi.fn(),
       emulateMediaType: vi.fn(),
       pdf: vi.fn().mockResolvedValue(Buffer.from('mock-pdf-content')),
-    };
+    } as MockPage;
 
     mockBrowser = {
       newPage: vi.fn().mockResolvedValue(mockPage),
       close: vi.fn(),
-    };
+    } as MockBrowser;
 
     // Re-setup the puppeteer mock
     const puppeteer = await import('puppeteer-core');
-    vi.mocked(puppeteer.default.launch).mockResolvedValue(mockBrowser);
+    vi.mocked(puppeteer.default.launch).mockResolvedValue(mockBrowser as unknown as Browser);
   });
 
   test('should successfully generate PDF from HTML content', async () => {

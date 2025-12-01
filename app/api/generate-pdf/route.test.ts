@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest';
-import type { Page, Browser } from 'puppeteer-core';
+import type { Browser } from 'puppeteer-core';
 import { POST, OPTIONS } from './route';
 
 // Mock types for test mocks

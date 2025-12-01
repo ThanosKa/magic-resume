@@ -2,7 +2,6 @@ import { describe, test, expect, beforeEach, vi } from 'vitest';
 import type { Browser } from 'puppeteer-core';
 import { POST, OPTIONS } from './route';
 
-// Mock types for test mocks
 type MockPage = {
   setViewport: ReturnType<typeof vi.fn>;
   setContent: ReturnType<typeof vi.fn>;
@@ -16,7 +15,6 @@ type MockBrowser = {
   close: ReturnType<typeof vi.fn>;
 };
 
-// Mock dependencies
 vi.mock('@sparticuz/chromium', () => ({
   default: {
     executablePath: vi.fn().mockResolvedValue('/usr/bin/chromium'),
@@ -34,7 +32,6 @@ vi.mock('../logger', () => ({
   },
 }));
 
-// Mock puppeteer - all objects must be created inline to avoid hoisting issues
 vi.mock('puppeteer-core', () => {
   const mockPage = {
     setViewport: vi.fn(),
@@ -74,8 +71,6 @@ describe('Generate PDF API - POST', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-
-    // Create fresh mocks for each test
     mockPage = {
       setViewport: vi.fn(),
       setContent: vi.fn(),
@@ -89,7 +84,6 @@ describe('Generate PDF API - POST', () => {
       close: vi.fn(),
     } as MockBrowser;
 
-    // Re-setup the puppeteer mock
     const puppeteer = await import('puppeteer-core');
     vi.mocked(puppeteer.default.launch).mockResolvedValue(
       mockBrowser as unknown as Browser
@@ -113,8 +107,6 @@ describe('Generate PDF API - POST', () => {
     expect(response.headers.get('Content-Disposition')).toContain(
       'my-resume.pdf'
     );
-
-    // Verify browser was launched and closed
     const puppeteer = await import('puppeteer-core');
     expect(puppeteer.default.launch).toHaveBeenCalled();
     expect(mockBrowser.close).toHaveBeenCalled();
@@ -138,8 +130,6 @@ describe('Generate PDF API - POST', () => {
 
     const setContentCall = mockPage.setContent.mock.calls[0];
     const html = setContentCall[0];
-
-    // Should contain the styles and content
     expect(html).toContain('body { font-family: Arial; }');
     expect(html).toContain('<div>CV Content</div>');
   });
@@ -174,7 +164,6 @@ describe('Generate PDF API - POST', () => {
 
     expect(response.status).toBe(200);
     const disposition = response.headers.get('Content-Disposition');
-    // Should not contain path traversal characters
     expect(disposition).not.toContain('../');
     expect(disposition).toContain('.pdf');
   });
@@ -221,7 +210,7 @@ describe('Generate PDF API - POST', () => {
   });
 
   test('should handle payload size limits', async () => {
-    const largeContent = 'x'.repeat(6 * 1024 * 1024); // 6MB
+    const largeContent = 'x'.repeat(6 * 1024 * 1024);
 
     const request = new Request('http://localhost:3000/api/generate-pdf', {
       method: 'POST',
@@ -255,7 +244,6 @@ describe('Generate PDF API - POST', () => {
     const response = await POST(request);
 
     expect(response.status).toBe(500);
-    // Browser should still be closed
     expect(mockBrowser.close).toHaveBeenCalled();
   });
 

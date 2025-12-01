@@ -19,7 +19,6 @@ describe('cn utility function', () => {
 
   test('should merge Tailwind classes correctly', () => {
     const result = cn('px-2 py-1', 'px-4');
-    // tailwind-merge should keep only the last px- class
     expect(result).toBe('py-1 px-4');
   });
 

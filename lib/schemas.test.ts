@@ -376,7 +376,7 @@ describe('CV Data Schema Validation', () => {
       personalInfo: {
         name: 'John Doe',
         title: 'Engineer',
-        email: 'invalid-email', // Invalid
+        email: 'invalid-email',
         phone: '+1 234',
         location: 'SF',
         headerAlign: 'center' as const,

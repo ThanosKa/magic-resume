@@ -46,7 +46,7 @@ describe('CV Store - Social Links', () => {
     const state = useCVStore.getState();
     const socialLinks = state.cv.personalInfo.socialLinks;
 
-    expect(socialLinks).toHaveLength(3); // 2 default + 1 new
+    expect(socialLinks).toHaveLength(3);
     const twitterLink = socialLinks.find((l) => l.platform === 'twitter');
     expect(twitterLink).toBeDefined();
     expect(twitterLink?.url).toBe('https://twitter.com/johndoe');
@@ -84,7 +84,9 @@ describe('CV Store - Social Links', () => {
       initialCount - 1
     );
     expect(
-      updatedState.cv.personalInfo.socialLinks.find((l) => l.id === firstLink.id)
+      updatedState.cv.personalInfo.socialLinks.find(
+        (l) => l.id === firstLink.id
+      )
     ).toBeUndefined();
   });
 });
@@ -106,7 +108,7 @@ describe('CV Store - Education', () => {
     useCVStore.getState().addEducation(education);
 
     const state = useCVStore.getState();
-    expect(state.cv.education).toHaveLength(3); // 2 default + 1 new
+    expect(state.cv.education).toHaveLength(3);
 
     const harvardEd = state.cv.education.find(
       (e) => e.institution === 'Harvard University'
@@ -126,7 +128,9 @@ describe('CV Store - Education', () => {
     });
 
     const updatedState = useCVStore.getState();
-    const updatedEd = updatedState.cv.education.find((e) => e.id === firstEd.id);
+    const updatedEd = updatedState.cv.education.find(
+      (e) => e.id === firstEd.id
+    );
 
     expect(updatedEd?.degree).toBe('Doctor of Philosophy');
   });
@@ -162,7 +166,7 @@ describe('CV Store - Experience', () => {
     useCVStore.getState().addExperience(experience);
 
     const state = useCVStore.getState();
-    expect(state.cv.experience).toHaveLength(3); // 2 default + 1 new
+    expect(state.cv.experience).toHaveLength(3);
 
     const msftExp = state.cv.experience.find((e) => e.company === 'Microsoft');
     expect(msftExp).toBeDefined();
@@ -218,7 +222,7 @@ describe('CV Store - Projects', () => {
     useCVStore.getState().addProject(project);
 
     const state = useCVStore.getState();
-    expect(state.cv.projects).toHaveLength(3); // 2 default + 1 new
+    expect(state.cv.projects).toHaveLength(3);
 
     const mlProject = state.cv.projects.find(
       (p) => p.name === 'Machine Learning Framework'
@@ -317,7 +321,6 @@ describe('CV Store - Sections', () => {
     const state = useCVStore.getState();
     const sections = [...state.cv.sections];
 
-    // Reverse the order
     const reorderedSections = sections.reverse().map((s, index) => ({
       ...s,
       order: index,
@@ -390,18 +393,14 @@ describe('CV Store - Reset', () => {
   });
 
   test('should reset store to default state', () => {
-    // Make changes
     useCVStore.getState().updatePersonalInfo({ name: 'Changed Name' });
     useCVStore.getState().updateSkills('New skills');
     useCVStore.getState().setActiveSection('projects');
 
-    // Reset
     useCVStore.getState().reset();
 
     const state = useCVStore.getState();
-    // Should have default name (Jane Doe from defaultCVData)
     expect(state.cv.personalInfo.name).toBe('Jane Doe');
-    // Active section should reset to experience
     expect(state.activeSection).toBe('experience');
   });
 });

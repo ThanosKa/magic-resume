@@ -1,7 +1,6 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { POST } from './route';
 
-// Mock the logger
 vi.mock('../logger', () => ({
   logger: {
     info: vi.fn(),
@@ -11,14 +10,12 @@ vi.mock('../logger', () => ({
   },
 }));
 
-// Mock fetch globally
 const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
 describe('Polish API Route', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Set up environment variable
     process.env.OPENROUTER_API_KEY = 'test-api-key';
   });
 
@@ -84,8 +81,6 @@ describe('Polish API Route', () => {
 
     expect(response.status).toBe(200);
     expect(data.polished).toBe('Senior Full-Stack Developer');
-
-    // Verify the correct prompt was used
     const fetchCall = mockFetch.mock.calls[0];
     const requestBody = JSON.parse(fetchCall[1].body);
     expect(requestBody.messages[0].content).toContain('job titles');
@@ -122,8 +117,6 @@ describe('Polish API Route', () => {
 
     expect(response.status).toBe(200);
     expect(data.polished).toContain('software engineer');
-
-    // Verify the correct prompt was used
     const fetchCall = mockFetch.mock.calls[0];
     const requestBody = JSON.parse(fetchCall[1].body);
     expect(requestBody.messages[0].content).toContain('professional summary');

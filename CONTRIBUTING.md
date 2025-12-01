@@ -45,10 +45,12 @@ This project adheres to a Code of Conduct that all contributors are expected to 
    pnpm install
    ```
 
-5. **Set up environment variables**:
+5. **Set up environment variables** (optional for testing):
    ```bash
    cp .env.example .env.local
-   # Add your OpenRouter API key if you want to test AI polish features
+   # Add your OpenRouter API key ONLY if you want to manually test AI polish features
+   # For running tests, API keys are NOT required - all external calls are mocked
+   # You can use placeholder values like "sk-test-fake" for testing
    ```
 
 6. **Start the development server**:
@@ -88,7 +90,23 @@ Branch naming conventions:
 
 2. **Make your changes** following the [Code Style Guidelines](#code-style-guidelines)
 
-3. **Test your changes**:
+3. **Write tests for your changes**:
+   ```bash
+   # Run tests in watch mode during development
+   pnpm test:watch
+   
+   # Run all tests
+   pnpm test
+   
+   # Generate coverage report
+   pnpm test:coverage
+   ```
+   
+   See the [Testing Guidelines](#testing-guidelines) section for details on writing tests.
+   
+   **Note**: Tests do not require real API keys. All external API calls (OpenRouter, Puppeteer) are mocked, so you can run tests with placeholder environment variables.
+
+4. **Test your changes**:
    ```bash
    pnpm lint      # Check for linting errors
    pnpm build     # Ensure the project builds successfully
@@ -120,6 +138,42 @@ Branch naming conventions:
    ```
 
 6. **Push your branch**:
+   ```
+
+## Continuous Integration
+
+Magic Resume uses GitHub Actions for continuous integration. On every pull request and push to `main`, the CI pipeline automatically:
+
+1. **Lints** the code (`pnpm lint`)
+2. **Tests** all functionality (`pnpm test`)
+3. **Builds** the project (`pnpm build`)
+
+The CI runs on both Node.js 18.x and 20.x to ensure compatibility.
+
+### Environment Variables in CI
+
+The CI environment uses placeholder API keys since all tests are mocked:
+
+```yaml
+OPENROUTER_API_KEY: sk-test-fake-key-for-ci-testing
+NEXT_PUBLIC_SITE_URL: http://localhost:3000
+LOG_LEVEL: info
+```
+
+This means:
+- You don't need real API keys to contribute
+- Tests will pass in CI even without valid credentials
+- All external API calls are mocked and don't make real network requests
+
+### Viewing CI Results
+
+- Check the "Actions" tab on GitHub to see CI runs
+- Each PR will show CI status checks
+- Green checkmark = all tests passed
+- Red X = tests failed (check logs for details)
+- CI must pass before a PR can be merged
+
+6. **Push your branch**:
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -129,7 +183,11 @@ Branch naming conventions:
 ### Before Submitting
 
 - [ ] Code follows the project's style guidelines (see [Code Style Guidelines](#code-style-guidelines))
-- [ ] All tests pass (`pnpm lint` and `pnpm build`)
+- [ ] All tests pass locally (`pnpm test`)
+- [ ] Added tests for new functionality
+- [ ] Linting passes (`pnpm lint`)
+- [ ] Build succeeds (`pnpm build`)
+- [ ] CI checks pass on your PR (GitHub Actions)
 - [ ] Self-review your code
 - [ ] Comment complex code sections
 - [ ] Update documentation if needed
@@ -214,6 +272,145 @@ export function Button({ variant = "primary", className, ...props }: ButtonProps
   );
 }
 ```
+
+## Testing Guidelines
+
+Magic Resume uses **Vitest** for testing with a comprehensive test strategy covering unit tests, integration tests, and API mocking.
+
+### Testing Strategy
+
+- **Unit Tests**: Test pure functions, utilities, Zod schemas, and type helpers
+- **Integration Tests**: Test Zustand store state management and persistence
+- **Mock Tests**: Test API routes with mocked external dependencies (OpenRouter, Puppeteer)
+
+### Running Tests
+
+```bash
+# Run all tests once
+pnpm test
+
+# Watch mode for development
+pnpm test:watch
+
+# Interactive UI
+pnpm test:ui
+
+# Coverage report
+pnpm test:coverage
+```
+
+### Writing Tests
+
+Tests are co-located with source files using the `.test.ts` or `.test.tsx` extension:
+
+```
+lib/
+  utils.ts
+  utils.test.ts       # Unit tests for utils
+store/
+  cv-store.ts
+  cv-store.test.ts    # Integration tests for store
+```
+
+**Example Unit Test:**
+
+```typescript
+import { describe, test, expect } from 'vitest';
+import { cn } from './utils';
+
+describe('cn utility', () => {
+  test('should merge class names', () => {
+    const result = cn('base', 'extra');
+    expect(result).toBe('base extra');
+  });
+
+  test('should handle conditionals', () => {
+    const result = cn('base', true && 'active', false && 'inactive');
+    expect(result).toBe('base active');
+  });
+});
+```
+
+**Example Integration Test (Store):**
+
+```typescript
+import { describe, test, expect, beforeEach } from 'vitest';
+import { useCVStore } from './cv-store';
+
+describe('CV Store', () => {
+  beforeEach(() => {
+    useCVStore.getState().reset();
+  });
+
+  test('should update personal info', () => {
+    useCVStore.getState().updatePersonalInfo({ name: 'Test User' });
+    
+    const state = useCVStore.getState();
+    expect(state.cv.personalInfo.name).toBe('Test User');
+  });
+
+  test('should persist to localStorage', () => {
+    useCVStore.getState().updatePersonalInfo({ name: 'Test' });
+    
+    const stored = localStorage.getItem('cv-builder-data');
+    expect(stored).toContain('Test');
+  });
+});
+```
+
+**Example API Mock Test:**
+
+```typescript
+import { describe, test, expect, vi } from 'vitest';
+import { POST } from './route';
+
+const mockFetch = vi.fn();
+global.fetch = mockFetch;
+
+describe('Polish API', () => {
+  test('should polish content successfully', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ choices: [{ message: { content: 'Polished!' } }] }),
+    });
+
+    const request = new Request('http://localhost/api/polish', {
+      method: 'POST',
+      body: JSON.stringify({ content: 'Raw text' }),
+    });
+
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(data.polished).toBe('Polished!');
+  });
+});
+```
+
+### Best Practices
+
+**DO:**
+- ✅ Test behavior, not implementation details
+- ✅ Mock external dependencies (APIs, file system)
+- ✅ Use descriptive test names that explain what's being tested
+- ✅ Keep tests focused and atomic (one assertion per test when possible)
+- ✅ Clean up state in `beforeEach` hooks
+- ✅ Aim for meaningful coverage (70%+ for core logic)
+
+**DON'T:**
+- ❌ Test library code (React, Zustand internals)
+- ❌ Make real network requests in tests
+- ❌ Test private implementation details
+- ❌ Write brittle tests that break on refactoring
+- ❌ Ignore test failures
+
+### Coverage Requirements
+
+- **Utilities/Helpers**: 80%+ coverage
+- **Store Logic**: 70%+ coverage
+- **API Routes**: 60%+ coverage (due to external dependencies)
+
+Run `pnpm test:coverage` to see coverage reports.
 
 ## Reporting Bugs
 

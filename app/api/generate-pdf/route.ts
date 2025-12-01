@@ -154,7 +154,7 @@ export async function POST(req: Request) {
       // channel is only used in non-serverless environments to pick a locally installed Chrome
       channel,
       // chromium.defaultViewport is available at runtime, cast to satisfy TS.
-      defaultViewport: isServerless ? (chromium as unknown as { defaultViewport?: any }).defaultViewport : undefined,
+      defaultViewport: isServerless ? (chromium as unknown as { defaultViewport?: { width: number; height: number } }).defaultViewport : undefined,
     };
 
     browser = await puppeteer.launch(launchOptions);

@@ -12,6 +12,7 @@
 [![pnpm](https://img.shields.io/badge/pnpm-%F0%9F%8F%AF-orange)](https://pnpm.io/)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/KazakisThanos?style=social)](https://x.com/KazakisThanos)
+[![CI](https://github.com/ThanosKa/magic-resume/actions/workflows/ci.yml/badge.svg)](https://github.com/ThanosKa/magic-resume/actions/workflows/ci.yml)
 
 <p>AI-assisted CV builder with live preview, AI polish, and one-click export to PDF or JSON.</p>
 
@@ -70,44 +71,38 @@ pnpm dev
 Useful scripts:
 
 ```bash
-pnpm lint     # ESLint
-pnpm build    # Production build
-pnpm start    # Start after a build
-pnpm seo-check # Basic SEO sanity checks
+pnpm lint           # Run ESLint for code quality
+pnpm type-check     # Run TypeScript type checking (--noEmit)
+pnpm build          # Production build
+pnpm start          # Start production server (after build)
+pnpm test           # Run all tests once
+pnpm test:watch     # Run tests in watch mode for development
+pnpm test:coverage  # Generate test coverage report
+pnpm seo-check      # Basic SEO sanity checks
 ```
+
+## Running Tests
+
+Magic Resume uses Vitest for testing and TypeScript for type checking. Tests run automatically on pull requests via GitHub Actions.
+
+```bash
+# Run TypeScript type checking
+pnpm type-check
+
+# Run all tests
+pnpm test
+
+# Watch mode for development
+pnpm test:watch
+
+# Generate coverage report
+pnpm test:coverage
+```
+
+**Note**: API keys are not required for running tests. All external API calls are mocked, so you can use placeholder values in `.env.local` or omit them entirely for testing purposes.
 
 PDF generation requirements:
 
-- Nothing extra needed for local dev—Puppeteer uses your installed Chrome/Chromium.
-- In serverless deploys, a bundled headless Chromium is included via `@sparticuz/chromium`, so no additional setup is required.
-
-## Usage
-
-- Open `/editor`, fill each section, and toggle/order sections as needed.
-- Use “AI Polish” on summaries, experiences, education, or projects (requires `OPENROUTER_API_KEY`).
-- Import a saved resume JSON, or export to JSON/PDF from the header menu; print uses the same layout.
-- Data is persisted locally under the `cv-builder-data` store key so you can pick up where you left off.
-
-API examples (local dev):
-
-```bash
-# Polish content
-curl -X POST http://localhost:3000/api/polish \
-  -H "Content-Type: application/json" \
-  -d '{"content":"Lead developer on a data platform...", "polishType":"summary"}'
-
-# Generate a PDF from prepared HTML (used by the editor)
-curl -X POST http://localhost:3000/api/generate-pdf \
-  -H "Content-Type: application/json" \
-  -d '{"html":"<html>...</html>","filename":"cv"}' --output cv.pdf
-```
-
-## Deployment
-
-**Vercel (recommended)**
-
-- Push your branch to GitHub/GitLab/Bitbucket so Vercel can pull it.
-- In Vercel, **New Project** → import the repo → set env vars (`NEXT_PUBLIC_SITE_URL`, `OPENROUTER_API_KEY`).
 - Framework preset: **Next.js**. Leave build command as `next build` (default) and output as `.next`.
 - For previews, Vercel auto-builds each PR. For production, promote the main branch or trigger a production deployment.
 - One-click deploy:
@@ -147,7 +142,7 @@ curl -X POST http://localhost:3000/api/generate-pdf \
 
 - Fork and create a feature branch.
 - Keep PRs scoped; include before/after context for UI changes (screenshots or short GIFs).
-- Run `pnpm lint` (and `pnpm build` if you touch build/runtime code) before submitting.
+- Run `pnpm lint` and `pnpm type-check` (and `pnpm build` if you touch build/runtime code) before submitting.
 - Prefer existing patterns (Radix + Tailwind, server-first components; guard client-only code).
 
 For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).

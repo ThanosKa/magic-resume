@@ -4,8 +4,7 @@ import type { Education, Experience, Project, SocialLink } from '@/types/cv';
 
 describe('CV Store - Personal Info', () => {
   beforeEach(() => {
-    // Reset store to initial state
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should update personal info', () => {
@@ -33,7 +32,7 @@ describe('CV Store - Personal Info', () => {
 
 describe('CV Store - Social Links', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should add a social link', () => {
@@ -92,7 +91,7 @@ describe('CV Store - Social Links', () => {
 
 describe('CV Store - Education', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should add education entry', () => {
@@ -148,7 +147,7 @@ describe('CV Store - Education', () => {
 
 describe('CV Store - Experience', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should add experience entry', () => {
@@ -204,7 +203,7 @@ describe('CV Store - Experience', () => {
 
 describe('CV Store - Projects', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should add project entry', () => {
@@ -262,7 +261,7 @@ describe('CV Store - Projects', () => {
 
 describe('CV Store - Skills and Summary', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should update skills', () => {
@@ -294,7 +293,7 @@ describe('CV Store - Skills and Summary', () => {
 
 describe('CV Store - Sections', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should toggle section visibility', () => {
@@ -333,7 +332,7 @@ describe('CV Store - Sections', () => {
 
 describe('CV Store - Active Section', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should set active section', () => {
@@ -355,7 +354,7 @@ describe('CV Store - Active Section', () => {
 describe('CV Store - Persistence', () => {
   beforeEach(() => {
     localStorage.clear();
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should persist state to localStorage', () => {
@@ -387,7 +386,7 @@ describe('CV Store - Persistence', () => {
 
 describe('CV Store - Reset', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should reset store to default state', () => {

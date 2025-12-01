@@ -19,25 +19,27 @@ vi.mock('../logger', () => ({
   },
 }));
 
-// Mock puppeteer
-const mockPage = {
-  setViewport: vi.fn(),
-  setContent: vi.fn(),
-  addStyleTag: vi.fn(),
-  emulateMediaType: vi.fn(),
-  pdf: vi.fn().mockResolvedValue(Buffer.from('mock-pdf-content')),
-};
+// Mock puppeteer - all objects must be created inline to avoid hoisting issues
+vi.mock('puppeteer-core', () => {
+  const mockPage = {
+    setViewport: vi.fn(),
+    setContent: vi.fn(),
+    addStyleTag: vi.fn(),
+    emulateMediaType: vi.fn(),
+    pdf: vi.fn().mockResolvedValue(Buffer.from('mock-pdf-content')),
+  };
 
-const mockBrowser = {
-  newPage: vi.fn().mockResolvedValue(mockPage),
-  close: vi.fn(),
-};
+  const mockBrowser = {
+    newPage: vi.fn().mockResolvedValue(mockPage),
+    close: vi.fn(),
+  };
 
-vi.mock('puppeteer-core', () => ({
-  default: {
-    launch: vi.fn().mockResolvedValue(mockBrowser),
-  },
-}));
+  return {
+    default: {
+      launch: vi.fn().mockResolvedValue(mockBrowser),
+    },
+  };
+});
 
 describe('Generate PDF API - OPTIONS', () => {
   test('should return 204 with CORS headers', async () => {
@@ -52,8 +54,29 @@ describe('Generate PDF API - OPTIONS', () => {
 });
 
 describe('Generate PDF API - POST', () => {
-  beforeEach(() => {
+  let mockPage: any;
+  let mockBrowser: any;
+
+  beforeEach(async () => {
     vi.clearAllMocks();
+
+    // Create fresh mocks for each test
+    mockPage = {
+      setViewport: vi.fn(),
+      setContent: vi.fn(),
+      addStyleTag: vi.fn(),
+      emulateMediaType: vi.fn(),
+      pdf: vi.fn().mockResolvedValue(Buffer.from('mock-pdf-content')),
+    };
+
+    mockBrowser = {
+      newPage: vi.fn().mockResolvedValue(mockPage),
+      close: vi.fn(),
+    };
+
+    // Re-setup the puppeteer mock
+    const puppeteer = await import('puppeteer-core');
+    vi.mocked(puppeteer.default.launch).mockResolvedValue(mockBrowser);
   });
 
   test('should successfully generate PDF from HTML content', async () => {
@@ -277,9 +300,9 @@ describe('Generate PDF API - POST', () => {
 
   test('should handle browser launch failures', async () => {
     const puppeteer = await import('puppeteer-core');
-    puppeteer.default.launch = vi
-      .fn()
-      .mockRejectedValueOnce(new Error('Browser launch failed'));
+    vi.mocked(puppeteer.default.launch).mockRejectedValueOnce(
+      new Error('Browser launch failed')
+    );
 
     const request = new Request('http://localhost:3000/api/generate-pdf', {
       method: 'POST',

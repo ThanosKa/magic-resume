@@ -24,6 +24,8 @@ Instructions below are for AI assistants. Keep responses concise and aligned wit
 - Keep UI in the neutral Radix/Tailwind style; avoid new dependencies without approval.
 - Write tests for new features: unit tests for utilities, integration tests for store/API changes.
 - Provide manual verification steps when relevant; run `pnpm test` to verify all tests pass.
+- Note: CI runs automatically on PRs via GitHub Actions (lint, test, build on Node 18 & 20).
+- Tests use mocked API calls, so real API keys are not required for testing.
 
 ## Agent Permissions
 

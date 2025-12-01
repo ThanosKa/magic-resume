@@ -12,6 +12,7 @@
 [![pnpm](https://img.shields.io/badge/pnpm-%F0%9F%8F%AF-orange)](https://pnpm.io/)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/KazakisThanos?style=social)](https://x.com/KazakisThanos)
+[![CI](https://github.com/ThanosKa/magic-resume/actions/workflows/ci.yml/badge.svg)](https://github.com/ThanosKa/magic-resume/actions/workflows/ci.yml)
 
 <p>AI-assisted CV builder with live preview, AI polish, and one-click export to PDF or JSON.</p>
 
@@ -70,11 +71,31 @@ pnpm dev
 Useful scripts:
 
 ```bash
-pnpm lint     # ESLint
-pnpm build    # Production build
-pnpm start    # Start after a build
-pnpm seo-check # Basic SEO sanity checks
+pnpm lint           # Run ESLint for code quality
+pnpm build          # Production build
+pnpm start          # Start production server (after build)
+pnpm test           # Run all tests once
+pnpm test:watch     # Run tests in watch mode for development
+pnpm test:coverage  # Generate test coverage report
+pnpm seo-check      # Basic SEO sanity checks
 ```
+
+## Running Tests
+
+Magic Resume uses Vitest for testing. Tests run automatically on pull requests via GitHub Actions.
+
+```bash
+# Run all tests
+pnpm test
+
+# Watch mode for development
+pnpm test:watch
+
+# Generate coverage report
+pnpm test:coverage
+```
+
+**Note**: API keys are not required for running tests. All external API calls are mocked, so you can use placeholder values in `.env.local` or omit them entirely for testing purposes.
 
 PDF generation requirements:
 

@@ -45,10 +45,12 @@ This project adheres to a Code of Conduct that all contributors are expected to 
    pnpm install
    ```
 
-5. **Set up environment variables**:
+5. **Set up environment variables** (optional for testing):
    ```bash
    cp .env.example .env.local
-   # Add your OpenRouter API key if you want to test AI polish features
+   # Add your OpenRouter API key ONLY if you want to manually test AI polish features
+   # For running tests, API keys are NOT required - all external calls are mocked
+   # You can use placeholder values like "sk-test-fake" for testing
    ```
 
 6. **Start the development server**:
@@ -101,6 +103,8 @@ Branch naming conventions:
    ```
    
    See the [Testing Guidelines](#testing-guidelines) section for details on writing tests.
+   
+   **Note**: Tests do not require real API keys. All external API calls (OpenRouter, Puppeteer) are mocked, so you can run tests with placeholder environment variables.
 
 4. **Test your changes**:
    ```bash
@@ -134,6 +138,42 @@ Branch naming conventions:
    ```
 
 6. **Push your branch**:
+   ```
+
+## Continuous Integration
+
+Magic Resume uses GitHub Actions for continuous integration. On every pull request and push to `main`, the CI pipeline automatically:
+
+1. **Lints** the code (`pnpm lint`)
+2. **Tests** all functionality (`pnpm test`)
+3. **Builds** the project (`pnpm build`)
+
+The CI runs on both Node.js 18.x and 20.x to ensure compatibility.
+
+### Environment Variables in CI
+
+The CI environment uses placeholder API keys since all tests are mocked:
+
+```yaml
+OPENROUTER_API_KEY: sk-test-fake-key-for-ci-testing
+NEXT_PUBLIC_SITE_URL: http://localhost:3000
+LOG_LEVEL: info
+```
+
+This means:
+- You don't need real API keys to contribute
+- Tests will pass in CI even without valid credentials
+- All external API calls are mocked and don't make real network requests
+
+### Viewing CI Results
+
+- Check the "Actions" tab on GitHub to see CI runs
+- Each PR will show CI status checks
+- Green checkmark = all tests passed
+- Red X = tests failed (check logs for details)
+- CI must pass before a PR can be merged
+
+6. **Push your branch**:
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -143,9 +183,11 @@ Branch naming conventions:
 ### Before Submitting
 
 - [ ] Code follows the project's style guidelines (see [Code Style Guidelines](#code-style-guidelines))
-- [ ] All tests pass (`pnpm test`)
+- [ ] All tests pass locally (`pnpm test`)
 - [ ] Added tests for new functionality
-- [ ] Linting passes (`pnpm lint` and `pnpm build`)
+- [ ] Linting passes (`pnpm lint`)
+- [ ] Build succeeds (`pnpm build`)
+- [ ] CI checks pass on your PR (GitHub Actions)
 - [ ] Self-review your code
 - [ ] Comment complex code sections
 - [ ] Update documentation if needed
@@ -297,7 +339,7 @@ import { useCVStore } from './cv-store';
 
 describe('CV Store', () => {
   beforeEach(() => {
-    useCVStore.setState(useCVStore.getState().reset(), true);
+    useCVStore.getState().reset();
   });
 
   test('should update personal info', () => {

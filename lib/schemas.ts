@@ -1,17 +1,15 @@
 import { z } from 'zod';
 
-// Social Link Schema
 export const socialLinkSchema = z.object({
   id: z.string().min(1, 'ID is required'),
   platform: z.enum(['linkedin', 'github', 'twitter', 'portfolio', 'other']),
-  url: z.string().url('Must be a valid URL'),
+  url: z.string().trim().min(1, 'Link is required'),
   label: z.string().optional(),
 });
 
-// Personal Info Schema
 export const personalInfoSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  title: z.string().min(1, 'Title is required'),
+  title: z.string(),
   email: z.string().email('Must be a valid email'),
   phone: z.string().min(1, 'Phone is required'),
   location: z.string().min(1, 'Location is required'),
@@ -21,24 +19,24 @@ export const personalInfoSchema = z.object({
   socialLinks: z.array(socialLinkSchema),
 });
 
-// Education Schema with date validation
 export const educationSchema = z
   .object({
     id: z.string().min(1, 'ID is required'),
-    institution: z.string().min(1, 'Institution is required'),
-    degree: z.string().min(1, 'Degree is required'),
-    field: z.string().min(1, 'Field of study is required'),
-    startDate: z.string().min(1, 'Start date is required'),
-    endDate: z.string().min(1, 'End date is required'),
+    institution: z.string(),
+    degree: z.string(),
+    field: z.string(),
+    startDate: z.string(),
+    endDate: z.string(),
     description: z.string(),
     visible: z.boolean(),
   })
   .refine(
     (data) => {
+      if (!data.startDate || !data.endDate) return true;
       if (data.endDate.toLowerCase() === 'present') return true;
       const start = parseInt(data.startDate);
       const end = parseInt(data.endDate);
-      if (isNaN(start) || isNaN(end)) return true; // Allow non-numeric dates
+      if (isNaN(start) || isNaN(end)) return true;
       return end >= start;
     },
     {
@@ -47,23 +45,23 @@ export const educationSchema = z
     }
   );
 
-// Experience Schema with date validation
 export const experienceSchema = z
   .object({
     id: z.string().min(1, 'ID is required'),
-    company: z.string().min(1, 'Company is required'),
-    position: z.string().min(1, 'Position is required'),
-    startDate: z.string().min(1, 'Start date is required'),
-    endDate: z.string().min(1, 'End date is required'),
+    company: z.string(),
+    position: z.string(),
+    startDate: z.string(),
+    endDate: z.string(),
     description: z.string(),
     visible: z.boolean(),
   })
   .refine(
     (data) => {
+      if (!data.startDate || !data.endDate) return true;
       if (data.endDate.toLowerCase() === 'present') return true;
       const start = parseInt(data.startDate);
       const end = parseInt(data.endDate);
-      if (isNaN(start) || isNaN(end)) return true; // Allow non-numeric dates
+      if (isNaN(start) || isNaN(end)) return true;
       return end >= start;
     },
     {
@@ -72,24 +70,24 @@ export const experienceSchema = z
     }
   );
 
-// Project Schema with date validation
 export const projectSchema = z
   .object({
     id: z.string().min(1, 'ID is required'),
-    name: z.string().min(1, 'Project name is required'),
-    role: z.string().min(1, 'Role is required'),
-    startDate: z.string().min(1, 'Start date is required'),
-    endDate: z.string().min(1, 'End date is required'),
+    name: z.string(),
+    role: z.string(),
+    startDate: z.string(),
+    endDate: z.string(),
     description: z.string(),
     link: z.string().url('Must be a valid URL').optional().or(z.literal('')),
     visible: z.boolean(),
   })
   .refine(
     (data) => {
+      if (!data.startDate || !data.endDate) return true;
       if (data.endDate.toLowerCase() === 'present') return true;
       const start = parseInt(data.startDate);
       const end = parseInt(data.endDate);
-      if (isNaN(start) || isNaN(end)) return true; // Allow non-numeric dates
+      if (isNaN(start) || isNaN(end)) return true;
       return end >= start;
     },
     {
@@ -98,7 +96,6 @@ export const projectSchema = z
     }
   );
 
-// Section Schema
 export const sectionSchema = z.object({
   id: z.string().min(1, 'ID is required'),
   type: z.enum(['experience', 'education', 'projects', 'skills', 'summary']),
@@ -107,7 +104,6 @@ export const sectionSchema = z.object({
   order: z.number().int().min(0),
 });
 
-// Complete CV Data Schema
 export const cvDataSchema = z.object({
   id: z.string().min(1, 'ID is required'),
   title: z.string().min(1, 'CV title is required'),
@@ -122,7 +118,6 @@ export const cvDataSchema = z.object({
   sections: z.array(sectionSchema),
 });
 
-// Type exports for use in the application
 export type SocialLinkInput = z.infer<typeof socialLinkSchema>;
 export type PersonalInfoInput = z.infer<typeof personalInfoSchema>;
 export type EducationInput = z.infer<typeof educationSchema>;

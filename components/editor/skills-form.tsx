@@ -15,15 +15,15 @@ export function SkillsForm() {
     <div className="space-y-4">
       <Card className="overflow-hidden">
         <div
-          className="flex cursor-pointer items-center justify-between p-4"
-          onClick={() => setExpanded((prev) => !prev)}
-        >
-          <div className="flex-1 truncate">
-            <p className="font-medium">Skills</p>
-            <p className="text-sm text-muted-foreground">
-              List your skills with bullets and emphasis.
-            </p>
-          </div>
+        className="flex cursor-pointer items-center justify-between p-4"
+        onClick={() => setExpanded((prev) => !prev)}
+      >
+        <div className="flex-1 truncate">
+          <p className="font-medium">Technical Skills</p>
+          <p className="text-sm text-muted-foreground">
+            List your skills with bullets and emphasis.
+          </p>
+        </div>
           <div className="flex items-center gap-2">
             {expanded ? (
               <ChevronUp className="h-4 w-4" />
@@ -36,11 +36,11 @@ export function SkillsForm() {
         {expanded && (
           <CardContent className="border-t pt-4">
             <div className="space-y-2">
-              <Label>Skills</Label>
+              <Label>Technical Skills</Label>
               <RichTextEditor
                 content={cv.skills}
                 onChange={updateSkills}
-                placeholder="List your skills..."
+                placeholder="List your technical skills..."
               />
               <p className="text-xs text-muted-foreground">
                 Use the toolbar to format your skills with bullets and bold

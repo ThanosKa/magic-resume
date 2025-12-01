@@ -241,7 +241,6 @@ export async function POST(request: NextRequest) {
       'Extracting text from PDF'
     );
 
-    // Extract text from PDF
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array = new Uint8Array(arrayBuffer);
     const extractedText = await pdfToText(uint8Array);
@@ -467,7 +466,7 @@ export async function POST(request: NextRequest) {
             {
               id: generateId(),
               type: 'skills' as const,
-              title: 'Skills',
+              title: 'Technical Skills',
               enabled: true,
               order: 4,
             },

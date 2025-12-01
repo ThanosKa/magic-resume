@@ -215,7 +215,7 @@ export const defaultCVData: CVData = {
     {
       id: generateId(),
       type: 'skills',
-      title: 'Skills',
+      title: 'Technical Skills',
       enabled: true,
       order: 4,
     },

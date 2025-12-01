@@ -78,36 +78,6 @@ pnpm seo-check # Basic SEO sanity checks
 
 PDF generation requirements:
 
-- Nothing extra needed for local dev—Puppeteer uses your installed Chrome/Chromium.
-- In serverless deploys, a bundled headless Chromium is included via `@sparticuz/chromium`, so no additional setup is required.
-
-## Usage
-
-- Open `/editor`, fill each section, and toggle/order sections as needed.
-- Use “AI Polish” on summaries, experiences, education, or projects (requires `OPENROUTER_API_KEY`).
-- Import a saved resume JSON, or export to JSON/PDF from the header menu; print uses the same layout.
-- Data is persisted locally under the `cv-builder-data` store key so you can pick up where you left off.
-
-API examples (local dev):
-
-```bash
-# Polish content
-curl -X POST http://localhost:3000/api/polish \
-  -H "Content-Type: application/json" \
-  -d '{"content":"Lead developer on a data platform...", "polishType":"summary"}'
-
-# Generate a PDF from prepared HTML (used by the editor)
-curl -X POST http://localhost:3000/api/generate-pdf \
-  -H "Content-Type: application/json" \
-  -d '{"html":"<html>...</html>","filename":"cv"}' --output cv.pdf
-```
-
-## Deployment
-
-**Vercel (recommended)**
-
-- Push your branch to GitHub/GitLab/Bitbucket so Vercel can pull it.
-- In Vercel, **New Project** → import the repo → set env vars (`NEXT_PUBLIC_SITE_URL`, `OPENROUTER_API_KEY`).
 - Framework preset: **Next.js**. Leave build command as `next build` (default) and output as `.next`.
 - For previews, Vercel auto-builds each PR. For production, promote the main branch or trigger a production deployment.
 - One-click deploy:

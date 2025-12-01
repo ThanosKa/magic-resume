@@ -12,6 +12,9 @@ Instructions below are for AI assistants. Keep responses concise and aligned wit
 - Dev: `pnpm dev`
 - Build: `pnpm build`
 - Lint: `pnpm lint`
+- Test: `pnpm test`
+- Test (watch): `pnpm test:watch`
+- Test (coverage): `pnpm test:coverage`
 - Start (after build): `pnpm start`
 
 ## Behavior Rules
@@ -19,7 +22,8 @@ Instructions below are for AI assistants. Keep responses concise and aligned wit
 - Prefer pnpm; avoid destructive git commands and respect existing changes.
 - Default to server components; gate browser-only logic to avoid hydration drift.
 - Keep UI in the neutral Radix/Tailwind style; avoid new dependencies without approval.
-- Provide manual verification steps when relevant; skip adding tests unless asked.
+- Write tests for new features: unit tests for utilities, integration tests for store/API changes.
+- Provide manual verification steps when relevant; run `pnpm test` to verify all tests pass.
 
 ## Agent Permissions
 

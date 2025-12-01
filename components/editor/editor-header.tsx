@@ -32,9 +32,16 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { useCVStore } from '@/store/cv-store';
 import type { CVData } from '@/types/cv';
 import { useToast } from '@/components/hooks/use-toast';
+import * as pdfjsLib from 'pdfjs-dist';
 
 const PDF_EXPORT_URL = '/api/generate-pdf';
 const PDF_EXPORT_TIMEOUT_MS = 45_000;
+const PARSE_PDF_URL = '/api/parse-pdf';
+
+// Configure pdfjs-dist worker
+if (typeof window !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+}
 
 const PRINT_STYLES = `
   @page {
@@ -218,7 +225,9 @@ interface EditorHeaderProps {
 export function EditorHeader({ previewRef }: EditorHeaderProps) {
   const { cv, setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const pdfInputRef = useRef<HTMLInputElement>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const [isParsingPDF, setIsParsingPDF] = useState(false);
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isImportMenuOpen, setIsImportMenuOpen] = useState(false);
   const { toast } = useToast();
@@ -319,6 +328,114 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
     fileInputRef.current?.click();
   };
 
+  const handlePDFImportClick = () => {
+    pdfInputRef.current?.click();
+  };
+
+  const extractTextFromPDF = async (file: File): Promise<string> => {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const numPages = pdf.numPages;
+    const textPromises = [];
+
+    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items
+        .map((item: any) => item.str)
+        .join(' ');
+      textPromises.push(pageText);
+    }
+
+    return textPromises.join('\n\n');
+  };
+
+  const handlePDFFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid file type',
+        description: 'Please select a PDF file.',
+      });
+      e.target.value = '';
+      return;
+    }
+
+    setIsParsingPDF(true);
+    try {
+      // Extract text from PDF
+      const text = await extractTextFromPDF(file);
+
+      if (!text || text.trim().length === 0) {
+        throw new Error('No text could be extracted from the PDF');
+      }
+
+      // Send to API for parsing
+      const response = await fetch(PARSE_PDF_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          errorText || `Failed to parse PDF: ${response.statusText}`
+        );
+      }
+
+      const data = (await response.json()) as { cv?: Partial<CVData> };
+      const parsedCV = data.cv;
+
+      if (!parsedCV) {
+        throw new Error('No CV data returned from parser');
+      }
+
+      // Merge parsed data with default structure to ensure all fields exist
+      const mergedCV: CVData = {
+        ...cv,
+        ...parsedCV,
+        personalInfo: {
+          ...cv.personalInfo,
+          ...parsedCV.personalInfo,
+          socialLinks:
+            parsedCV.personalInfo?.socialLinks || cv.personalInfo.socialLinks,
+        },
+        sections: parsedCV.sections || cv.sections,
+        experience: parsedCV.experience || [],
+        education: parsedCV.education || [],
+        projects: parsedCV.projects || [],
+        summary: parsedCV.summary || cv.summary,
+        skills: parsedCV.skills || cv.skills,
+        updatedAt: new Date().toISOString(),
+      };
+
+      setCVData(mergedCV);
+      toast({
+        title: 'PDF imported successfully',
+        description: 'Your CV has been imported. Please review and adjust as needed.',
+      });
+    } catch (error) {
+      console.error('PDF import failed:', error);
+      toast({
+        variant: 'destructive',
+        title: 'PDF import failed',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'Failed to parse PDF. Please make sure it contains readable text.',
+      });
+    } finally {
+      setIsParsingPDF(false);
+      e.target.value = '';
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -331,6 +448,10 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
           throw new Error('Invalid CV data structure');
         }
         setCVData(data);
+        toast({
+          title: 'JSON imported successfully',
+          description: 'Your CV has been imported.',
+        });
       } catch {
         toast({
           variant: 'destructive',
@@ -359,15 +480,33 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
             onChange={handleFileChange}
             className="hidden"
           />
+          <input
+            ref={pdfInputRef}
+            type="file"
+            accept=".pdf,application/pdf"
+            onChange={handlePDFFileChange}
+            className="hidden"
+          />
 
           <DropdownMenu
             open={isImportMenuOpen}
             onOpenChange={setIsImportMenuOpen}
           >
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <Upload className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">Import</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-busy={isParsingPDF}
+                disabled={isParsingPDF}
+              >
+                {isParsingPDF ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Upload className="mr-2 h-4 w-4" />
+                )}
+                <span className="hidden sm:inline">
+                  {isParsingPDF ? 'Parsing...' : 'Import'}
+                </span>
                 <ChevronDown className="ml-1 h-3 w-3" />
               </Button>
             </DropdownMenuTrigger>
@@ -375,8 +514,18 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
               <DropdownMenuItem onClick={handleImportClick}>
                 Import from JSON
               </DropdownMenuItem>
-              <DropdownMenuItem disabled className="opacity-50">
-                Import from PDF (soon)
+              <DropdownMenuItem
+                onClick={handlePDFImportClick}
+                disabled={isParsingPDF}
+              >
+                {isParsingPDF ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Parsing PDF...
+                  </>
+                ) : (
+                  'Import from PDF'
+                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

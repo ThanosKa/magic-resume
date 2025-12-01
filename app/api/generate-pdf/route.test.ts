@@ -91,7 +91,9 @@ describe('Generate PDF API - POST', () => {
 
     // Re-setup the puppeteer mock
     const puppeteer = await import('puppeteer-core');
-    vi.mocked(puppeteer.default.launch).mockResolvedValue(mockBrowser as unknown as Browser);
+    vi.mocked(puppeteer.default.launch).mockResolvedValue(
+      mockBrowser as unknown as Browser
+    );
   });
 
   test('should successfully generate PDF from HTML content', async () => {

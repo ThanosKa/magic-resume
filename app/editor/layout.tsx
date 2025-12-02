@@ -4,7 +4,7 @@ import { siteMetadata } from '@/lib/seo';
 
 const editorTitle = `Resume Editor | ${siteMetadata.name}`;
 const editorDescription =
-  'Build and polish your CV with real-time preview, AI suggestions, and instant PDF export.';
+  'Build and polish your CV with PDF import, real-time preview, AI suggestions, and instant PDF export.';
 
 export const metadata: Metadata = {
   title: editorTitle,

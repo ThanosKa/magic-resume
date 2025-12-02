@@ -55,9 +55,9 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-6 max-w-2xl text-pretty text-lg text-muted-foreground md:text-xl"
           >
-            Create stunning, professional resumes with our intuitive editor. See
-            changes in real-time, polish your content with AI, and export
-            anywhere.
+            Create stunning, professional resumes with our intuitive editor.
+            Import existing PDF resumes, see changes in real-time, polish your
+            content with AI, and export anywhere.
           </motion.p>
 
           <motion.div

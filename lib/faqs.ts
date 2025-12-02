@@ -27,6 +27,6 @@ export const faqs = [
   {
     question: 'Can I import an existing CV?',
     answer:
-      "Yes! If you've previously exported your CV as JSON, you can import it back using the Import button in the editor. This makes it easy to continue working on a previous version.",
+      'Yes! You can import existing CVs in two ways: 1) Upload a PDF resume to automatically extract and populate your data, or 2) import a previously exported JSON file. This makes it easy to continue working on existing resumes or convert PDF resumes into editable format.',
   },
 ];

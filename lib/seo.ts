@@ -46,7 +46,7 @@ export const siteMetadata = {
     'CV creator',
     'job application resume',
   ],
-  ogImage: '/og-image.png',
+  ogImage: '/opengraph-image',
 };
 
 export type JsonLd = Record<string, unknown>;

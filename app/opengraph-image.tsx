@@ -41,9 +41,9 @@ export default async function Image() {
         ✨ AI-Powered CV Enhancement
       </div>
 
-      {/* Main Headline */}
       <div
         style={{
+          display: 'block',
           fontSize: 72,
           fontWeight: 'bold',
           color: 'white',

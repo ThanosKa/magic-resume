@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Eye, Sparkles, Download, Shield } from 'lucide-react';
+import { Eye, Sparkles, Download, Shield, Upload } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const features = [
@@ -10,6 +10,12 @@ const features = [
     title: 'Real-Time Preview',
     description:
       'See your CV update instantly as you type. No guessing, no surprises - what you see is exactly what you get.',
+  },
+  {
+    icon: Upload,
+    title: 'Import from PDF',
+    description:
+      'Upload your existing PDF resume and automatically extract all your information. Convert paper resumes to editable format in seconds.',
   },
   {
     icon: Sparkles,

@@ -19,7 +19,7 @@ export const siteMetadata = {
   name: 'Magic Resume',
   title: 'CV Builder - Create Professional Resumes in Minutes',
   description:
-    'Create stunning, professional resumes with our intuitive editor. See changes in real-time, polish content with AI, and export anywhere.',
+    'Create stunning, professional resumes with our intuitive editor. Import existing PDF resumes, see changes in real-time, polish content with AI, and export anywhere.',
   keywords: [
     'CV builder',
     'resume builder',
@@ -45,6 +45,12 @@ export const siteMetadata = {
     'résumé builder',
     'CV creator',
     'job application resume',
+    'import PDF resume',
+    'PDF to resume converter',
+    'upload PDF CV',
+    'convert PDF to editable resume',
+    'resume PDF importer',
+    'PDF resume parser',
   ],
   ogImage: '/opengraph-image',
 };

@@ -13,7 +13,7 @@ export default async function Image() {
     <div
       style={{
         fontSize: 48,
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: 'black',
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -43,20 +43,19 @@ export default async function Image() {
 
       <div
         style={{
-          display: 'flex',
-          flexWrap: 'wrap',
           fontSize: 72,
           fontWeight: 'bold',
           color: 'white',
           lineHeight: 1.1,
           marginBottom: '24px',
           maxWidth: '900px',
+          textAlign: 'center',
         }}
       >
         Build Your Professional CV in{' '}
         <span
           style={{
-            background: 'linear-gradient(90deg, #fbbf24, #f59e0b)',
+            background: 'linear-gradient(90deg, #ffffff, #a1a1aa)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             color: 'transparent',
@@ -77,18 +76,6 @@ export default async function Image() {
       >
         Create stunning, professional resumes with our intuitive editor. See
         changes in real-time, polish your content with AI, and export anywhere.
-      </div>
-
-      <div
-        style={{
-          fontSize: 20,
-          color: 'rgba(255, 255, 255, 0.7)',
-          position: 'absolute',
-          bottom: '40px',
-          right: '60px',
-        }}
-      >
-        magik-resume.dev
       </div>
     </div>,
     {

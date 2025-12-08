@@ -12,7 +12,7 @@ export const faqs = [
   {
     question: 'How does the AI Polish feature work?',
     answer:
-      'Magic resume uses Grok 4.1 fast (a free model) to analyze your text and suggest improvements to make it more professional and impactful. You can choose to accept, modify, or reject any suggestions. For the hosted version, we handle the API costs - no API key needed from you. When running locally, you can configure any AI model but will need your own API key.',
+      'Magic resume uses a free model from OpenRouter to analyze your text and suggest improvements to make it more professional and impactful. You can choose to accept, modify, or reject any suggestions. For the hosted version, we handle the API costs - no API key needed from you. When running locally, you can configure any AI model but will need your own API key.',
   },
   {
     question: 'Can I export my CV as PDF?',

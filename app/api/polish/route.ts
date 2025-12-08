@@ -1,8 +1,7 @@
 import { logger } from '../logger';
+import { OPENROUTER_MODEL } from '../openrouter';
 
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
-const MODEL = 'x-ai/grok-4.1-fast:free';
-
 type PolishType = 'title' | 'summary' | 'description';
 
 const POLISH_PROMPTS = {
@@ -75,7 +74,7 @@ export async function POST(req: Request) {
     const prompt = POLISH_PROMPTS[polishType] || POLISH_PROMPTS.description;
 
     logger.info(
-      { model: MODEL, polishType },
+      { model: OPENROUTER_MODEL, polishType },
       'Sending polish request to OpenRouter'
     );
 
@@ -89,7 +88,7 @@ export async function POST(req: Request) {
         'X-Title': 'Magic Resume',
       },
       body: JSON.stringify({
-        model: MODEL,
+        model: OPENROUTER_MODEL,
         stream: false,
         messages: [
           {

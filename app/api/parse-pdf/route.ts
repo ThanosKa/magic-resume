@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { pdfToText } from 'pdf-ts';
 import { z } from 'zod';
 import { logger } from '../logger';
+import { OPENROUTER_MODEL } from '../openrouter';
 import { generateId, type CVData } from '@/types/cv';
 
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
-const MODEL = 'x-ai/grok-4.1-fast:free';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 const aiResponseSchema = z.object({
@@ -280,7 +280,7 @@ export async function POST(request: NextRequest) {
         'X-Title': 'Magic Resume',
       },
       body: JSON.stringify({
-        model: MODEL,
+        model: OPENROUTER_MODEL,
         stream: false,
         messages: [
           {

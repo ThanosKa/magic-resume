@@ -5,6 +5,7 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable both-edges;
 }
 
 :root {
@@ -125,6 +126,7 @@ html {
   }
   body {
     @apply bg-background text-foreground;
+    overflow-y: scroll;
   }
 }
 

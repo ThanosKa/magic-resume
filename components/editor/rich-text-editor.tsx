@@ -12,6 +12,7 @@ import {
   ListOrdered,
   Undo,
   Redo,
+  CornerDownLeft,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -132,6 +133,17 @@ export function RichTextEditor({
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
         >
           <ListOrdered className="h-4 w-4" />
+        </Button>
+
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0"
+          onClick={() => editor.chain().focus().setHardBreak().run()}
+          title="Line Break (Shift+Enter)"
+        >
+          <CornerDownLeft className="h-4 w-4" />
         </Button>
 
         <div className="mx-1 h-6 w-px bg-border" />

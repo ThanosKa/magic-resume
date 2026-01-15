@@ -331,6 +331,22 @@ describe('CV Store - Sections', () => {
     const updatedState = useCVStore.getState();
     expect(updatedState.cv.sections).toEqual(reorderedSections);
   });
+
+  test('should reset section order', () => {
+    const initialSections = [...useCVStore.getState().cv.sections];
+    const reordered = [...initialSections].reverse();
+    
+    useCVStore.getState().reorderSections(reordered);
+    expect(useCVStore.getState().cv.sections[0].type).toBe(reordered[0].type);
+    
+    useCVStore.getState().resetSectionsOrder();
+    const resetSections = useCVStore.getState().cv.sections;
+    
+    expect(resetSections).toHaveLength(initialSections.length);
+    // Check types match default order
+    expect(resetSections[0].type).toBe('summary');
+    expect(resetSections[1].type).toBe('experience');
+  });
 });
 
 describe('CV Store - Active Section', () => {

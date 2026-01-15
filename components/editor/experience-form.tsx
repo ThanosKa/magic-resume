@@ -73,9 +73,11 @@ export function ExperienceForm() {
             >
               <div className="flex-1 truncate">
                 <p className="font-medium">{exp.company || 'New Experience'}</p>
-                <p className="text-sm text-muted-foreground">
-                  {exp.position || 'Add position'}
-                </p>
+                {exp.position && (
+                  <p className="text-sm text-muted-foreground">
+                    {exp.position}
+                  </p>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <Button

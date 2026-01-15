@@ -42,10 +42,16 @@ export function SkillsForm() {
                 onChange={updateSkills}
                 placeholder="List your technical skills..."
               />
-              <p className="text-xs text-muted-foreground">
-                Use the toolbar to format your skills with bullets and bold
-                text.
-              </p>
+              <details className="mt-2">
+                <summary className="cursor-pointer text-xs text-muted-foreground hover:text-foreground transition-colors">
+                  Formatting Tips
+                </summary>
+                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                  • Use the toolbar for bullets and bold text.<br />
+                  • Press <kbd className="rounded border bg-muted px-1">Shift+Enter</kbd> for extra spacing.<br />
+                  • Use multiple line breaks to separate groups.
+                </p>
+              </details>
             </div>
           </CardContent>
         )}

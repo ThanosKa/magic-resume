@@ -49,7 +49,7 @@ export const experienceSchema = z
   .object({
     id: z.string().min(1, 'ID is required'),
     company: z.string(),
-    position: z.string(),
+    position: z.string().optional().or(z.literal('')),
     startDate: z.string(),
     endDate: z.string(),
     description: z.string(),

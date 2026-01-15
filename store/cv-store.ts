@@ -16,7 +16,7 @@ import {
 
 interface CVStore {
   cv: CVData;
-  activeSection: Section['type'] | null;
+  activeSection: string | null;
 
   updatePersonalInfo: (info: Partial<PersonalInfo>) => void;
   addSocialLink: (link?: Partial<SocialLink>) => void;
@@ -42,7 +42,8 @@ interface CVStore {
 
   toggleSection: (sectionId: string) => void;
   reorderSections: (sections: Section[]) => void;
-  setActiveSection: (section: Section['type'] | null) => void;
+  resetSectionsOrder: () => void;
+  setActiveSection: (section: string | null) => void;
 
   setCVData: (cv: CVData) => void;
   reset: () => void;
@@ -278,6 +279,18 @@ export const useCVStore = create<CVStore>()(
           cv: {
             ...state.cv,
             sections: sections.map((s, i) => ({ ...s, order: i })),
+            updatedAt: new Date().toISOString(),
+          },
+        })),
+
+      resetSectionsOrder: () =>
+        set((state) => ({
+          cv: {
+            ...state.cv,
+            sections: defaultCVData.sections.map((s) => ({
+              ...s,
+              id: generateId(),
+            })),
             updatedAt: new Date().toISOString(),
           },
         })),

@@ -1,6 +1,6 @@
 'use client';
 
-import { Reorder, useDragControls, motion } from 'framer-motion';
+import { Reorder, useDragControls } from 'framer-motion';
 import {
   User,
   Briefcase,
@@ -99,18 +99,18 @@ function SectionTabItem({ section, isActive, onSelect, onToggle }: SectionTabIte
       value={section}
       dragListener={false}
       dragControls={dragControls}
-      whileDrag={{ 
-        scale: 1.02, 
+      whileDrag={{
+        scale: 1.02,
         zIndex: 50,
-        boxShadow: "0px 5px 15px rgba(0,0,0,0.08)" 
+        boxShadow: "0px 5px 15px rgba(0,0,0,0.08)"
       }}
       className="relative"
     >
       <div
         className={cn(
           'group flex items-center gap-1 rounded-md border border-transparent transition-all',
-          isActive 
-            ? 'bg-primary text-primary-foreground shadow-sm' 
+          isActive
+            ? 'bg-primary text-primary-foreground shadow-sm'
             : 'text-muted-foreground hover:bg-muted hover:text-foreground',
           !section.enabled && 'opacity-60'
         )}

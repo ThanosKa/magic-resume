@@ -1,6 +1,6 @@
 'use client';
 
-import { Reorder, AnimatePresence, useDragControls, motion } from 'framer-motion';
+import { Reorder, useDragControls, motion } from 'framer-motion';
 import {
   User,
   Briefcase,

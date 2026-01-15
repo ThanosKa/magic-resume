@@ -26,206 +26,26 @@ import { useCVStore } from '@/store/cv-store';
 import type { CVData } from '@/types/cv';
 import { useToast } from '@/components/hooks/use-toast';
 import { ImportPdfDialog } from './import-pdf-dialog';
-
-const PDF_EXPORT_URL = '/api/generate-pdf';
-const PDF_EXPORT_TIMEOUT_MS = 45_000;
-
-const PRINT_STYLES = `
-  @page {
-    size: A4;
-    margin: 16mm;
-  }
-  * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-  html, body {
-    margin: 0;
-    background: #ffffff;
-    color: #0f172a;
-  }
-  #cv-preview {
-    width: 210mm;
-    min-height: 297mm;
-    margin: 0 auto;
-    box-shadow: none;
-    background: #ffffff;
-  }
-  .cv-section {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-  .cv-content ul {
-    list-style-type: disc;
-    padding-left: 1.5rem;
-    margin-top: 0.25rem;
-  }
-  .cv-content li {
-    margin-bottom: 0.25rem;
-  }
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-`;
-
-const STYLE_FILTER_PREFIXES = [
-  'animation',
-  'transition',
-  'width',
-  'height',
-  'min-',
-  'max-',
-  'flex',
-  'grid',
-  'inline-size',
-  'block-size',
-];
-const STYLE_FILTER_EXACT = [
-  'font-family',
-  'font-display',
-  'font-variation-settings',
-  'left',
-  'right',
-  'top',
-  'bottom',
-  'inset',
-];
-
-const stripUnsupportedRules = (css: string) =>
-  css
-    .replace(/@font-face[\s\S]*?}\s*/g, '')
-    .replace(/@keyframes[\s\S]*?}\s*}/g, '')
-    .replace(/animation:[^;]*;/g, '')
-    .replace(/transition:[^;]*;/g, '');
-
-const collectDocumentStyles = async () => {
-  const inlineStyles = Array.from(document.querySelectorAll('style'))
-    .map((style) => style.textContent ?? '')
-    .join('\n');
-
-  const externalStyles = await Promise.all(
-    Array.from(
-      document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')
-    ).map(async (link) => {
-      if (!link.href) return '';
-      try {
-        const response = await fetch(link.href);
-        if (!response.ok) return '';
-        return await response.text();
-      } catch {
-        return '';
-      }
-    })
-  );
-
-  const mergedStyles = [inlineStyles, ...externalStyles, PRINT_STYLES]
-    .filter(Boolean)
-    .join('\n');
-
-  return stripUnsupportedRules(mergedStyles);
-};
-
-const applyComputedStyles = (sourceEl: Element, targetEl: Element) => {
-  const computed = window.getComputedStyle(sourceEl);
-  const filteredStyles = Array.from(computed)
-    .filter(
-      (prop) =>
-        !STYLE_FILTER_PREFIXES.some((prefix) => prop.startsWith(prefix)) &&
-        !STYLE_FILTER_EXACT.includes(prop)
-    )
-    .map((prop) => `${prop}: ${computed.getPropertyValue(prop)};`)
-    .join(' ');
-
-  const existingStyle = targetEl.getAttribute('style');
-  const mergedStyle = existingStyle
-    ? `${existingStyle}; ${filteredStyles}`
-    : filteredStyles;
-  targetEl.setAttribute('style', mergedStyle);
-
-  const sourceChildren = Array.from(sourceEl.children);
-  const targetChildren = Array.from(targetEl.children);
-  for (let i = 0; i < sourceChildren.length; i += 1) {
-    const sourceChild = sourceChildren[i];
-    const targetChild = targetChildren[i];
-    if (sourceChild && targetChild) {
-      applyComputedStyles(sourceChild, targetChild);
-    }
-  }
-};
-
-const toDataUrl = async (src: string) => {
-  const response = await fetch(src);
-  if (!response.ok) throw new Error('Image fetch failed');
-  const blob = await response.blob();
-  return await new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = () => reject(new Error('Failed to convert image'));
-    reader.readAsDataURL(blob);
-  });
-};
-
-const inlineImages = async (root: HTMLElement) => {
-  const images = Array.from(root.querySelectorAll('img'));
-  await Promise.all(
-    images.map(async (img) => {
-      const src = img.getAttribute('src');
-      if (!src || src.startsWith('data:')) return;
-      try {
-        const dataUrl = await toDataUrl(src);
-        img.setAttribute('src', dataUrl);
-      } catch {}
-    })
-  );
-};
-
-const buildPdfPayload = async (previewEl: HTMLElement) => {
-  const cloned = previewEl.cloneNode(true) as HTMLElement;
-
-  cloned.querySelectorAll('.page-break-line').forEach((el) => {
-    (el as HTMLElement).style.display = 'none';
-  });
-
-  applyComputedStyles(previewEl, cloned);
-  await inlineImages(cloned);
-  const styles = await collectDocumentStyles();
-
-  return {
-    content: cloned.outerHTML,
-    styles,
-    margin: {
-      top: '16mm',
-      right: '16mm',
-      bottom: '16mm',
-      left: '16mm',
-    },
-  };
-};
+import { usePdfExport } from '@/components/pdf/use-pdf-export';
 
 interface EditorHeaderProps {
   previewRef: RefObject<HTMLDivElement | null>;
 }
 
-export function EditorHeader({ previewRef }: EditorHeaderProps) {
+export function EditorHeader({ previewRef: _previewRef }: EditorHeaderProps) {
   const { cv, setCVData, reset } = useCVStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isExportingPDF, setIsExportingPDF] = useState(false);
-  const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isImportMenuOpen, setIsImportMenuOpen] = useState(false);
   const [isImportPdfDialogOpen, setIsImportPdfDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const toSafeFilename = (value?: string) => {
-    if (!value) return 'cv';
-    const cleaned = value.replace(/[<>:"/\\|?*\u0000-\u001F]/g, '').trim();
-    if (!cleaned) return 'cv';
-    return cleaned.replace(/\s+/g, '-').toLowerCase();
-  };
-
-  const safeTitle = toSafeFilename(cv.title || cv.personalInfo.name);
+  const { exportPdf, isExporting } = usePdfExport();
 
   const handleExportJSON = () => {
+    const safeTitle = (cv.title || cv.personalInfo.name || 'cv')
+      .replace(/[^a-z0-9]/gi, '-')
+      .toLowerCase();
+
     const dataStr = JSON.stringify(cv, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -237,74 +57,22 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
   };
 
   const handlePrint = () => {
-    if (!previewRef.current) {
-      window.print();
-      return;
-    }
     window.print();
   };
 
   const handleExportPDF = async () => {
-    if (isExportingPDF) return;
-    let timeoutId: number | undefined;
-
-    if (!previewRef.current) {
-      toast({
-        variant: 'destructive',
-        title: 'PDF export failed',
-        description: 'Preview is not ready yet. Please try again.',
-      });
-      return;
-    }
-
     try {
-      setIsExportingPDF(true);
-      setIsExportMenuOpen(true);
-      const payload = await buildPdfPayload(previewRef.current);
-      const controller = new AbortController();
-      timeoutId = window.setTimeout(
-        () => controller.abort(),
-        PDF_EXPORT_TIMEOUT_MS
-      );
-
-      const response = await fetch(PDF_EXPORT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...payload,
-          filename: safeTitle,
-        }),
-        signal: controller.signal,
+      await exportPdf(cv);
+      toast({
+        title: 'PDF exported successfully',
+        description: 'Your CV has been downloaded.',
       });
-
-      if (!response.ok) {
-        throw new Error(`PDF generation failed with status ${response.status}`);
-      }
-
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${safeTitle}.pdf`;
-      link.click();
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      const description =
-        error instanceof DOMException && error.name === 'AbortError'
-          ? 'PDF export timed out. Please try again.'
-          : 'Please try again in a moment.';
-
+    } catch (_error) {
       toast({
         variant: 'destructive',
         title: 'PDF export failed',
-        description,
+        description: 'There was an error generating your PDF. Please try again.',
       });
-    } finally {
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
-      setIsExportingPDF(false);
-      setIsExportMenuOpen(false);
     }
   };
 
@@ -379,24 +147,20 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenu
-            open={isExportMenuOpen}
-            onOpenChange={setIsExportMenuOpen}
-          >
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                aria-busy={isExportingPDF}
-                disabled={isExportingPDF}
+                disabled={isExporting}
               >
-                {isExportingPDF ? (
+                {isExporting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                   <Upload className="mr-2 h-4 w-4" />
                 )}
                 <span className="hidden sm:inline">
-                  {isExportingPDF ? 'Exporting...' : 'Export'}
+                  {isExporting ? 'Exporting...' : 'Export'}
                 </span>
                 <ChevronDown className="ml-1 h-3 w-3" />
               </Button>
@@ -406,13 +170,13 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
                 Export as JSON
               </DropdownMenuItem>
               <DropdownMenuItem
-                disabled={isExportingPDF}
+                disabled={isExporting}
                 onSelect={(event) => {
                   event.preventDefault();
                   void handleExportPDF();
                 }}
               >
-                {isExportingPDF ? (
+                {isExporting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Exporting PDF...

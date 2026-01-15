@@ -31,7 +31,7 @@ Magic Resume is a Next.js (App Router) application for creating professional CVs
 
 - Guided editor for personal info, experience, education, projects, skills, and summaries
 - Real-time preview with flexible header alignment and section ordering/toggles
-- Import/export JSON, print-friendly view, and server-side PDF generation via Puppeteer
+- Import/export JSON, print-friendly view, and high-quality PDF generation via `@react-pdf/renderer`
 - AI polish (OpenRouter) to improve titles, summaries, and descriptions
 - Client-side persistence (Zustand + localStorage) so drafts stay saved between sessions
 
@@ -101,10 +101,9 @@ pnpm test:coverage
 
 **Note**: API keys are not required for running tests. All external API calls are mocked, so you can use placeholder values in `.env.local` or omit them entirely for testing purposes.
 
-PDF generation requirements:
-
-- Framework preset: **Next.js**. Leave build command as `next build` (default) and output as `.next`.
-- For previews, Vercel auto-builds each PR. For production, promote the main branch or trigger a production deployment.
+PDF generation:
+- Powered by `@react-pdf/renderer` for high-quality, searchable client-side generation.
+- No server-side browser required. 
 - One-click deploy:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FThanosKa%2Fmagic-resume)

@@ -17,7 +17,7 @@ export const faqs = [
   {
     question: 'Can I export my CV as PDF?',
     answer:
-      "Yes! Click the Print button to open your browser's print dialog, then save as PDF. Your CV is already formatted for standard A4 paper size with professional margins.",
+      'Yes! Click the Export button and select "Export as PDF" for a high-quality, searchable document. You can also use the browser\'s print dialog if you prefer.',
   },
   {
     question: 'Is this service free?',

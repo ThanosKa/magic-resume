@@ -104,7 +104,7 @@ Branch naming conventions:
    
    See the [Testing Guidelines](#testing-guidelines) section for details on writing tests.
    
-   **Note**: Tests do not require real API keys. All external API calls (OpenRouter, Puppeteer) are mocked, so you can run tests with placeholder environment variables.
+   **Note**: Tests do not require real API keys. All external API calls (OpenRouter) are mocked, so you can run tests with placeholder environment variables.
 
 4. **Test your changes**:
    ```bash
@@ -281,7 +281,7 @@ Magic Resume uses **Vitest** for testing with a comprehensive test strategy cove
 
 - **Unit Tests**: Test pure functions, utilities, Zod schemas, and type helpers
 - **Integration Tests**: Test Zustand store state management and persistence
-- **Mock Tests**: Test API routes with mocked external dependencies (OpenRouter, Puppeteer)
+- **Mock Tests**: Test API routes with mocked external dependencies (OpenRouter)
 
 ### Running Tests
 

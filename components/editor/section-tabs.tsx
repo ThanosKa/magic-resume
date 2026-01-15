@@ -1,6 +1,6 @@
 'use client';
 
-import { Reorder, AnimatePresence, useDragControls } from 'framer-motion';
+import { Reorder, AnimatePresence, useDragControls, motion } from 'framer-motion';
 import {
   User,
   Briefcase,
@@ -31,7 +31,7 @@ export function SectionTabs() {
 
   return (
     <div className="flex flex-col gap-3 border-b border-border pb-4">
-      <div className="space-y-1">
+      <motion.div layout className="space-y-1">
         <button
           onClick={() => setActiveSection(null)}
           className={cn(
@@ -53,19 +53,17 @@ export function SectionTabs() {
           onReorder={reorderSections}
           className="space-y-1"
         >
-          <AnimatePresence initial={false}>
-            {cv.sections.map((section) => (
-              <SectionTabItem
-                key={section.id}
-                section={section}
-                isActive={activeSection === section.type}
-                onSelect={() => setActiveSection(section.type)}
-                onToggle={() => toggleSection(section.id)}
-              />
-            ))}
-          </AnimatePresence>
+          {cv.sections.map((section) => (
+            <SectionTabItem
+              key={section.id}
+              section={section}
+              isActive={activeSection === section.type}
+              onSelect={() => setActiveSection(section.type)}
+              onToggle={() => toggleSection(section.id)}
+            />
+          ))}
         </Reorder.Group>
-      </div>
+      </motion.div>
 
       <div className="flex items-center justify-between px-1">
         <p className="text-[10px] text-muted-foreground">
@@ -101,9 +99,6 @@ function SectionTabItem({ section, isActive, onSelect, onToggle }: SectionTabIte
       value={section}
       dragListener={false}
       dragControls={dragControls}
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 10 }}
       whileDrag={{ 
         scale: 1.02, 
         zIndex: 50,

@@ -52,7 +52,7 @@ const aiResponseSchema = z.object({
     .array(
       z.object({
         company: z.string(),
-        position: z.string(),
+        position: z.string().optional().or(z.literal('')),
         startDate: z.string(),
         endDate: z.string(),
         description: z.string().optional(),
@@ -128,7 +128,7 @@ const PARSE_PROMPT = `You are an expert at extracting structured data from CV/re
   "experience": [
     {
       "company": "string",
-      "position": "string",
+      "position": "string (optional, empty string if not present)",
       "startDate": "string",
       "endDate": "string (use 'Present' if current)",
       "description": "string (can include HTML like <ul><li> for bullet points)",
@@ -152,6 +152,7 @@ const PARSE_PROMPT = `You are an expert at extracting structured data from CV/re
 Guidelines:
 - Extract information exactly as written in the PDF - do not invent or modify content
 - If a field is not present in the PDF, use empty string "" or empty array []
+- For "experience", prioritize extracting the company name even if a specific job title (position) is not listed or is unclear.
 - For dates, preserve the format used in the PDF (e.g., "2020", "Jan 2020", "2020-2023")
 - For social links, extract every LinkedIn/GitHub/Twitter/portfolio URL you see (or obvious handle) and include them in socialLinks. Identify the platform from the URL (linkedin.com → linkedin, github.com → github, etc.). Return full profile URLs when possible; if only a handle is present, return the handle without @ symbols.
 - For skills, return structured HTML (e.g., "<ul><li><strong>Languages:</strong> JavaScript, Python</li></ul>") rather than plain text whenever the PDF lists categories or bullets.
@@ -409,7 +410,7 @@ export async function POST(request: NextRequest) {
       experience: (validatedData.experience || []).map((exp) => ({
         id: generateId(),
         company: exp.company,
-        position: exp.position,
+        position: exp.position || '',
         startDate: exp.startDate,
         endDate: exp.endDate,
         description: exp.description || '',

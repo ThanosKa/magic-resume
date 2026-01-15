@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { Upload, FileText, Loader2, X } from 'lucide-react';
+import { Download, FileText, Loader2, X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -214,7 +214,7 @@ export function ImportPdfDialog({ open, onOpenChange }: ImportPdfDialogProps) {
               ) : (
                 <>
                   <div className="rounded-full bg-primary/10 p-4">
-                    <Upload className="h-8 w-8 text-primary" />
+                    <Download className="h-8 w-8 text-primary" />
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-medium">

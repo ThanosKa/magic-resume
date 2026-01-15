@@ -287,10 +287,16 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           cv: {
             ...state.cv,
-            sections: defaultCVData.sections.map((s) => ({
-              ...s,
-              id: generateId(),
-            })),
+            sections: defaultCVData.sections.map((defaultSection, i) => {
+              const existing = state.cv.sections.find(
+                (s) => s.type === defaultSection.type
+              );
+              return {
+                ...defaultSection,
+                id: existing?.id || generateId(),
+                order: i,
+              };
+            }),
             updatedAt: new Date().toISOString(),
           },
         })),

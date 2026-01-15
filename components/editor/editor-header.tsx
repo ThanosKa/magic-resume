@@ -359,7 +359,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
           >
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm">
-                <Upload className="mr-2 h-4 w-4" />
+                <Download className="mr-2 h-4 w-4" />
                 <span className="hidden sm:inline">Import</span>
                 <ChevronDown className="ml-1 h-3 w-3" />
               </Button>
@@ -393,7 +393,7 @@ export function EditorHeader({ previewRef }: EditorHeaderProps) {
                 {isExportingPDF ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
-                  <Download className="mr-2 h-4 w-4" />
+                  <Upload className="mr-2 h-4 w-4" />
                 )}
                 <span className="hidden sm:inline">
                   {isExportingPDF ? 'Exporting...' : 'Export'}

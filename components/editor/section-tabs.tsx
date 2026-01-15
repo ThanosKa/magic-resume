@@ -31,7 +31,7 @@ export function SectionTabs() {
 
   return (
     <div className="flex flex-col gap-3 border-b border-border pb-4">
-      <motion.div layout className="space-y-1">
+      <div className="space-y-1">
         <button
           onClick={() => setActiveSection(null)}
           className={cn(
@@ -63,7 +63,7 @@ export function SectionTabs() {
             />
           ))}
         </Reorder.Group>
-      </motion.div>
+      </div>
 
       <div className="flex items-center justify-between px-1">
         <p className="text-[10px] text-muted-foreground">
@@ -104,7 +104,6 @@ function SectionTabItem({ section, isActive, onSelect, onToggle }: SectionTabIte
         zIndex: 50,
         boxShadow: "0px 5px 15px rgba(0,0,0,0.08)" 
       }}
-      layout
       className="relative"
     >
       <div

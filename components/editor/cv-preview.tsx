@@ -97,12 +97,12 @@ export const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
                       <div className="flex-1 min-w-0">
                         <h3 className="break-words font-bold text-black">
                           {exp.company || 'Company Name'}
+                          {exp.position && (
+                            <span className="text-sm font-medium text-black">
+                              {` - ${exp.position}`}
+                            </span>
+                          )}
                         </h3>
-                        {exp.position && (
-                          <p className="break-words text-sm font-medium text-black">
-                            {exp.position}
-                          </p>
-                        )}
                       </div>
                       <span className="shrink-0 whitespace-nowrap text-sm font-medium text-black">
                         {exp.startDate}

@@ -47,6 +47,9 @@ export const metadata: Metadata = {
     creator: '@KazakisThanos',
     site: '@KazakisThanos',
   },
+  verification: {
+    google: 'i8w1tIP5iQumz_p_QdLc-sQ1lT-_vFCnlHVdF1OOk2A',
+  },
   alternates: {
     canonical: '/',
   },

@@ -1,13 +1,20 @@
 import type { Metadata } from 'next';
 import { Header } from '@/components/landing/header';
 import { Hero } from '@/components/landing/hero';
+import { HowItWorks } from '@/components/landing/how-it-works';
 import { Features } from '@/components/landing/features';
 import { FAQ } from '@/components/landing/faq';
 import { CTA } from '@/components/landing/cta';
 import { Footer } from '@/components/landing/footer';
 import { JsonLd } from '@/components/seo/json-ld';
 import { faqs } from '@/lib/faqs';
-import { faqJsonLd, organizationJsonLd, siteMetadata } from '@/lib/seo';
+import {
+  faqJsonLd,
+  organizationJsonLd,
+  webApplicationJsonLd,
+  webSiteJsonLd,
+  siteMetadata,
+} from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: siteMetadata.title,
@@ -39,10 +46,18 @@ export const metadata: Metadata = {
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
-      <JsonLd data={[organizationJsonLd(), faqJsonLd(faqs)]} />
+      <JsonLd
+        data={[
+          organizationJsonLd(),
+          webApplicationJsonLd(),
+          webSiteJsonLd(),
+          faqJsonLd(faqs),
+        ]}
+      />
       <Header />
       <main className="flex-1">
         <Hero />
+        <HowItWorks />
         <Features />
         <FAQ />
         <CTA />

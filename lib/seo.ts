@@ -57,13 +57,53 @@ export const siteMetadata = {
 
 export type JsonLd = Record<string, unknown>;
 
-export const organizationJsonLd = (sameAs: string[] = []): JsonLd => ({
+export const organizationJsonLd = (
+  sameAs: string[] = [
+    'https://github.com/ThanosKa/magic-resume',
+    'https://x.com/KazakisThanos',
+  ]
+): JsonLd => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: siteMetadata.name,
   url: siteUrl,
   logo: `${siteUrl}/icon.svg`,
   ...(sameAs.length ? { sameAs } : {}),
+});
+
+export const webApplicationJsonLd = (): JsonLd => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: siteMetadata.name,
+  url: siteUrl,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  description: siteMetadata.description,
+  featureList: [
+    'AI-Powered Resume Polish',
+    'PDF Import with AI Extraction',
+    'Real-Time Live Preview',
+    'Client-Side PDF Export',
+    'No Account Required',
+    'Privacy-First Local Storage',
+  ],
+  screenshot: `${siteUrl}/og-image.png`,
+  creator: {
+    '@type': 'Person',
+    name: 'Thanos Kazakis',
+  },
+});
+
+export const webSiteJsonLd = (): JsonLd => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteMetadata.name,
+  url: siteUrl,
 });
 
 export const faqJsonLd = (
@@ -81,4 +121,45 @@ export const faqJsonLd = (
   })),
 });
 
-export const staticRoutes = ['/', '/editor'];
+export const articleJsonLd = (article: {
+  headline: string;
+  description: string;
+  datePublished: string;
+  dateModified: string;
+  url: string;
+  image?: string;
+}): JsonLd => ({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: article.headline,
+  description: article.description,
+  image: article.image || `${siteUrl}/og-image.png`,
+  author: {
+    '@type': 'Person',
+    name: 'Thanos Kazakis',
+    url: 'https://x.com/KazakisThanos',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: siteMetadata.name,
+    logo: `${siteUrl}/icon.svg`,
+  },
+  datePublished: article.datePublished,
+  dateModified: article.dateModified,
+  mainEntityOfPage: `${siteUrl}${article.url}`,
+});
+
+export const breadcrumbJsonLd = (
+  items: Array<{ name: string; url: string }>
+): JsonLd => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: `${siteUrl}${item.url}`,
+  })),
+});
+
+export const staticRoutes = ['/'];

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Eye, Sparkles, Download, Shield, Upload } from 'lucide-react';
+import { Eye, Sparkles, Download, Shield, Upload, GripVertical } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const features = [
@@ -28,6 +28,12 @@ const features = [
     title: 'Export Anywhere',
     description:
       'Download as JSON for backup or print directly to PDF. Your CV, your format, your choice.',
+  },
+  {
+    icon: GripVertical,
+    title: 'Drag & Drop Sections',
+    description:
+      'Reorder resume sections with drag and drop. Toggle visibility per item to create tailored versions for different jobs.',
   },
   {
     icon: Shield,
@@ -76,7 +82,7 @@ export function Features() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {features.map((feature) => (
             <motion.div key={feature.title} variants={item}>

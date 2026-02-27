@@ -92,7 +92,7 @@ export function Hero() {
               <div className="relative aspect-[16/9] overflow-hidden rounded-lg border border-border bg-background">
                 <Image
                   src="/dark.png"
-                  alt="CV builder preview"
+                  alt="Magic Resume AI-powered CV builder showing real-time resume editing with live preview"
                   fill
                   priority
                   className="object-contain"

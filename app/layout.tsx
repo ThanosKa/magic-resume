@@ -44,6 +44,8 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     description: siteMetadata.description,
     images: [siteMetadata.ogImage],
+    creator: '@KazakisThanos',
+    site: '@KazakisThanos',
   },
   alternates: {
     canonical: '/',

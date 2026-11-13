@@ -1,2 +1,8 @@
 ignoredBuiltDependencies:
   - core-js
+
+onlyBuiltDependencies:
+  # Verifies/installs the native esbuild binary used by Vite/Vitest.
+  - esbuild
+  # Downloads and validates the local Workers runtime used by the vinext preview.
+  - workerd

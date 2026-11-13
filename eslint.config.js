@@ -10,6 +10,8 @@ export default [
       'build/**',
       'dist/**',
       '.turbo/**',
+      '.cloudflare/**',
+      '.vinext/**',
     ],
   },
   {

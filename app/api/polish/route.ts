@@ -1,5 +1,5 @@
 import { logger } from '../logger';
-import { OPENROUTER_MODEL } from '../openrouter';
+import { OPENROUTER_MODEL, OPENROUTER_MODELS } from '../openrouter';
 
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 type PolishType = 'title' | 'summary' | 'description';
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
         'X-Title': 'Magic Resume',
       },
       body: JSON.stringify({
-        model: OPENROUTER_MODEL,
+        models: OPENROUTER_MODELS,
         stream: false,
         messages: [
           {

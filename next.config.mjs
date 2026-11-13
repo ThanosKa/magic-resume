@@ -3,14 +3,13 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Keeps generateMetadata output in the initial <head>; vinext otherwise
+  // streams it into the body.
+  htmlLimitedBots: /.*/,
   images: {
     unoptimized: true,
   },
-  // Keep these packages external so Vercel bundles their binaries correctly with pnpm
-  serverExternalPackages: [
-    'pino',
-    'pino-pretty',
-  ],
+  serverExternalPackages: ['pino', 'pino-pretty'],
 };
 
 export default nextConfig;

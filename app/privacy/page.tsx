@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="mt-4 text-muted-foreground">
-              Last updated: February 27, 2026
+              Last updated: November 13, 2026
             </p>
 
             <div className="mt-12 space-y-12">
@@ -141,21 +141,9 @@ export default function PrivacyPolicyPage() {
                   3. Cookies and Analytics
                 </h2>
                 <p className="mt-4 leading-relaxed text-muted-foreground">
-                  We use minimal cookies and analytics:
+                  We use no analytics tool and no cookies:
                 </p>
                 <ul className="mt-4 space-y-3 text-muted-foreground">
-                  <li className="flex gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-muted-foreground" />
-                    <span>
-                      <strong className="text-foreground">
-                        Vercel Analytics:
-                      </strong>{' '}
-                      We use Vercel Analytics to understand general usage
-                      patterns such as page views and visitor counts. Vercel
-                      Analytics is privacy-friendly and does not track individual
-                      users or collect personal information.
-                    </span>
-                  </li>
                   <li className="flex gap-3">
                     <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-muted-foreground" />
                     <span>
@@ -192,17 +180,17 @@ export default function PrivacyPolicyPage() {
                   <li className="flex gap-3">
                     <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-muted-foreground" />
                     <span>
-                      <strong className="text-foreground">
-                        Vercel Analytics:
-                      </strong>{' '}
-                      For anonymous, aggregated website usage statistics. See{' '}
+                      <strong className="text-foreground">Cloudflare:</strong>{' '}
+                      Hosts the website. Like any web host, it processes
+                      request data such as IP addresses to deliver pages and
+                      protect against abuse. See{' '}
                       <a
-                        href="https://vercel.com/docs/analytics/privacy-policy"
+                        href="https://www.cloudflare.com/privacypolicy/"
                         target="_blank"
                         rel="noreferrer"
                         className="text-foreground underline underline-offset-4"
                       >
-                        Vercel&apos;s privacy policy
+                        Cloudflare&apos;s privacy policy
                       </a>
                       .
                     </span>

@@ -104,15 +104,23 @@ pnpm test:coverage
 PDF generation:
 - Powered by `@react-pdf/renderer` for high-quality, searchable client-side generation.
 - No server-side browser required. 
-- One-click deploy:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FThanosKa%2Fmagic-resume)
+## Deployment
 
-**Manual/Other hosts**
+Magic Resume runs on a Cloudflare Worker named `magic-resume` through [vinext](https://github.com/cloudflare/vinext). Use Node 24.22 or newer for the Worker build and the `cf` CLI.
+
+1. Put `OPENROUTER_API_KEY`, `NEXT_PUBLIC_SITE_URL` (your `https://` production domain) and `LOG_LEVEL` in `.env.production.local`
+2. Build with `pnpm build:vinext`. It reads the `NEXT_PUBLIC_*` values and stops if `NEXT_PUBLIC_SITE_URL` is missing or not `https://`
+3. Put `OPENROUTER_API_KEY` and `LOG_LEVEL` in a JSON file outside the repo, then deploy with `pnpm exec cf deploy --prebuilt --secrets-file <file>`. Later deploys keep them, so the flag is only needed when a value changes
+
+Merging to `main` updates the Worker: `.github/workflows/deploy.yml` builds and deploys once CI passes on `main`. To deploy by hand, run `pnpm build:vinext`, then `pnpm exec cf deploy --prebuilt`.
+
+Local Worker preview: `pnpm build:vinext && pnpm start:vinext`.
+
+**Other Node hosts**
 
 - Build locally: `pnpm build`.
 - Start: `pnpm start` (expects `.env.local` with required variables).
-- Ensure the host supports Node.js 18+ and Next.js server output.
 
 ## Project Structure
 

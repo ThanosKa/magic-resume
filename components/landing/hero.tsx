@@ -96,6 +96,9 @@ export function Hero() {
                   fill
                   priority
                   className="object-contain"
+                  // vinext puts an inline objectFit: cover on fill images,
+                  // which beats the class above.
+                  style={{ objectFit: 'contain' }}
                   sizes="(min-width: 1024px) 800px, 100vw"
                 />
               </div>

@@ -8,11 +8,9 @@ out
 .vercel
 next-env.d.ts
 
-# Env files
-.env.local
-.env.development
-.env.test
-.env.production
+# Env files (keep only the example)
+.env*
+!.env.example
 
 # Logs
 npm-debug.log*
@@ -22,3 +20,9 @@ pnpm-debug.log*
 
 # TypeScript build info
 tsconfig.tsbuildinfo
+
+# vinext and Cloudflare output
+/dist/
+.vinext/
+.cloudflare/
+.dev.vars*

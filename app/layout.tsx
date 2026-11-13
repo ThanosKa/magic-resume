@@ -1,7 +1,6 @@
 import type React from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { metadataBase, siteMetadata, siteUrl } from '@/lib/seo';
@@ -90,7 +89,6 @@ export default function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
-        <Analytics />
 
         {/* Buy Me a Coffee Widget */}
         <script

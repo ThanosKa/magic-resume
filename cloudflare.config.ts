@@ -7,9 +7,7 @@ export default defineConfig({
     compatibilityDate: '2026-11-07',
     compatibilityFlags: ['nodejs_compat'],
     observability: { enabled: true },
-    // magik-resume.dev is not a Cloudflare zone yet (its nameservers still
-    // point at Vercel). Once the zone is on this account, add:
-    //   domains: ["magik-resume.dev"],
+    domains: ['magik-resume.dev'],
     // Keep workersDev on: declaring a domain would otherwise switch it off.
     workersDev: true,
     assets: {
